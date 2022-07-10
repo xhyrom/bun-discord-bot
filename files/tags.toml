@@ -24,3 +24,28 @@ Any idea what to add to bun?
 • Please consider if this is a request for bun, not for other 3rd party packages
 • [Open an issue on GitHub](<https://github.com/oven-sh/bun/issues/new?template=2-feature-request.yml>) and fill out the given template
 """
+
+[hono]
+keywords = ["express", "server", "routes"]
+content = """
+**Hono - [炎] means flame🔥 in Japanese**
+• Is a small, simple, and ultrafast web framework for Cloudflare Workers, Deno, Bun, and others
+
+[Bun doesn't currently support express because some native modules are missing, but you can use hono for now.](<https://github.com/honojs/hono#bun>)
+"""
+
+[not-same-file-system]
+keywords = ["backend copyfile", "copyfile"]
+content = """
+**error: NotSameFileSystem installing [package]**
+
+Bun uses hardlinks for installation by default.
+Due to technical limitations, hardlinks won't work with different partitions, to evade this limitation, use the `--backend=copyfile` flag.
+"""
+
+[windows]
+keywords = ["windows support"]
+content = """
+Bun does not currently have support for Windows, so you must use WSL (Windows Subsystem for Linux).
+To install WSL, check [microsoft documentation](https://docs.microsoft.com/en-us/windows/wsl/install)
+"""

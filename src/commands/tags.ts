@@ -24,7 +24,7 @@ new Command({
     ],
     run: (ctx) => {
         const query: APIApplicationCommandInteractionDataStringOption = ctx.options[0] as APIApplicationCommandInteractionDataStringOption;
-        const target = ctx?.resolved?.users?.[0];
+        const target = ctx?.resolved?.users ? Object.values(ctx?.resolved?.users)[0] : null;
 
         const tag = getTag(query.value);
         if (!tag)
