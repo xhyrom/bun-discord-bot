@@ -1,5 +1,16 @@
 {
-  "version": "1.0.0",
+  "version": "0.0.0",
   "name": "bun-discord-bot",
-  "main": "src/index.js"
+  "scripts": {
+    "start": "bun src/index.ts"
+  },
+  "devDependencies": {
+    "bun-types": "^0.1.2"
+  },
+  "dependencies": {
+    "@discordjs/collection": "^0.7.0",
+    "discord-api-types": "^0.36.1",
+    "hono": "^1.6.4",
+    "tweetnacl": "^1.0.3"
+  }
 }

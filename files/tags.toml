@@ -1,0 +1,11 @@
+[test]
+keywords = ["test", "t"]
+content = """
+Hello, new bot :)
+"""
+
+[lol]
+keywords = ["l"]
+content = """
+Lol
+"""

@@ -1,0 +1,9 @@
+# For start application rename it to config.toml !!
+
+[server]
+port = 3000
+
+[client]
+public_key = "CLIENT PUBLIC KEY"
+token = "CLIENT TOKEN"
+id = "CLIENT USER ID"
