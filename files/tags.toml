@@ -1,11 +1,26 @@
-[test]
-keywords = ["test", "t"]
+[bun]
+keywords = ["bun.sh"]
 content = """
-Hello, new bot :)
+Bun is a modern JavaScript runtime like Node or Deno. It was built from scratch to focus on three main things:
+• Start fast (it has the edge in mind).
+• New levels of performance (extending JavaScriptCore, the engine).
+• Being a great and complete tool (bundler, transpiler, package manager).
+
+Read more [here](https://bun.sh/)
 """
 
-[lol]
-keywords = ["l"]
+[bug]
+keywords = ["report", "bugs"]
 content = """
-Lol
+Found a bug in bun?
+• If you are unsure, first discuss your bug in <#887787428973281300> or <#995247410794217553>
+• [Open an issue on GitHub](<https://github.com/oven-sh/bun/issues/new?template=1-bug-report.yml>) and fill out the given template
+"""
+
+[feature-request]
+keywords = ["feature", "request"]
+content = """
+Any idea what to add to bun?
+• Please consider if this is a request for bun, not for other 3rd party packages
+• [Open an issue on GitHub](<https://github.com/oven-sh/bun/issues/new?template=2-feature-request.yml>) and fill out the given template
 """
