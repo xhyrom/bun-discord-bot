@@ -7,6 +7,8 @@ import config from '../../files/config.toml';
 import { githubIssuesAndPullRequests } from '../utils/regexes';
 import isNumeric from '../utils/isNumeric';
 import Collection from '@discordjs/collection';
+import formatStatus from '../utils/formatStatus';
+import ms from 'ms';
 
 const cooldowns: Collection<string, number> = new Collection();
 
@@ -34,8 +36,14 @@ new Command({
         }
     ],
     run: async(ctx) => {
-        if (cooldowns.has(ctx.user.id) && cooldowns.get(ctx.user.id) < Date.now()) {
-            return ctx.respond('⚠️ You are in cooldown.');
+        if (cooldowns?.has(ctx.user.id) && cooldowns.get(ctx.user.id) > Date.now()) {
+            return ctx.respond({
+                type: InteractionResponseType.ChannelMessageWithSource,
+                data: {
+                    content: `⚠️ You are in cooldown, please wait ${ms(cooldowns.get(ctx.user.id) - Date.now())}.`,
+                    flags: MessageFlags.Ephemeral,
+                }
+            });
         }
 
         const query: string = (ctx.options[0] as APIApplicationCommandInteractionDataStringOption).value;
@@ -70,11 +78,18 @@ new Command({
         });
 
         const data: any = await res.json();
-
-        // TODO: finish (pull request, issue)
+        if (data.message) {
+            return ctx.respond({
+                type: InteractionResponseType.ChannelMessageWithSource,
+                data: {
+                    content: `\`❌\` Invalid issue or pull request \`${query}\``,
+                    flags: MessageFlags.Ephemeral,
+                }
+            });
+        }
 
         return ctx.respond([
-            `[#${data.number} ${repositoryOwner}/${repositoryName}](${data.html_url}) operation <timestamp>`,
+            `[#${data.number} ${repositoryOwner}/${repositoryName}](<${data.html_url}>) by [${data.user.login}](<${data.user.html_url}>) ${formatStatus(data)}`,
             data.title
         ].join('\n'));
     }
