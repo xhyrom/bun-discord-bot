@@ -34,7 +34,7 @@ export const findTags = (name: string) => {
                     name,
                     value: name
                 }
-            ]
+            ];
         else return findTags(null);
     }
 }

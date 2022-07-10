@@ -6,7 +6,7 @@ import { Logger } from './utils/Logger';
 import config from '../files/config.toml';
 import loadCommands from './utils/loadCommands';
 import { verifyKey } from './utils/verify';
-import { APIPingInteraction, APIApplicationCommandInteraction, APIMessageComponentInteraction, InteractionType, InteractionResponseType, ApplicationCommandType, APIApplicationCommandAutocompleteInteraction, ApplicationCommandOptionType, APIApplicationCommandOption } from 'discord-api-types/v10';
+import { APIPingInteraction, APIApplicationCommandInteraction, APIMessageComponentInteraction, InteractionType, InteractionResponseType, ApplicationCommandType, APIApplicationCommandAutocompleteInteraction, ApplicationCommandOptionType } from 'discord-api-types/v10';
 import { CommandContext } from './structures/contexts/CommandContext';
 import { Commands } from './managers/CommandManager';
 import registerCommands from './utils/registerCommands';
@@ -72,7 +72,7 @@ app.post('/interaction', bodyParse(), async(c) => {
     data: {
       content: 'Beep boop. Boop beep?'
     }
-  })
+  });
 })
 
 await Bun.serve({
