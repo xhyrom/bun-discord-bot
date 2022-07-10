@@ -2,7 +2,8 @@
   "version": "0.0.0",
   "name": "bun-discord-bot",
   "scripts": {
-    "start": "bun src/index.ts"
+    "start": "bun src/index.ts",
+    "cloudflare:tunnel": "sudo cloudflared tunnel run"
   },
   "devDependencies": {
     "bun-types": "^0.1.2"

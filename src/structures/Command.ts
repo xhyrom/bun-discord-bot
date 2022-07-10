@@ -1,5 +1,7 @@
 // Taken from https://github.com/Garlic-Team/gcommands/blob/next/src/lib/structures/Command.ts
 
+// @ts-expect-error Types :(
+import config from '../../files/config.toml';
 import { LocaleString } from 'discord-api-types/v10';
 import { Commands } from '../managers/CommandManager';
 import { CommandContext } from './contexts/CommandContext';
@@ -13,7 +15,7 @@ export interface CommandOptions {
     guildId?: string;
     defaultMemberPermissions?: string;
     options?: Option[] | OptionOptions[];
-    run: (ctx: CommandContext) => Response;
+    run: (ctx: CommandContext) => Response | Promise<Response>;
 }
 
 export class Command {
@@ -21,10 +23,10 @@ export class Command {
 	public nameLocalizations?: Record<LocaleString, string>;
 	public description?: string;
 	public descriptionLocalizations?: Record<LocaleString, string>;
-    public guildId?: string;
+    public guildId?: string = config.client.guild_id;
     public defaultMemberPermissions?: string;
     public options: Option[] | OptionOptions[];
-    public run: (ctx: CommandContext) => Response;
+    public run: (ctx: CommandContext) => Response | Promise<Response>;
 
     public constructor(options: CommandOptions) {
         this.name = options.name;

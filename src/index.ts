@@ -21,6 +21,7 @@ try {
 }
 
 const app = new Hono();
+app.get('*', (c) => c.redirect('https://www.youtube.com/watch?v=FMhScnY0dME'));
 
 app.post('/interaction', bodyParse(), async(c) => {
   const signature = c.req.headers.get('X-Signature-Ed25519');
@@ -62,6 +63,7 @@ app.post('/interaction', bodyParse(), async(c) => {
   if (interaction.type === InteractionType.ApplicationCommand && interaction.data.type === ApplicationCommandType.ChatInput) {
     return Commands.get(interaction.data.name).run(new CommandContext(
       c,
+      interaction.user,
       interaction.data.options,
       interaction.data.resolved
     ));

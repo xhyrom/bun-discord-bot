@@ -1,0 +1,7 @@
+[github]
+repositories = [
+    "oven-sh/bun",
+    "oven-sh/docs",
+    "Jarred-Sumner/bun-dependencies",
+    "xHyroM/bun-discord-bot"
+]

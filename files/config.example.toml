@@ -7,3 +7,9 @@ port = 3000
 public_key = "CLIENT PUBLIC KEY"
 token = "CLIENT TOKEN"
 id = "CLIENT USER ID"
+
+[commands]
+guild_id = "GUILD ID"
+
+[api]
+github_personal_access_token = ""

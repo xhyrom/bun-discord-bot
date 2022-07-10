@@ -5,7 +5,6 @@ import { findTags, getTag } from '../utils/tagsUtils';
 new Command({
     name: 'tags',
     description: 'Send a tag by name or alias',
-    guildId: '924395690451423332',
     options: [
         {
             name: 'query',
@@ -23,13 +22,13 @@ new Command({
             required: false
         }
     ],
-    run: (c) => {
-        const query: APIApplicationCommandInteractionDataStringOption = c.options[0] as APIApplicationCommandInteractionDataStringOption;
-        const target = c?.resolved?.users?.[0];
+    run: (ctx) => {
+        const query: APIApplicationCommandInteractionDataStringOption = ctx.options[0] as APIApplicationCommandInteractionDataStringOption;
+        const target = ctx?.resolved?.users?.[0];
 
         const tag = getTag(query.value);
         if (!tag)
-            return c.respond({
+            return ctx.respond({
                 type: InteractionResponseType.ChannelMessageWithSource,
                 data: {
                     content: `\`❌\` Could not find a tag \`${query.value}\``,
@@ -37,7 +36,7 @@ new Command({
                 }
             });
 
-        return c.respond([
+        return ctx.respond([
             target ? `*Tag suggestion for <@${target.id}>:*` : '',
             tag.content
         ].join('\n'));
