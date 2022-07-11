@@ -6,7 +6,7 @@ Bun is a modern JavaScript runtime like Node or Deno. It was built from scratch 
 • New levels of performance (extending JavaScriptCore, the engine).
 • Being a great and complete tool (bundler, transpiler, package manager).
 
-Read more [here](https://bun.sh/)
+Read more [here](<https://bun.sh/>)
 """
 
 [bug]
@@ -47,5 +47,5 @@ Due to technical limitations, hardlinks won't work with different partitions, to
 keywords = ["windows support"]
 content = """
 Bun does not currently have support for Windows, so you must use WSL (Windows Subsystem for Linux).
-To install WSL, check [microsoft documentation](https://docs.microsoft.com/en-us/windows/wsl/install)
+To install WSL, check [microsoft documentation](<https://docs.microsoft.com/en-us/windows/wsl/install>)
 """
