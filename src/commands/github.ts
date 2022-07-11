@@ -8,9 +8,14 @@ import { githubIssuesAndPullRequests } from '../utils/regexes';
 import isNumeric from '../utils/isNumeric';
 import Collection from '@discordjs/collection';
 import formatStatus from '../utils/formatStatus';
-import ms from 'ms';
+import { CommandContext } from '../structures/contexts/CommandContext';
 
 const cooldowns: Collection<string, number> = new Collection();
+const invalidIssue = (ctx: CommandContext, query: string) => {
+    return ctx.editResponse(
+        `\`❌\` Invalid issue or pull request \`${query}\`. You can check [github search syntax](https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests)`
+    );
+}
 
 new Command({
     name: 'github',
@@ -18,7 +23,7 @@ new Command({
     options: [
         {
             name: 'query',
-            description: 'Issue, PR number or direct link to Github Issue or PR',
+            description: 'Issue numer/name, PR number/name or direct link to Github Issue or PR',
             type: ApplicationCommandOptionType.String,
             required: true
         },
@@ -40,13 +45,19 @@ new Command({
             return ctx.respond({
                 type: InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `⚠️ You are in cooldown, please wait ${ms(cooldowns.get(ctx.user.id) - Date.now())}.`,
+                    content: `⚠️ You are in cooldown, please wait <t:${Math.floor(cooldowns.get(ctx.user.id) / 1000)}:R>.`,
                     flags: MessageFlags.Ephemeral,
                 }
             });
+        } else {
+            ctx.command.runWithoutReturn(ctx)
+            return ctx.respond({
+                type: InteractionResponseType.DeferredChannelMessageWithSource
+            })
         }
-
-        const query: string = (ctx.options[0] as APIApplicationCommandInteractionDataStringOption).value;
+    },
+    runWithoutReturn: async(ctx) => {
+        let query: string = (ctx.options[0] as APIApplicationCommandInteractionDataStringOption).value;
         const repository: string = (ctx.options?.[1] as APIApplicationCommandInteractionDataStringOption)?.value || 'oven-sh/bun';
 
         const repositorySplit = repository.split('/');
@@ -56,18 +67,17 @@ new Command({
         const isIssueOrPR = githubIssuesAndPullRequests(repositoryOwner, repositoryName).test(query);
         const isIssueOrPRNumber = isNumeric(query);
 
+        cooldowns.set(ctx.user.id, Date.now() + 30000);
         if (!isIssueOrPR && !isIssueOrPRNumber) {
-            return ctx.respond({
-                type: InteractionResponseType.ChannelMessageWithSource,
-                data: {
-                    content: `\`❌\` Invalid issue or pull request \`${query}\``,
-                    flags: MessageFlags.Ephemeral,
-                }
-            });
+            const res = await fetch(`https://api.github.com/search/issues?q=${encodeURIComponent(query)}${encodeURIComponent(' repo:oven-sh/bun')}`);
+
+            const data: any = await res.json();
+            if (data.message || data?.items?.length === 0) return invalidIssue(ctx, query);
+            
+            query = data.items[0].number; 
         }
 
         const issueUrl = `https://api.github.com/repos/${repositoryOwner}/${repositoryName}/issues/${isIssueOrPR ? query.split('/issues/')[1] : query}`;
-        cooldowns.set(ctx.user.id, Date.now() + 60000);
         
         const res = await fetch(issueUrl, {
             headers: {
@@ -78,17 +88,9 @@ new Command({
         });
 
         const data: any = await res.json();
-        if (data.message) {
-            return ctx.respond({
-                type: InteractionResponseType.ChannelMessageWithSource,
-                data: {
-                    content: `\`❌\` Invalid issue or pull request \`${query}\``,
-                    flags: MessageFlags.Ephemeral,
-                }
-            });
-        }
+        if (data.message) return invalidIssue(ctx, query);
 
-        return ctx.respond([
+        return ctx.editResponse([
             `[#${data.number} ${repositoryOwner}/${repositoryName}](<${data.html_url}>) by [${data.user.login}](<${data.user.html_url}>) ${formatStatus(data)}`,
             data.title
         ].join('\n'));

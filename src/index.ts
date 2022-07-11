@@ -61,11 +61,11 @@ app.post('/interaction', bodyParse(), async(c) => {
   }
 
   if (interaction.type === InteractionType.ApplicationCommand && interaction.data.type === ApplicationCommandType.ChatInput) {
-    return await Commands.get(interaction.data.name).run(new CommandContext(
+    const commands = Commands.get(interaction.data.name);
+    return await commands.run(new CommandContext(
       c,
-      interaction.member,
-      interaction.data.options,
-      interaction.data.resolved
+      commands,
+      interaction
     ));
   }
 
