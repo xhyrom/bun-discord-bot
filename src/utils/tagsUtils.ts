@@ -14,7 +14,7 @@ for (const [key, value] of Object.entries(tags)) {
 }
 
 export const getTag = (name: string) => {
-    const tag = tagCache.get(name) || tagCache.find(tag => tag.keywords.includes(name));
+    const tag = tagCache.get(name) || tagCache.find(tag => tag.keywords.some(k => k.includes(name)));
     return tag;
 }
 
@@ -31,8 +31,8 @@ export const findTags = (name: string) => {
         if (tag)
             return [
                 {
-                    name,
-                    value: name
+                    name: tag.keywords[0],
+                    value: tag.keywords[0],
                 }
             ];
         else return findTags(null);
