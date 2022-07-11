@@ -28,6 +28,7 @@ export const findTags = (name: string) => {
         ];
     else {
         const tag = getTag(name);
+        console.log(tag);
         if (tag)
             return [
                 {

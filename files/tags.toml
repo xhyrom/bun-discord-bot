@@ -1,5 +1,5 @@
 [bun]
-keywords = ["bun.sh"]
+keywords = ["bun", "bun.sh"]
 content = """
 Bun is a modern JavaScript runtime like Node or Deno. It was built from scratch to focus on three main things:
 • Start fast (it has the edge in mind).
@@ -10,7 +10,7 @@ Read more [here](<https://bun.sh/>)
 """
 
 [bug]
-keywords = ["report", "bugs"]
+keywords = ["bug", "report", "bugs"]
 content = """
 Found a bug in bun?
 • If you are unsure, first discuss your bug in <#887787428973281300> or <#995247410794217553>
@@ -18,7 +18,7 @@ Found a bug in bun?
 """
 
 [feature-request]
-keywords = ["feature", "request"]
+keywords = ["feature-request", "feature", "request"]
 content = """
 Any idea what to add to bun?
 • Please consider if this is a request for bun, not for other 3rd party packages
@@ -26,7 +26,7 @@ Any idea what to add to bun?
 """
 
 [hono]
-keywords = ["express", "server", "routes"]
+keywords = ["hono", "express", "server", "routes"]
 content = """
 **Hono - [炎] means flame🔥 in Japanese**
 • Is a small, simple, and ultrafast web framework for Cloudflare Workers, Deno, Bun, and others
@@ -35,7 +35,7 @@ content = """
 """
 
 [not-same-file-system]
-keywords = ["backend copyfile", "copyfile"]
+keywords = ["not-same-file-system", "backend copyfile", "copyfile"]
 content = """
 **error: NotSameFileSystem installing [package]**
 
@@ -44,7 +44,7 @@ Due to technical limitations, hardlinks won't work with different partitions, to
 """
 
 [windows]
-keywords = ["windows support"]
+keywords = ["windows", "windows support"]
 content = """
 Bun does not currently have support for Windows, so you must use WSL (Windows Subsystem for Linux).
 To install WSL, check [microsoft documentation](<https://docs.microsoft.com/en-us/windows/wsl/install>)
