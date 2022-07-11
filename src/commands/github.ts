@@ -45,7 +45,7 @@ new Command({
             return ctx.respond({
                 type: InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `⚠️ You are in cooldown, please wait <t:${Math.floor(cooldowns.get(ctx.user.id) / 1000)}:R>.`,
+                    content: `⚠️ You are in cooldown, you will be able to use this command <t:${Math.floor(cooldowns.get(ctx.user.id) / 1000)}:R>.`,
                     flags: MessageFlags.Ephemeral,
                 }
             });
