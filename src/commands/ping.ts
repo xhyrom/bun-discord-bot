@@ -1,4 +1,4 @@
-import { InteractionResponseType } from 'discord-api-types/v10';
+import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 import { Command } from '../structures/Command';
 
 new Command({
@@ -8,7 +8,8 @@ new Command({
         return ctx.respond({
             type: InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: 'Pong 🏓'
+                content: 'Pong 🏓',
+                flags: MessageFlags.Ephemeral,
             }
         })
     }
