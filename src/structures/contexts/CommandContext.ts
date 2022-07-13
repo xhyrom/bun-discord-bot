@@ -14,15 +14,16 @@ export class CommandContext {
     public resolved?: APIChatInputApplicationCommandInteractionDataResolved;
     
     public constructor(c: Context, command?: Command, interaction?: APIApplicationCommandInteraction) {
-        if (interaction.data.type != ApplicationCommandType.ChatInput) return;
-
         this.context = c;
         this.command = command;
-        this.interaction = interaction as APIChatInputApplicationCommandInteraction;
-        this.user = interaction.member.user;
-        this.member = interaction.member;
-        this.options = interaction.data.options;
-        this.resolved = interaction.data.resolved;
+
+        if (interaction) {
+            this.interaction = interaction as APIChatInputApplicationCommandInteraction;
+            this.user = this.interaction.member.user;
+            this.member = this.interaction.member;
+            this.options = this.interaction.data.options;
+            this.resolved = this.interaction.data.resolved;   
+        }
     }
 
     public respond(response: APIInteractionResponse | string) {
