@@ -39,8 +39,8 @@ keywords = ["not-same-file-system", "backend copyfile", "copyfile"]
 content = """
 **error: NotSameFileSystem installing [package]**
 
-Bun uses hardlinks for installation by default.
-Due to technical limitations, hardlinks won't work with different partitions, to evade this limitation, use the `--backend=copyfile` flag.
+You have old bun. Use `bun upgrade` to upgrade.
+If you have problems with upgrade, reinstall bun using `curl https://bun.sh/install | bash`
 """
 
 [windows]
@@ -53,11 +53,12 @@ To install WSL, check [microsoft documentation](<https://docs.microsoft.com/en-u
 [io-uring-not-supported]
 keywords = ["io-uring-is-not-supported", "io uring", "not supported", "support"]
 content = """
-To fix `Linux kernel version doesn't support io_uring, which Bun depends on` error, you need to update Linux kernel.
+**error: Linux kernel version doesn't support io_uring, which Bun depends on**
 
+To fix this error, you need to update Linux kernel.
 If you are using the Windows Subsystem for Linux, do:
-1. Open powershell
-2. Run:
-    • wsl --set-version <distro name> 2
-    • wsl --shutdown
+  **1.** Open powershell
+  **2.** Run:
+     • wsl --set-version <distro name> 2
+     • wsl --shutdown
 """
