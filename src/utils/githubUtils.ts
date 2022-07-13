@@ -53,7 +53,7 @@ export const fetchIssues = async() => {
                 if ('pull_request' in issue) continue;
 
                 // @ts-expect-error it works
-                addToDb.run([
+                await addToDb.run([
                     issue.repository_url.replace('https://api.github.com/repos/', ''),
                     issue.title,
                     issue.number,
@@ -98,7 +98,7 @@ export const fetchPullRequests = async() => {
 
             for (const pull of res) {
                 // @ts-expect-error it works
-                addToDb.run([
+                await addToDb.run([
                     pull.html_url.replace('https://github.com/', '').replace(`/pull/${pull.number}`, ''),
                     pull.title,
                     pull.number,
