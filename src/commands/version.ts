@@ -12,7 +12,7 @@ new Command({
             type: InteractionResponseType.ChannelMessageWithSource,
             data: {
                 content: [
-                    `Bot version: [git-bun-discord-bot-"${commitHash}"](<https://github.com/xHyroM/bun-discord-bot/commit/${commitHash})>`,
+                    `Bot version: [git-bun-discord-bot-"${commitHash}"](<https://github.com/xHyroM/bun-discord-bot/commit/${commitHash}>)`,
                     `Bun version: [${process.version}](<https://github.com/oven-sh/bun/releases/tag/bun-${process.version}>)`,
                 ].join('\n'),
                 flags: MessageFlags.Ephemeral,
