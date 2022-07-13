@@ -23,7 +23,7 @@ export interface OptionOptions {
 	maxValue?: number;
 	minLength?: number;
 	maxLength?: number;
-	run?: (ctx: AutocompleteContext) => Response;
+	run?: (ctx: AutocompleteContext) => Response | Promise<Response>;
 }
 
 export class Option {
@@ -40,7 +40,7 @@ export class Option {
 	public maxValue?: number;
 	public minLength?: number;
 	public maxLength?: number;
-	public run?: (ctx: AutocompleteContext) => Response;
+	public run?: (ctx: AutocompleteContext) => Response | Promise<Response>;
 
     public constructor(options: OptionOptions) {
         this.name = options.name;

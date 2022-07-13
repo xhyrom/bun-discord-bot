@@ -12,7 +12,7 @@ import { Commands } from './managers/CommandManager';
 import registerCommands from './utils/registerCommands';
 import { Option, OptionOptions } from './structures/Option';
 import { AutocompleteContext } from './structures/contexts/AutocompleteContext';
-import { deleteIssue, deletePullRequest, fetchIssues, fetchPullRequests, issues, setIssue, setPullRequest } from './utils/githubUtils';
+import { deleteIssueOrPR, fetchIssues, fetchPullRequests, setIssue, setPullRequest } from './utils/githubUtils';
 import createHmac from 'create-hmac';
 
 await fetchIssues();
@@ -95,15 +95,14 @@ app.post('/github_webhook', bodyParse(), (c) => {
   const issueOrPr = c.req.parsedBody;
   if (issueOrPr.action !== 'deleted') {
     if (issueOrPr.issue) {
-      console.log('issue');
       setIssue({
         id: issueOrPr.issue.number,
         repository: issueOrPr.issue.repository_url.replace('https://api.github.com/repos/', ''),
         title: issueOrPr.issue.title,
         number: issueOrPr.issue.number,
         state: issueOrPr.issue.state,
-        created_at: new Date(issueOrPr.issue.created_at),
-        closed_at: new Date(issueOrPr.issue.closed_at),
+        created_at: issueOrPr.issue.created_at,
+        closed_at: issueOrPr.issue.closed_at,
         html_url: issueOrPr.issue.html_url,
         user_login: issueOrPr.issue.user.login,
         user_html_url: issueOrPr.issue.user.html_url,
@@ -117,9 +116,9 @@ app.post('/github_webhook', bodyParse(), (c) => {
         title: issueOrPr.pull_request.title,
         number: issueOrPr.pull_request.number,
         state: issueOrPr.pull_request.state,
-        created_at: new Date(issueOrPr.pull_request.created_at),
-        closed_at: new Date(issueOrPr.pull_request.closed_at),
-        merged_at: new Date(issueOrPr.pull_request.merged_at),
+        created_at: issueOrPr.pull_request.created_at,
+        closed_at: issueOrPr.pull_request.closed_at,
+        merged_at: issueOrPr.pull_request.merged_at,
         html_url: issueOrPr.pull_request.html_url,
         user_login: issueOrPr.pull_request.user.login,
         user_html_url: issueOrPr.pull_request.user.html_url,
@@ -127,10 +126,10 @@ app.post('/github_webhook', bodyParse(), (c) => {
       })
     }
   } else {
-    if (issueOrPr.issue) deleteIssue(
+    if (issueOrPr.issue) deleteIssueOrPR(
       issueOrPr.issue.number, issueOrPr.issue.repository_url.replace('https://api.github.com/repos/', '')
     );
-    else deletePullRequest(
+    else deleteIssueOrPR(
       issueOrPr.pull_request.number,
       issueOrPr.pull_request.html_url
         .replace('https://github.com/', '')

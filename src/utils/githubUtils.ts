@@ -5,6 +5,7 @@ import utilities from '../../files/utilities.toml';
 import MiniSearch from 'minisearch';
 import { Logger } from './Logger';
 import { APIApplicationCommandOptionChoice } from 'discord-api-types/v10';
+import { Database } from 'bun:sqlite';
 
 interface Issue {
     id: number;
@@ -12,8 +13,8 @@ interface Issue {
     title: string;
     number: number;
     state: 'open' | 'closed',
-    created_at: Date;
-    closed_at: Date | null;
+    created_at: string;
+    closed_at: string | null;
     html_url: string;
     user_login: string;
     user_html_url: string;
@@ -21,11 +22,19 @@ interface Issue {
 }
 
 interface PullRequest extends Issue {
-    merged_at: Date | null;
+    merged_at: string | null;
 }
 
-export let issues: Issue[] = [];
-export let pulls: PullRequest[] = [];
+export const db = new Database('./files/database.sqlite');
+await db.exec('DROP TABLE IF EXISTS issuesandprs');
+await db.exec('CREATE TABLE issuesandprs (id INTEGER PRIMARY KEY, repository TEXT, title TEXT, number INTEGER, state TEXT, created_at TEXT, closed_at TEXT, merged_at TEXT, html_url TEXT, user_login TEXT, user_html_url TEXT, type TEXT)');
+
+const addToDb = db.prepare(
+    'INSERT INTO issuesandprs (repository, title, number, state, created_at, closed_at, merged_at, html_url, user_login, user_html_url, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+);
+
+export let issues: number = 0;
+export let pulls: number = 0;
 
 export const fetchIssues = async() => {
     for await (const repository of utilities.github.repositories) {
@@ -43,22 +52,24 @@ export const fetchIssues = async() => {
             for (const issue of res) {
                 if ('pull_request' in issue) continue;
 
-                issues.push({
-                    id: issue.number,
-                    repository: issue.repository_url.replace('https://api.github.com/repos/', ''),
-                    title: issue.title,
-                    number: issue.number,
-                    state: issue.state,
-                    created_at: new Date(issue.created_at),
-                    closed_at: new Date(issue.closed_at),
-                    html_url: issue.html_url,
-                    user_login: issue.user.login,
-                    user_html_url: issue.user.html_url,
-                    type: '(ISSUE)'
-                })
+                // @ts-expect-error it works
+                addToDb.run([
+                    issue.repository_url.replace('https://api.github.com/repos/', ''),
+                    issue.title,
+                    issue.number,
+                    issue.state,
+                    issue.created_at,
+                    issue.closed_at,
+                    null,
+                    issue.html_url,
+                    issue.user.login,
+                    issue.user.html_url,
+                    '(ISSUE)'
+                ]);
+                issues++;
             }
     
-            Logger.debug(`Fetching issues for ${repository} - ${issues.length} * ${page}`);
+            Logger.debug(`Fetching issues for ${repository} - ${issues} * ${page}`);
     
             page++;
             if (res.length === 0) {
@@ -66,7 +77,8 @@ export const fetchIssues = async() => {
             }
         }
     
-        Logger.success(`Issues have been fetched for ${repository} - ${issues.length}`);
+        Logger.success(`Issues have been fetched for ${repository} - ${issues}`);
+        issues = 0;
     }
 }
 
@@ -84,23 +96,24 @@ export const fetchPullRequests = async() => {
             })).json() as any;
 
             for (const pull of res) {
-                pulls.push({
-                    id: pull.number,
-                    repository: pull.html_url.replace('https://github.com/', '').replace(`/pull/${pull.number}`, ''),
-                    title: pull.title,
-                    number: pull.number,
-                    state: pull.state,
-                    created_at: new Date(pull.created_at),
-                    closed_at: new Date(pull.closed_at),
-                    merged_at: new Date(pull.merged_at),
-                    html_url: pull.html_url,
-                    user_login: pull.user.login,
-                    user_html_url: pull.user.html_url,
-                    type: '(PR)',
-                })
+                // @ts-expect-error it works
+                addToDb.run([
+                    pull.html_url.replace('https://github.com/', '').replace(`/pull/${pull.number}`, ''),
+                    pull.title,
+                    pull.number,
+                    pull.state,
+                    pull.created_at,
+                    pull.closed_at,
+                    pull.merged_at,
+                    pull.html_url,
+                    pull.user.login,
+                    pull.user.html_url,
+                    '(PR)'
+                ]);
+                pulls++;
             }
 
-            Logger.debug(`Fetching pull requests for ${repository} - ${pulls.length} * ${page}`);
+            Logger.debug(`Fetching pull requests for ${repository} - ${pulls} * ${page}`);
 
             page++;
             if (res.length === 0) {
@@ -108,44 +121,70 @@ export const fetchPullRequests = async() => {
             }
         }
 
-        Logger.success(`Pull requests have been fetched for ${repository} - ${pulls.length}`);
+        Logger.success(`Pull requests have been fetched for ${repository} - ${pulls}`);
+        pulls = 0;
     }
 }
 
-export const setIssue = (issue: Issue) => {
-    const exists = issues.findIndex(i => i.number === issue.number && i.repository === issue.repository);
-    if (exists >= 0) issues[exists] = issue;
-    else issues.push(issue);
+export const setIssue = async(issue: Issue) => {
+    const exists = await db.prepare(`SELECT * FROM issuesandprs WHERE number = ${issue.number} AND repository = '${issue.repository}'`).get();
+    if (typeof exists == 'object') {
+        db.exec(`UPDATE issuesandprs SET state = '${issue.state}', closed_at = '${issue.closed_at}', title = '${issue.title}' WHERE number = ${issue.number} AND repository = '${issue.repository}'`);
+    } else {
+        // @ts-expect-error
+        addToDb.run([
+            issue.repository.replace('https://api.github.com/repos/', ''),
+            issue.title,
+            issue.number,
+            issue.state,
+            issue.created_at,
+            issue.closed_at,
+            null,
+            issue.html_url,
+            issue.user_login,
+            issue.user_html_url,
+            '(ISSUE)'
+        ]);
+    }
 }
 
-export const setPullRequest = (pull: PullRequest) => {
-    const exists = pulls.findIndex(i => i.number === pull.number);
-    if (exists >= 0) pulls[exists] = pull;
-    else pulls.push(pull);
+export const setPullRequest = async(pull: PullRequest) => {
+    const exists = await db.prepare(`SELECT * FROM issuesandprs WHERE number = ${pull.number} AND repository = '${pull.repository}'`).get();
+    if (typeof exists == 'object') {
+        db.exec(`UPDATE issuesandprs SET state = '${pull.state}', closed_at = '${pull.closed_at}', merged_at = '${pull.merged_at}', title = '${pull.title}' WHERE number = ${pull.number} AND repository = '${pull.repository}'`);
+    } else {
+        // @ts-expect-error
+        addToDb.run([
+            pull.repository.replace('https://api.github.com/repos/', ''),
+            pull.title,
+            pull.number,
+            pull.state,
+            pull.created_at,
+            pull.closed_at,
+            pull.merged_at,
+            pull.html_url,
+            pull.user_login,
+            pull.user_html_url,
+            '(ISSUE)'
+        ]);
+    }
 }
 
-export const deleteIssue = (number: number, repository: string) => {
-    issues = issues.filter(i => i.number === number && i.repository === repository);
+export const deleteIssueOrPR = (number: number, repository: string) => {
+    db.exec(`DELETE FROM issuesandprs WHERE repository = '${repository}' AND number = ${number}`);
 }
 
-export const deletePullRequest = (number: number, repository: string) => {
-    pulls = pulls.filter(p => p.number === number && p.repository === repository);
-}
-
-export const search = (query: string, repository: string): APIApplicationCommandOptionChoice[] => {
+export const search = async(query: string, repository: string): Promise<APIApplicationCommandOptionChoice[]> => {
     try {
-        const pullsFiltered = pulls.filter(pull => pull.repository === repository);
-        const issuesFiltered = issues.filter(issue => issue.repository === repository);
+        const arrayFiltered = await db.prepare(`SELECT * FROM issuesandprs WHERE repository = '${repository}'`).all();
     
         if (!query) {
-            const array = [].concat(pullsFiltered.slice(0, 13), issuesFiltered.slice(0, 12));
+            const array = arrayFiltered.slice(0, 25);
             return array.map((issueOrPr: Issue | PullRequest) => new Object({
-                name: `${issueOrPr.type} ${issueOrPr.title.slice(0, 93)}`,
+                name: `${issueOrPr.type} ${issueOrPr.title.slice(0, 93).replace(/[^a-z0-9 ]/gi, '')}`,
                 value: issueOrPr.number.toString()
             })) as APIApplicationCommandOptionChoice[]
         }
-    
-        const array = [].concat(pullsFiltered, issuesFiltered);
     
         const searcher = new MiniSearch({
             fields: ['title', 'number', 'type'],
@@ -156,7 +195,7 @@ export const search = (query: string, repository: string): APIApplicationCommand
             },
         });
     
-        searcher.addAll(array);
+        searcher.addAll(arrayFiltered);
     
         const result = searcher.search(query);
     
@@ -169,7 +208,7 @@ export const search = (query: string, repository: string): APIApplicationCommand
     }
 }
 
-export const getIssueOrPR = (number: number, repository: string): Issue | PullRequest => {
-    return issues.find(issue => issue.number === number && issue.repository === repository) ||
-        pulls.find(pull => pull.number === number && pull.repository === repository);
+export const getIssueOrPR = async(number: number, repository: string): Promise<Issue | PullRequest> => {
+    const issueOrPR = await db.prepare(`SELECT * FROM issuesandprs WHERE repository = '${repository}' AND number = ${number}`).get();
+    return issueOrPR;
 }

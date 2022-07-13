@@ -23,8 +23,8 @@ new Command({
             description: 'Issue numer/name, PR number/name or direct link to Github Issue or PR',
             type: ApplicationCommandOptionType.String,
             required: true,
-            run: (ctx) => {
-                return ctx.respond(search(ctx.value, ctx?.options?.[1]?.value as string || 'oven-sh/bun'));
+            run: async(ctx) => {
+                return ctx.respond(await search(ctx.value, ctx?.options?.[1]?.value as string || 'oven-sh/bun'));
             }
         },
         {
@@ -64,7 +64,7 @@ new Command({
         const repositoryOwner = repositorySplit[0];
         const repositoryName = repositorySplit[1];
 
-        let issueOrPR = getIssueOrPR(parseInt(query), repository);
+        let issueOrPR = await getIssueOrPR(parseInt(query), repository);
         if (!issueOrPR) {
             const res = await fetch(`https://api.github.com/search/issues?q=${encodeURIComponent(query)}${encodeURIComponent(' repo:oven-sh/bun')}`);
 
