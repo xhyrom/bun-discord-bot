@@ -49,3 +49,15 @@ content = """
 Bun does not currently have support for Windows, so you must use WSL (Windows Subsystem for Linux).
 To install WSL, check [microsoft documentation](<https://docs.microsoft.com/en-us/windows/wsl/install>)
 """
+
+[io-uring-not-supported]
+keywords = ["io-uring-is-not-supported", "io uring", "not supported", "support"]
+content = """
+To fix `Linux kernel version doesn't support io_uring, which Bun depends on` error, you need to update Linux kernel.
+
+If you are using the Windows Subsystem for Linux, do:
+1. Open powershell
+2. Run:
+    • wsl --set-version <distro name> 2
+    • wsl --shutdown
+"""
