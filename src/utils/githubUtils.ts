@@ -78,7 +78,8 @@ export const fetchIssues = async() => {
         }
     
         Logger.success(`Issues have been fetched for ${repository} - ${issues}`);
-        issues = 0;
+        issues = null;
+        Object.freeze(issues);
     }
 }
 
@@ -122,7 +123,8 @@ export const fetchPullRequests = async() => {
         }
 
         Logger.success(`Pull requests have been fetched for ${repository} - ${pulls}`);
-        pulls = 0;
+        pulls = null;
+        Object.freeze(pulls);
     }
 }
 
