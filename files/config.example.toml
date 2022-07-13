@@ -13,3 +13,4 @@ guild_id = "GUILD ID"
 
 [api]
 github_personal_access_token = ""
+github_webhooks_secret = ""

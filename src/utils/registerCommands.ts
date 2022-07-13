@@ -21,7 +21,7 @@ const sync = async(
         }
     )
     
-	if (res.ok) return Logger.success('🌍 All commands has been synchronized with discord api.');
+	if (res.ok) return Logger.success('🌍 All commands have been synchronized with discord api.');
 	const data = await res.json() as any;
 
 	if (res.status === 429) {

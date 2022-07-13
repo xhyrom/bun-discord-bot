@@ -2,13 +2,10 @@ import { APIApplicationCommandInteractionDataStringOption, ApplicationCommandOpt
 import { Command } from '../structures/Command';
 // @ts-expect-error Types :(
 import utilities from '../../files/utilities.toml';
-// @ts-expect-error Types :(
-import config from '../../files/config.toml';
-import { githubIssuesAndPullRequests } from '../utils/regexes';
-import isNumeric from '../utils/isNumeric';
 import Collection from '@discordjs/collection';
 import formatStatus from '../utils/formatStatus';
 import { CommandContext } from '../structures/contexts/CommandContext';
+import { getIssueOrPR, search } from '../utils/githubUtils';
 
 const cooldowns: Collection<string, number> = new Collection();
 const invalidIssue = (ctx: CommandContext, query: string) => {
@@ -25,7 +22,10 @@ new Command({
             name: 'query',
             description: 'Issue numer/name, PR number/name or direct link to Github Issue or PR',
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
+            run: (ctx) => {
+                return ctx.respond(search(ctx.value, ctx?.options?.[1]?.value as string || 'oven-sh/bun'));
+            }
         },
         {
             name: 'repository',
@@ -64,35 +64,32 @@ new Command({
         const repositoryOwner = repositorySplit[0];
         const repositoryName = repositorySplit[1];
 
-        const isIssueOrPR = githubIssuesAndPullRequests(repositoryOwner, repositoryName).test(query);
-        const isIssueOrPRNumber = isNumeric(query);
-
-        cooldowns.set(ctx.user.id, Date.now() + 30000);
-        if (!isIssueOrPR && !isIssueOrPRNumber) {
+        let issueOrPR = getIssueOrPR(parseInt(query), repository);
+        if (!issueOrPR) {
             const res = await fetch(`https://api.github.com/search/issues?q=${encodeURIComponent(query)}${encodeURIComponent(' repo:oven-sh/bun')}`);
 
             const data: any = await res.json();
             if (data.message || data?.items?.length === 0) return invalidIssue(ctx, query);
             
-            query = data.items[0].number; 
+            const item = data.items[0];
+            issueOrPR = {
+                id: item.number,
+                repository: item.repository_url.replace('https://api.github.com/repos/', ''),
+                title: item.title,
+                number: item.number,
+                state: item.state,
+                created_at: item.created_at,
+                closed_at: item.closed_at,
+                html_url: item.html_url,
+                user_login: item.user.login,
+                user_html_url: item.user.html_url,
+                type: item.pull_request ? '(PR)' : '(ISSUE)',
+            };
         }
 
-        const issueUrl = `https://api.github.com/repos/${repositoryOwner}/${repositoryName}/issues/${isIssueOrPR ? query.split('/issues/')[1] : query}`;
-        
-        const res = await fetch(issueUrl, {
-            headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': 'bun-discord-bot',
-                'Authorization': config.api.github_personal_access_token
-            }
-        });
-
-        const data: any = await res.json();
-        if (data.message) return invalidIssue(ctx, query);
-
         return ctx.editResponse([
-            `[#${data.number} ${repositoryOwner}/${repositoryName}](<${data.html_url}>) by [${data.user.login}](<${data.user.html_url}>) ${formatStatus(data)}`,
-            data.title
+            `[#${issueOrPR.number} ${repositoryOwner}/${repositoryName}](<${issueOrPR.html_url}>) by [${issueOrPR.user_login}](<${issueOrPR.user_html_url}>) ${formatStatus(issueOrPR)}`,
+            issueOrPR.title
         ].join('\n'));
     }
 })
