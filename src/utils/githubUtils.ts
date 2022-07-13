@@ -78,9 +78,10 @@ export const fetchIssues = async() => {
         }
     
         Logger.success(`Issues have been fetched for ${repository} - ${issues}`);
-        issues = null;
-        Object.freeze(issues);
     }
+
+    issues = null;
+    Object.freeze(issues);
 }
 
 export const fetchPullRequests = async() => {
@@ -123,9 +124,10 @@ export const fetchPullRequests = async() => {
         }
 
         Logger.success(`Pull requests have been fetched for ${repository} - ${pulls}`);
-        pulls = null;
-        Object.freeze(pulls);
     }
+
+    pulls = null;
+    Object.freeze(pulls);
 }
 
 export const setIssue = async(issue: Issue) => {

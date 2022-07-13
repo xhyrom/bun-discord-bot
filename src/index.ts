@@ -85,7 +85,7 @@ app.post('/interaction', bodyParse(), async(c) => {
 app.post('/github_webhook', bodyParse(), (c) => {
   if (
     !c.req.headers.get('User-Agent').startsWith('GitHub-Hookshot/') ||
-    typeof c.req.parsedBody !== 'object'
+    typeof c.req?.parsedBody !== 'object'
   ) return c.redirect('https://www.youtube.com/watch?v=FMhScnY0dME'); // fireship :D
 
   const githubWebhooksSecret = new TextEncoder().encode(config.api.github_webhooks_secret);
@@ -94,7 +94,7 @@ app.post('/github_webhook', bodyParse(), (c) => {
 
   const issueOrPr = c.req.parsedBody;
   if (issueOrPr.action !== 'deleted') {
-    if (issueOrPr.issue) {
+    if ('issue' in issueOrPr) {
       setIssue({
         id: issueOrPr.issue.number,
         repository: issueOrPr.issue.repository_url.replace('https://api.github.com/repos/', ''),
@@ -109,7 +109,7 @@ app.post('/github_webhook', bodyParse(), (c) => {
         type: '(IS)',
       })
     }
-    else {
+    else if('pull_request' in issueOrPr) {
       setPullRequest({
         id: issueOrPr.pull_request.number,
         repository: issueOrPr.pull_request.html_url.replace('https://github.com/', '').replace(`/pull/${issueOrPr.pull_request.number}`, ''),
@@ -126,10 +126,10 @@ app.post('/github_webhook', bodyParse(), (c) => {
       })
     }
   } else {
-    if (issueOrPr.issue) deleteIssueOrPR(
+    if ('issue' in issueOrPr) deleteIssueOrPR(
       issueOrPr.issue.number, issueOrPr.issue.repository_url.replace('https://api.github.com/repos/', '')
     );
-    else deleteIssueOrPR(
+    else if('pull_request' in issueOrPr) deleteIssueOrPR(
       issueOrPr.pull_request.number,
       issueOrPr.pull_request.html_url
         .replace('https://github.com/', '')
