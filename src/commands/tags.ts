@@ -1,6 +1,6 @@
 import { APIApplicationCommandInteractionDataStringOption, ApplicationCommandOptionType, InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 import { Command } from '../structures/Command';
-import { findTags, getTag } from '../utils/tagsUtils';
+import { findTags, getTag, Tag } from '../utils/tagsUtils';
 
 new Command({
     name: 'tags',
@@ -26,7 +26,7 @@ new Command({
         const query: APIApplicationCommandInteractionDataStringOption = ctx.options[0] as APIApplicationCommandInteractionDataStringOption;
         const target = ctx?.resolved?.users ? Object.values(ctx?.resolved?.users)[0] : null;
 
-        const tag = getTag(query.value);
+        const tag = getTag(query.value, false);
         if (!tag)
             return ctx.respond({
                 type: InteractionResponseType.ChannelMessageWithSource,

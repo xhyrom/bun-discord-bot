@@ -13,13 +13,13 @@ for (const [key, value] of Object.entries(tags)) {
     tagCache.set(key, value as unknown as Tag);
 }
 
-export const getTag = (name: string, more?: boolean) => {
+export const getTag = <T extends boolean>(name: string, more?: T): T extends true ? Tag[] : Tag => {
     if (more) {
         const tags = [...tagCache.filter(tag => tag.keywords.some(k => k.includes(name))).values()];
-        return tags;
+        return tags as T extends true ? Tag[] : Tag;
     } else {
         const tag = tagCache.get(name) || tagCache.find(tag => tag.keywords.some(k => k.includes(name)));
-        return tag;
+        return tag as T extends true ? Tag[] : Tag;
     }
 }
 
@@ -32,7 +32,7 @@ export const findTags = (name: string) => {
             })).slice(0, 25)
         ];
     else {
-        const tags: Tag[] = getTag(name, true) as Tag[];
+        const tags = getTag(name, true);
         if (tags.length > 0)
             return tags.map(tag => new Object({
                 name: tag.keywords[0],
