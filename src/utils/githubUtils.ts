@@ -18,7 +18,7 @@ interface Issue {
     html_url: string;
     user_login: string;
     user_html_url: string;
-    type: '(ISSUE)' | '(PR)';
+    type: '(IS)' | '(PR)';
 }
 
 interface PullRequest extends Issue {
@@ -64,7 +64,7 @@ export const fetchIssues = async() => {
                     issue.html_url,
                     issue.user.login,
                     issue.user.html_url,
-                    '(ISSUE)'
+                    '(IS)'
                 ]);
                 issues++;
             }
@@ -145,7 +145,7 @@ export const setIssue = async(issue: Issue) => {
             issue.html_url,
             issue.user_login,
             issue.user_html_url,
-            '(ISSUE)'
+            '(IS)'
         ]);
     }
 }
@@ -167,7 +167,7 @@ export const setPullRequest = async(pull: PullRequest) => {
             pull.html_url,
             pull.user_login,
             pull.user_html_url,
-            '(ISSUE)'
+            '(IS)'
         ]);
     }
 }
@@ -183,14 +183,14 @@ export const search = async(query: string, repository: string): Promise<APIAppli
         if (!query) {
             const array = arrayFiltered.slice(0, 25);
             return array.map((issueOrPr: Issue | PullRequest) => new Object({
-                name: `${issueOrPr.type} ${issueOrPr.title.slice(0, 93).replace(/[^a-z0-9 ]/gi, '')}`,
+                name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 95).replace(/[^a-z0-9 ]/gi, '')}`,
                 value: issueOrPr.number.toString()
             })) as APIApplicationCommandOptionChoice[]
         }
     
         const searcher = new MiniSearch({
-            fields: ['title', 'number', 'type'],
-            storeFields: ['title', 'number', 'type'],
+            fields: query.startsWith('#') ? ['number'] : ['title'],
+            storeFields: ['title', 'number', 'type', 'state', 'merged_at'],
             searchOptions: {
                 fuzzy: 3,
                 processTerm: term => term.toLowerCase(),
@@ -202,7 +202,7 @@ export const search = async(query: string, repository: string): Promise<APIAppli
         const result = searcher.search(query);
     
         return (result as unknown as Issue[] | PullRequest[]).slice(0, 25).map((issueOrPr: Issue | PullRequest) => new Object({
-            name: `${issueOrPr.type} ${issueOrPr.title.slice(0, 93).replace(/[^a-z0-9 ]/gi, '')}`,
+            name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 95).replace(/[^a-z0-9 ]/gi, '')}`,
             value: issueOrPr.number.toString()
         })) as APIApplicationCommandOptionChoice[]
     } catch(e) {
@@ -213,4 +213,39 @@ export const search = async(query: string, repository: string): Promise<APIAppli
 export const getIssueOrPR = async(number: number, repository: string): Promise<Issue | PullRequest> => {
     const issueOrPR = await db.prepare(`SELECT * FROM issuesandprs WHERE repository = '${repository}' AND number = ${number}`).get();
     return issueOrPR;
+}
+
+export const formatStatus = (data: Issue | PullRequest) => {
+    let operation = '';
+    let timestamp = '';
+    switch(data.state as 'open' | 'closed' | 'all') {
+        case 'open':
+            operation = 'opened';
+            timestamp = `<t:${Math.floor(new Date(data.created_at).getTime() / 1000)}:R>`;
+            break;
+        case 'closed':
+            operation = (data as PullRequest).merged_at ? 'merged' : 'closed';
+            timestamp = (data as PullRequest).merged_at 
+                ? `<t:${Math.floor(new Date((data as PullRequest).merged_at).getTime() / 1000)}:R>`
+                : `<t:${Math.floor(new Date(data.closed_at).getTime() / 1000)}:R>`;
+            break;
+    }
+
+    return `${operation} ${timestamp}`;
+}
+
+export const formatEmojiStatus = (data: Issue | PullRequest) => {
+    let emoji = '';
+    switch(data.state as 'open' | 'closed' | 'all') {
+        case 'open':
+            emoji = '🟢';
+            break;
+        case 'closed':
+            emoji = '🔴';
+            break;
+    }
+
+    if (data.type === '(PR)' && !isNaN(new Date((data as PullRequest).merged_at).getTime())) emoji = '🟣';
+
+    return emoji;
 }

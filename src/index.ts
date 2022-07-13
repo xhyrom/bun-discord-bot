@@ -106,7 +106,7 @@ app.post('/github_webhook', bodyParse(), (c) => {
         html_url: issueOrPr.issue.html_url,
         user_login: issueOrPr.issue.user.login,
         user_html_url: issueOrPr.issue.user.html_url,
-        type: '(ISSUE)',
+        type: '(IS)',
       })
     }
     else {

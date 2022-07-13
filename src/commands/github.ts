@@ -3,9 +3,8 @@ import { Command } from '../structures/Command';
 // @ts-expect-error Types :(
 import utilities from '../../files/utilities.toml';
 import Collection from '@discordjs/collection';
-import formatStatus from '../utils/formatStatus';
 import { CommandContext } from '../structures/contexts/CommandContext';
-import { getIssueOrPR, search } from '../utils/githubUtils';
+import { getIssueOrPR, search, formatStatus } from '../utils/githubUtils';
 
 const cooldowns: Collection<string, number> = new Collection();
 const invalidIssue = (ctx: CommandContext, query: string) => {
@@ -83,7 +82,7 @@ new Command({
                 html_url: item.html_url,
                 user_login: item.user.login,
                 user_html_url: item.user.html_url,
-                type: item.pull_request ? '(PR)' : '(ISSUE)',
+                type: item.pull_request ? '(PR)' : '(IS)',
             };
         }
 
