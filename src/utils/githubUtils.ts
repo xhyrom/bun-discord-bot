@@ -6,6 +6,7 @@ import MiniSearch from 'minisearch';
 import { Logger } from './Logger';
 import { APIApplicationCommandOptionChoice } from 'discord-api-types/v10';
 import { Database } from 'bun:sqlite';
+import { discordChoicesRegex } from './regexes';
 
 interface Issue {
     id: number;
@@ -185,7 +186,7 @@ export const search = async(query: string, repository: string): Promise<APIAppli
         if (!query) {
             const array = arrayFiltered.slice(0, 25);
             return array.map((issueOrPr: Issue | PullRequest) => new Object({
-                name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 95).replace(/[^a-z0-9 ]/gi, '')}`,
+                name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 93).replace(discordChoicesRegex, '')}`,
                 value: issueOrPr.number.toString()
             })) as APIApplicationCommandOptionChoice[]
         }
@@ -204,7 +205,7 @@ export const search = async(query: string, repository: string): Promise<APIAppli
         const result = searcher.search(query);
     
         return (result as unknown as Issue[] | PullRequest[]).slice(0, 25).map((issueOrPr: Issue | PullRequest) => new Object({
-            name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 95).replace(/[^a-z0-9 ]/gi, '')}`,
+            name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 93).replace(discordChoicesRegex, '')}`,
             value: issueOrPr.number.toString()
         })) as APIApplicationCommandOptionChoice[]
     } catch(e) {
@@ -247,7 +248,7 @@ export const formatEmojiStatus = (data: Issue | PullRequest) => {
             break;
     }
 
-    if (data.type === '(PR)' && !isNaN(new Date((data as PullRequest).merged_at).getTime())) emoji = '🟣';
+    if (data.type === '(PR)' && (data as PullRequest).merged_at) emoji = '🟣';
 
     return emoji;
 }

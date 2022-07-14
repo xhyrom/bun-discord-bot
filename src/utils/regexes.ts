@@ -1,0 +1,1 @@
+export const discordChoicesRegex = /[^a-z0-9 (|)|-|*|/|+|,|<|>|&|!|?]/gi;
