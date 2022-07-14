@@ -138,7 +138,7 @@ export const setIssue = async(issue: Issue) => {
     } else {
         // @ts-expect-error
         addToDb.run([
-            issue.repository.replace('https://api.github.com/repos/', ''),
+            issue.repository,
             issue.title,
             issue.number,
             issue.state,
@@ -160,7 +160,7 @@ export const setPullRequest = async(pull: PullRequest) => {
     } else {
         // @ts-expect-error
         addToDb.run([
-            pull.repository.replace('https://api.github.com/repos/', ''),
+            pull.repository,
             pull.title,
             pull.number,
             pull.state,
