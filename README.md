@@ -2,7 +2,7 @@
 Official serverless discord bot for [bun](https://bun.sh/) [discord server](https://bun.sh/discord)
 
 ## Contributing tags
-To create a new tag, you need to fork the repository and edit the `tags.toml` file
+To create a new tag, you need to fork this repository and edit `tags.toml` file
 
 Format:
 ```toml

@@ -25,6 +25,12 @@ Any idea what to add to bun?
 • [Open an issue on GitHub](<https://github.com/oven-sh/bun/issues/new?template=2-feature-request.yml>) and fill out the given template
 """
 
+[contributing-tags]
+keywords = ["contributing-tags", "contributing", "tags"]
+content = """
+To create or update tag, check [xHyroM/bun-discord-bot#contributing-tags](https://github.com/xHyroM/bun-discord-bot/#contributing-tags)
+"""
+
 [hono]
 keywords = ["hono", "express", "server", "routes"]
 content = """
