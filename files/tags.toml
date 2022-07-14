@@ -75,7 +75,7 @@ If that doesn't work (and you're on a Windows machine), try this:
 
 [illegal-instruction]
 keywords = ["illegal-instruction", "core-dumped", "dumped", "core", "illegal"]
-cotent = """
+content = """
 **Illegal instruction - core dumped**
 
 Bun currently only works on CPUs supporting the AVX2 instruction set.
@@ -85,7 +85,7 @@ If you get this error while bun is initializing, you probably need to wrap the b
 **1.** Install intel-sde:
    • Arch Linux: `yay -S intel-sde`
    • Other Distros:
-```bash
++++bash
 wget https://downloadmirror.intel.com/732268/sde-external-9.7.0-2022-05-09-lin.tar.xz -O /tmp/intel-sde.tar.xz
 cd /tmp
 tar -xf intel-sde.tar.xz
@@ -94,7 +94,7 @@ mkdir /usr/local/bin -p
 cp sde64 /usr/local/bin/sde
 cp -r intel64 /usr/local/bin/
 cp -r misc /usr/local/bin/
-```
++++
 
 **2.** Add alias to bashrc
    • `echo "alias bun='sde -chip-check-disable -- bun'" >> ~/.bashrc`

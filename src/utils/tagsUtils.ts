@@ -10,6 +10,7 @@ export interface Tag {
 const tagCache: Collection<string, Tag> = new Collection();
 
 for (const [key, value] of Object.entries(tags)) {
+    (value as Tag).content = (value as Tag).content.replaceAll('+', '`');
     tagCache.set(key, value as unknown as Tag);
 }
 
