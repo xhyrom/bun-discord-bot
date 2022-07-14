@@ -99,3 +99,11 @@ cp -r misc /usr/local/bin/
 **2.** Add alias to bashrc
    • `echo "alias bun='sde -chip-check-disable -- bun'" >> ~/.bashrc`
 """
+
+[why-zig]
+keywords = ["why-zig", "zig", "zig-lang", "zig lang bun"]
+content = """
+[**Zig**](https://ziglang.org/) is a general-purpose programming language and toolchain for maintaining **robust**, **optimal** and **reusable** software.
+
+Its **low-level control over memory** and **lack of hidden control flow**, whilst retaining **simplicity** and **flexibility**, makes building _fast_ software (in development time as well) relatively easier.
+"""
