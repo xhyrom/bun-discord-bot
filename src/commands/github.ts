@@ -4,7 +4,7 @@ import { Command } from '../structures/Command';
 import utilities from '../../files/utilities.toml';
 import Collection from '@discordjs/collection';
 import { CommandContext } from '../structures/contexts/CommandContext';
-import { getIssueOrPR, search, formatStatus } from '../utils/githubUtils';
+import { getIssueOrPR, search, formatStatus, formatEmojiStatus } from '../utils/githubUtils';
 
 const invalidIssue = (ctx: CommandContext, query: string) => {
     return ctx.editResponse(
@@ -76,7 +76,7 @@ new Command({
         }
 
         return ctx.editResponse([
-            `[#${issueOrPR.number} ${repositoryOwner}/${repositoryName}](<${issueOrPR.html_url}>) by [${issueOrPR.user_login}](<${issueOrPR.user_html_url}>) ${formatStatus(issueOrPR)}`,
+            `${formatEmojiStatus(issueOrPR)} [#${issueOrPR.number} ${repositoryOwner}/${repositoryName}](<${issueOrPR.html_url}>) by [${issueOrPR.user_login}](<${issueOrPR.user_html_url}>) ${formatStatus(issueOrPR)}`,
             issueOrPR.title
         ].join('\n'));
     }

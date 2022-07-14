@@ -1,1 +1,1 @@
-export const discordChoicesRegex = /[^a-z0-9 (|)|-|*|/|+|,|<|>|&|!|?]/gi;
+export const githubTitleClean = /[`]/gi;
