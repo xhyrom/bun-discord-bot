@@ -57,7 +57,7 @@ To install WSL, check [microsoft documentation](<https://docs.microsoft.com/en-u
 """
 
 [io-uring-not-supported]
-keywords = ["io-uring-is-not-supported", "io uring", "not supported", "support"]
+keywords = ["io-uring-is-not-supported", "io uring", "not supported", "support", "linux", "kernel", "update"]
 content = """
 **error: Linux kernel version doesn't support io_uring, which Bun depends on**
 
