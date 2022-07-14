@@ -16,7 +16,7 @@ export interface CommandOptions {
     defaultMemberPermissions?: string;
     options?: Option[] | OptionOptions[];
     run: (ctx: CommandContext) => Response | Promise<Response>;
-    runWithoutReturn?: (ctx: CommandContext) => any;
+    runEditResponse?: (ctx: CommandContext) => any;
 }
 
 export class Command {
@@ -28,7 +28,7 @@ export class Command {
     public defaultMemberPermissions?: string;
     public options: Option[] | OptionOptions[];
     public run: (ctx: CommandContext) => Response | Promise<Response>;
-    public runWithoutReturn: (ctx: CommandContext) => any;
+    public runEditResponse: (ctx: CommandContext) => any;
 
     public constructor(options: CommandOptions) {
         this.name = options.name;
@@ -45,7 +45,7 @@ export class Command {
             else return new Option(option);
         });
         this.run = options.run;
-        this.runWithoutReturn = options.runWithoutReturn;
+        this.runEditResponse = options.runEditResponse;
 
         Commands.register(this);
     }

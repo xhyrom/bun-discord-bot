@@ -1,6 +1,7 @@
 // from https://github.com/discord/discord-interactions-js/blob/main/src/index.ts
 
 import { sign } from 'tweetnacl';
+import createHmac from 'create-hmac';
 
 /**
  * Converts different types to Uint8Array.
@@ -83,4 +84,21 @@ export const verifyKey = (
     console.error('[discord-interactions]: Invalid verifyKey parameters', ex);
     return false;
   }
+}
+
+/**
+ * Validates a payload from GitHub against its signature and secret
+ */
+export const verifyGithubKey = (
+  body: string,
+  signature: string,
+  secret: string
+): boolean => {
+  if (!body || !signature || !secret) return false;
+  
+  const githubWebhooksSecret = new TextEncoder().encode(secret);
+  const sha256 = `sha256=${createHmac('sha256', githubWebhooksSecret).update(body).digest('hex')}`;
+  if (sha256 !== signature) return false;
+
+  return true;
 }

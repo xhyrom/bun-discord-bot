@@ -5,7 +5,7 @@ import { Logger } from './utils/Logger';
 // @ts-expect-error Types :(
 import config from '../files/config.toml';
 import loadCommands from './utils/loadCommands';
-import { verifyKey } from './utils/verify';
+import { verifyGithubKey, verifyKey } from './utils/verify';
 import { APIPingInteraction, APIApplicationCommandInteraction, APIMessageComponentInteraction, InteractionType, InteractionResponseType, ApplicationCommandType, APIApplicationCommandAutocompleteInteraction, ApplicationCommandOptionType } from 'discord-api-types/v10';
 import { CommandContext } from './structures/contexts/CommandContext';
 import { Commands } from './managers/CommandManager';
@@ -13,7 +13,6 @@ import registerCommands from './utils/registerCommands';
 import { Option, OptionOptions } from './structures/Option';
 import { AutocompleteContext } from './structures/contexts/AutocompleteContext';
 import { deleteIssueOrPR, fetchIssues, fetchPullRequests, setIssue, setPullRequest } from './utils/githubUtils';
-import createHmac from 'create-hmac';
 
 await fetchIssues();
 await fetchPullRequests();
@@ -88,9 +87,13 @@ app.post('/github_webhook', bodyParse(), (c) => {
     typeof c.req?.parsedBody !== 'object'
   ) return c.redirect('https://www.youtube.com/watch?v=FMhScnY0dME'); // fireship :D
 
-  const githubWebhooksSecret = new TextEncoder().encode(config.api.github_webhooks_secret);
-  const sha256 = `sha256=${createHmac('sha256', githubWebhooksSecret).update(JSON.stringify(c.req.parsedBody)).digest('hex')}`;
-  if (sha256 !== c.req.headers.get('X-Hub-Signature-256')) return c.redirect('https://www.youtube.com/watch?v=FMhScnY0dME'); // fireship :D
+  if (
+    !verifyGithubKey(
+      JSON.stringify(c.req.parsedBody),
+      c.req.headers.get('X-Hub-Signature-256'),
+      config.api.github_webhooks_secret
+    )
+  ) return c.redirect('https://www.youtube.com/watch?v=FMhScnY0dME'); // fireship :D
 
   const issueOrPr = c.req.parsedBody;
   if (issueOrPr.action !== 'deleted') {
