@@ -27,7 +27,7 @@ export const findTags = (name: string) => {
     if (!name)
         return [
             ...tagCache.map((tag, name) => new Object({
-                name: name.replaceAll('-', ''),
+                name: name.replaceAll('-', ' '),
                 value: name
             })).slice(0, 25)
         ];
@@ -35,7 +35,7 @@ export const findTags = (name: string) => {
         const tags = getTag(name, true);
         if (tags.length > 0)
             return tags.map(tag => new Object({
-                name: tag.keywords[0].replaceAll('-', ''),
+                name: tag.keywords[0].replaceAll('-', ' '),
                 value: tag.keywords[0]
             }));
         else return findTags(null);
