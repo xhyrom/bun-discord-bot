@@ -133,7 +133,7 @@ export const fetchPullRequests = async() => {
 
 export const setIssue = async(issue: Issue) => {
     const exists = await db.prepare(`SELECT * FROM issuesandprs WHERE number = ${issue.number} AND repository = '${issue.repository}'`).get();
-    if (typeof exists == 'object') {
+    if (exists) {
         db.exec(`UPDATE issuesandprs SET state = '${issue.state}', closed_at = '${issue.closed_at}', title = '${issue.title}' WHERE number = ${issue.number} AND repository = '${issue.repository}'`);
     } else {
         // @ts-expect-error
@@ -155,7 +155,7 @@ export const setIssue = async(issue: Issue) => {
 
 export const setPullRequest = async(pull: PullRequest) => {
     const exists = await db.prepare(`SELECT * FROM issuesandprs WHERE number = ${pull.number} AND repository = '${pull.repository}'`).get();
-    if (typeof exists == 'object') {
+    if (exists) {
         db.exec(`UPDATE issuesandprs SET state = '${pull.state}', closed_at = '${pull.closed_at}', merged_at = '${pull.merged_at}', title = '${pull.title}' WHERE number = ${pull.number} AND repository = '${pull.repository}'`);
     } else {
         // @ts-expect-error
@@ -186,7 +186,7 @@ export const search = async(query: string, repository: string): Promise<APIAppli
         if (!query) {
             const array = arrayFiltered.slice(0, 25);
             return array.map((issueOrPr: Issue | PullRequest) => new Object({
-                name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 93).replace(discordChoicesRegex, '')}`,
+                name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 93)}`,
                 value: issueOrPr.number.toString()
             })) as APIApplicationCommandOptionChoice[]
         }
@@ -205,7 +205,7 @@ export const search = async(query: string, repository: string): Promise<APIAppli
         const result = searcher.search(query);
     
         return (result as unknown as Issue[] | PullRequest[]).slice(0, 25).map((issueOrPr: Issue | PullRequest) => new Object({
-            name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 93).replace(discordChoicesRegex, '')}`,
+            name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 93)}`,
             value: issueOrPr.number.toString()
         })) as APIApplicationCommandOptionChoice[]
     } catch(e) {
