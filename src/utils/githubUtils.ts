@@ -132,7 +132,7 @@ export const fetchPullRequests = async() => {
 }
 
 export const setIssue = async(issue: Issue) => {
-    const exists = await db.prepare(`SELECT * FROM issuesandprs WHERE number = ${issue.number} AND repository = '${issue.repository}'`).get();
+    const exists = await db.prepare(`SELECT * FROM issuesandprs WHERE number = ? AND repository = ?`).get(issue.number, issue.repository);
     if (exists) {
         db.exec(`UPDATE issuesandprs SET state = '${issue.state}', closed_at = '${issue.closed_at}', title = '${issue.title}' WHERE number = ${issue.number} AND repository = '${issue.repository}'`);
     } else {
@@ -154,7 +154,7 @@ export const setIssue = async(issue: Issue) => {
 }
 
 export const setPullRequest = async(pull: PullRequest) => {
-    const exists = await db.prepare(`SELECT * FROM issuesandprs WHERE number = ${pull.number} AND repository = '${pull.repository}'`).get();
+    const exists = await db.prepare(`SELECT * FROM issuesandprs WHERE number = ? AND repository = ?`).get(pull.number, pull.repository);
     if (exists) {
         db.exec(`UPDATE issuesandprs SET state = '${pull.state}', closed_at = '${pull.closed_at}', merged_at = '${pull.merged_at}', title = '${pull.title}' WHERE number = ${pull.number} AND repository = '${pull.repository}'`);
     } else {
@@ -181,7 +181,7 @@ export const deleteIssueOrPR = (number: number, repository: string) => {
 
 export const search = async(query: string, repository: string): Promise<APIApplicationCommandOptionChoice[]> => {
     try {
-        const arrayFiltered = await db.prepare(`SELECT * FROM issuesandprs WHERE repository = '${repository}'`).all();
+        const arrayFiltered = await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ?`).all(repository);
     
         if (!query) {
             const array = arrayFiltered.slice(0, 25);
@@ -214,7 +214,7 @@ export const search = async(query: string, repository: string): Promise<APIAppli
 }
 
 export const getIssueOrPR = async(number: number, repository: string): Promise<Issue | PullRequest> => {
-    const issueOrPR = await db.prepare(`SELECT * FROM issuesandprs WHERE repository = '${repository}' AND number = ${number}`).get();
+    const issueOrPR = await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ?`).get(repository, number);
     return issueOrPR;
 }
 
