@@ -8,12 +8,13 @@ import { APIApplicationCommandOptionChoice } from 'discord-api-types/v10';
 import { Database } from 'bun:sqlite';
 import { githubTitleClean } from './regexes';
 
+export type IssueState = 'open' | 'closed' | 'all' | 'merged';
 interface Issue {
     id: number;
     repository: string;
     title: string;
     number: number;
-    state: 'open' | 'closed',
+    state: IssueState,
     created_at: string;
     closed_at: string | null;
     html_url: string;
@@ -179,10 +180,14 @@ export const deleteIssueOrPR = (number: number, repository: string) => {
     db.exec(`DELETE FROM issuesandprs WHERE repository = '${repository}' AND number = ${number}`);
 }
 
-export const search = async(query: string, repository: string): Promise<APIApplicationCommandOptionChoice[]> => {
+export const search = async(query: string, repository: string, state: IssueState): Promise<APIApplicationCommandOptionChoice[]> => {
     try {
-        const arrayFiltered = await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ?`).all(repository);
-    
+        const arrayFiltered = state === 'all'
+            ? await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ?`).all(repository)
+            : state === 'merged'
+            ? await db.prepare(`SELECT * FROM issuesandprs WHERE merged_at IS NOT NULL AND repository = ?`).all(repository)
+            : await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND state = ?`).all(repository, state);
+
         if (!query) {
             const array = arrayFiltered.slice(0, 25);
             return array.map((issueOrPr: Issue | PullRequest) => new Object({
@@ -213,8 +218,13 @@ export const search = async(query: string, repository: string): Promise<APIAppli
     }
 }
 
-export const getIssueOrPR = async(number: number, repository: string): Promise<Issue | PullRequest> => {
-    const issueOrPR = await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ?`).get(repository, number);
+export const getIssueOrPR = async(number: number, repository: string, state: IssueState): Promise<Issue | PullRequest> => {
+    const issueOrPR = state === 'all'
+        ? await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ?`).get(repository, number)
+        : state === 'merged'
+        ? await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ? AND merged_at IS NOT NULL`).get(repository, number)
+        : await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ? AND state = ?`).get(repository, number, state);
+
     return issueOrPR;
 }
 

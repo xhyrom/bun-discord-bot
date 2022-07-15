@@ -2,9 +2,8 @@ import { APIApplicationCommandInteractionDataStringOption, ApplicationCommandOpt
 import { Command } from '../structures/Command';
 // @ts-expect-error Types :(
 import utilities from '../../files/utilities.toml';
-import Collection from '@discordjs/collection';
 import { CommandContext } from '../structures/contexts/CommandContext';
-import { getIssueOrPR, search, formatStatus, formatEmojiStatus } from '../utils/githubUtils';
+import { getIssueOrPR, search, formatStatus, formatEmojiStatus, IssueState } from '../utils/githubUtils';
 
 const invalidIssue = (ctx: CommandContext, query: string) => {
     return ctx.editResponse(
@@ -22,8 +21,38 @@ new Command({
             type: ApplicationCommandOptionType.String,
             required: true,
             run: async(ctx) => {
-                return ctx.respond(await search(ctx.value, ctx?.options?.[1]?.value as string || 'oven-sh/bun'));
+                return ctx.respond(
+                    await search(
+                        ctx.value,
+                        (ctx.options.find(o => o.name === 'repository'))?.value as string || 'oven-sh/bun',
+                        (ctx.options.find(o => o.name === 'state')?.value as string || 'all') as IssueState,
+                    )
+                );
             }
+        },
+        {
+            name: 'state',
+            description: 'Issue or PR state',
+            type: ApplicationCommandOptionType.String,
+            required: false,
+            choices: [
+                {
+                    name: 'open',
+                    value: 'open',
+                },
+                {
+                    name: 'closed',
+                    value: 'closed',
+                },
+                {
+                    name: 'merged',
+                    value: 'merged',
+                },
+                {
+                    name: 'all (default)',
+                    value: 'all',
+                }
+            ]
         },
         {
             name: 'repository',
@@ -36,7 +65,7 @@ new Command({
                     value: repository
                 }))
             ]
-        }
+        },
     ],
     run: async(ctx) => {
         ctx.command.runEditResponse(ctx)
@@ -46,13 +75,14 @@ new Command({
     },
     runEditResponse: async(ctx) => {
         let query: string = (ctx.options[0] as APIApplicationCommandInteractionDataStringOption).value;
-        const repository: string = (ctx.options?.[1] as APIApplicationCommandInteractionDataStringOption)?.value || 'oven-sh/bun';
+        const repository: string = (ctx.options.find(o => o.name === 'repository') as APIApplicationCommandInteractionDataStringOption)?.value || 'oven-sh/bun';
+        const state: IssueState = ((ctx.options.find(o => o.name === 'state') as APIApplicationCommandInteractionDataStringOption)?.value || 'all') as IssueState;
 
         const repositorySplit = repository.split('/');
         const repositoryOwner = repositorySplit[0];
         const repositoryName = repositorySplit[1];
 
-        let issueOrPR = await getIssueOrPR(parseInt(query), repository);
+        let issueOrPR = await getIssueOrPR(parseInt(query), repository, state);
         if (!issueOrPR) {
             const res = await fetch(`https://api.github.com/search/issues?q=${encodeURIComponent(query)}${encodeURIComponent(' repo:oven-sh/bun')}`);
 
