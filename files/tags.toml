@@ -79,6 +79,10 @@ content = """
 **Illegal instruction - core dumped**
 
 Bun currently only works on CPUs supporting the AVX2 instruction set.
+There is nothing you can do about it at the moment, you can only wait.
+However, there are plans to make a build that doesn't need AVX2 ([#67](<https://github.com/oven-sh/bun/issues/67>))
+
+**NOT RECOMMENDED (VERY SLOW ALTERNATIVE)**:
 To run on older CPUs this can be emulated using Intel SDE, however bun won't be as fast as it would be when running on CPUs with AVX2 support.
 If you get this error while bun is initializing, you probably need to wrap the bun executable with intel-sde.
 
