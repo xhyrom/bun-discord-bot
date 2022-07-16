@@ -1,4 +1,4 @@
-name: Validate Tag
+name: Validate Tags
 
 on:
   pull_request_target:
