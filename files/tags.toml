@@ -110,15 +110,15 @@ cp -r misc /usr/local/bin/
 [why-zig]
 keywords = ["why-zig", "zig", "zig-lang", "zig lang bun"]
 content = """
-[**Zig**](https://ziglang.org/) is a general-purpose programming language and toolchain for maintaining **robust**, **optimal** and **reusable** software.
+[**Zig**](<https://ziglang.org/>) is a general-purpose programming language and toolchain for maintaining **robust**, **optimal** and **reusable** software.
 
 Its **low-level control over memory** and **lack of hidden control flow**, whilst retaining **simplicity** and **flexibility**, makes building _fast_ software (in development time as well) relatively easier.
 """
 
 [test]
-keywords = ["asdr", "pop", "f"]
+keywords = ["test", "asdr", "pop", "f"]
 content = """
 asdr
-https://test.lol
+<https://test.lol>
 rr
 """
