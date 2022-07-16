@@ -1,6 +1,6 @@
 import { APIApplicationCommandInteractionDataStringOption, ApplicationCommandOptionType, InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 import { Command } from '../structures/Command';
-import { findTags, getTag, Tag } from '../utils/tagsUtils';
+import { findTags, getTag } from '../utils/tagsUtils';
 
 new Command({
     name: 'tags',
