@@ -18,6 +18,13 @@ let tags;
 try {
     // @ts-expect-error types
     tags = (await import('../../../files/tags.toml')).default;
+
+    requestGithub(
+        `issues/${pullRequestNumber}/labels`,
+        {
+            labels: ['tags']
+        }
+    );
 } catch(e) {
     tags = [];
     errors.push(e.message);
