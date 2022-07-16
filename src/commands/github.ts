@@ -3,7 +3,7 @@ import { Command } from '../structures/Command';
 // @ts-expect-error Types :(
 import utilities from '../../files/utilities.toml';
 import { CommandContext } from '../structures/contexts/CommandContext';
-import { getIssueOrPR, search, formatStatus, formatEmojiStatus, IssueState } from '../utils/githubUtils';
+import { getIssueOrPR, search, formatStatus, formatEmojiStatus, IssueState, IssueType } from '../utils/githubUtils';
 
 const invalidIssue = (ctx: CommandContext, query: string) => {
     return ctx.editResponse(
@@ -26,6 +26,7 @@ new Command({
                         ctx.value,
                         (ctx.options.find(o => o.name === 'repository'))?.value as string || 'oven-sh/bun',
                         (ctx.options.find(o => o.name === 'state')?.value as string || 'all') as IssueState,
+                        (ctx.options.find(o => o.name === 'type')?.value as string || '(IS|PR)') as IssueType,
                     )
                 );
             }
@@ -55,6 +56,26 @@ new Command({
             ]
         },
         {
+            name: 'type',
+            description: 'Issues or PRs',
+            type: ApplicationCommandOptionType.String,
+            required: false,
+            choices: [
+                {
+                    name: 'Issues',
+                    value: '(IS)',
+                },
+                {
+                    name: 'Pull Requests',
+                    value: '(PR)',
+                },
+                {
+                    name: 'Both',
+                    value: '(IS|PR)',
+                }
+            ]
+        },
+        {
             name: 'repository',
             description: 'Project repository (default oven-sh/bun)',
             type: ApplicationCommandOptionType.String,
@@ -77,12 +98,13 @@ new Command({
         let query: string = (ctx.options[0] as APIApplicationCommandInteractionDataStringOption).value;
         const repository: string = (ctx.options.find(o => o.name === 'repository') as APIApplicationCommandInteractionDataStringOption)?.value || 'oven-sh/bun';
         const state: IssueState = ((ctx.options.find(o => o.name === 'state') as APIApplicationCommandInteractionDataStringOption)?.value || 'all') as IssueState;
+        const type: IssueType = ((ctx.options.find(o => o.name === 'type') as APIApplicationCommandInteractionDataStringOption)?.value || '(IS|PR)') as IssueType;
 
         const repositorySplit = repository.split('/');
         const repositoryOwner = repositorySplit[0];
         const repositoryName = repositorySplit[1];
 
-        let issueOrPR = await getIssueOrPR(parseInt(query), repository, state);
+        let issueOrPR = await getIssueOrPR(parseInt(query), repository, state, type);
         if (!issueOrPR) {
             const res = await fetch(`https://api.github.com/search/issues?q=${encodeURIComponent(query)}${encodeURIComponent(' repo:oven-sh/bun')}`);
 

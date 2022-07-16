@@ -9,6 +9,7 @@ import { Database } from 'bun:sqlite';
 import { githubTitleClean } from './regexes';
 
 export type IssueState = 'open' | 'closed' | 'all' | 'merged';
+export type IssueType = '(IS)' | '(PR)' | '(IS|PR)';
 interface Issue {
     id: number;
     repository: string;
@@ -20,7 +21,7 @@ interface Issue {
     html_url: string;
     user_login: string;
     user_html_url: string;
-    type: '(IS)' | '(PR)';
+    type: IssueType;
 }
 
 interface PullRequest extends Issue {
@@ -180,13 +181,14 @@ export const deleteIssueOrPR = (number: number, repository: string) => {
     db.exec(`DELETE FROM issuesandprs WHERE repository = '${repository}' AND number = ${number}`);
 }
 
-export const search = async(query: string, repository: string, state: IssueState): Promise<APIApplicationCommandOptionChoice[]> => {
+export const search = async(query: string, repository: string, state: IssueState, type: IssueType): Promise<APIApplicationCommandOptionChoice[]> => {
     try {
+        const sqliteTypePrepase = type !== '(IS|PR)' ? ` AND type = '${type}'` : '';
         const arrayFiltered = state === 'all'
-            ? await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ?`).all(repository)
+            ? await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ?${sqliteTypePrepase}`).all(repository)
             : state === 'merged'
-            ? await db.prepare(`SELECT * FROM issuesandprs WHERE merged_at IS NOT NULL AND repository = ?`).all(repository)
-            : await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND state = ?`).all(repository, state);
+            ? await db.prepare(`SELECT * FROM issuesandprs WHERE merged_at IS NOT NULL AND repository = ?${sqliteTypePrepase}`).all(repository)
+            : await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND state = ?${sqliteTypePrepase}`).all(repository, state);
 
         if (!query) {
             const array = arrayFiltered.slice(0, 25);
@@ -218,12 +220,13 @@ export const search = async(query: string, repository: string, state: IssueState
     }
 }
 
-export const getIssueOrPR = async(number: number, repository: string, state: IssueState): Promise<Issue | PullRequest> => {
+export const getIssueOrPR = async(number: number, repository: string, state: IssueState, type: IssueType): Promise<Issue | PullRequest> => {
+    const sqliteTypePrepase = type !== '(IS|PR)' ? ` AND type = '${type}'` : '';
     const issueOrPR = state === 'all'
-        ? await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ?`).get(repository, number)
+        ? await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ?${sqliteTypePrepase}`).get(repository, number)
         : state === 'merged'
-        ? await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ? AND merged_at IS NOT NULL`).get(repository, number)
-        : await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ? AND state = ?`).get(repository, number, state);
+        ? await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ? AND merged_at IS NOT NULL${sqliteTypePrepase}`).get(repository, number)
+        : await db.prepare(`SELECT * FROM issuesandprs WHERE repository = ? AND number = ? AND state = ?${sqliteTypePrepase}`).get(repository, number, state);
 
     return issueOrPR;
 }
