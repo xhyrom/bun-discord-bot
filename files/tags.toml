@@ -116,7 +116,7 @@ Its **low-level control over memory** and **lack of hidden control flow**, whils
 """
 
 [test]
-keywords = ["asd"]
+keywords = ["asdr"]
 content = """
 asd
 """
