@@ -1,0 +1,6 @@
+{
+    "name": "validate-tags",
+    "scripts": {
+        "start": "bun src/index.ts"
+    }
+}
