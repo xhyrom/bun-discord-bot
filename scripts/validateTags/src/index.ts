@@ -49,29 +49,52 @@ for (const [key, value] of Object.entries(tags)) {
 }
 
 if (errors.length === 0) {
-    fetch(`https://api.github.com/repos/xHyroM/bun-discord-bot/pulls/${pullRequestNumber}/reviews`, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/vnd.github+json',
-            'Authorization': `token ${githubToken}`
-        },
-        body: JSON.stringify({
+    requestGithub(
+        `pulls/${pullRequestNumber}/reviews`,
+        {
             commit_id: commitSha,
             event: 'APPROVE',
-        })
-    })
+        }
+    );
+
+    requestGithub(
+        `issues/${pullRequestNumber}/labels/waiting`,
+        {},
+        'DELETE'
+    );
+
+    requestGithub(
+        `issues/${pullRequestNumber}/labels`,
+        {
+            labels: ['ready']
+        }
+    );
 } else {
-    fetch(`https://api.github.com/repos/xHyroM/bun-discord-bot/pulls/${pullRequestNumber}/reviews`, {
-        method: 'POST',
+    requestGithub(
+        `pulls/${pullRequestNumber}/reviews`,
+        {
+            commit_id: commitSha,
+            body: '### Please fix the following problems:\n' + errors.join('\n'),
+            event: 'REQUEST_CHANGES',
+        }
+    );
+
+    requestGithub(
+        `issues/${pullRequestNumber}/labels`,
+        {
+            labels: ['waiting']
+        }
+    );
+}
+
+function requestGithub(url: string, body: any, method?: 'POST' | 'DELETE') {
+    fetch(`https://api.github.com/repos/xHyroM/bun-discord-bot/${url}`, {
+        method: method || 'POST',
         headers: {
             'Accept': 'application/vnd.github+json',
             'Authorization': `token ${githubToken}`
         },
-        body: JSON.stringify({
-            commit_id: commitSha,
-            body: 'Please fix the following problems:\n' + errors.join('\n'),
-            event: 'REQUEST_CHANGES',
-        })
+        body: JSON.stringify(body)
     })
 }
 
