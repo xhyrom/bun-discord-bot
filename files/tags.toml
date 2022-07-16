@@ -114,3 +114,9 @@ content = """
 
 Its **low-level control over memory** and **lack of hidden control flow**, whilst retaining **simplicity** and **flexibility**, makes building _fast_ software (in development time as well) relatively easier.
 """
+
+[test]
+keywords = ["asd"]
+content = """
+asd
+"""
