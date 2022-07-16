@@ -56,7 +56,7 @@ Bun does not currently have support for Windows, so you must use WSL (Windows Su
 To install WSL, check [microsoft documentation](<https://docs.microsoft.com/en-us/windows/wsl/install>)
 """
 
-[io-uring-not-supported]
+[io-uring-is-not-supported]
 keywords = ["io-uring-is-not-supported", "io uring", "not supported", "support", "linux", "kernel", "update"]
 content = """
 **error: Linux kernel version doesn't support io_uring, which Bun depends on**
@@ -65,6 +65,9 @@ To fix this error, you need to update Linux kernel.
 If you are using the Windows Subsystem for Linux, do:
   **1.** Open powershell as administrator
   **2.** Run:
+     • wsl --set-version <disto name> 2
+       • If it throws `Please enable the Virtual Machine Platform Windows feature and ensure virtualization is enabled in the BIOS.`, turn on Virtual Machine Platform in Windows Features and then rerun this command.
+       • PS: You can get distro name from `wsl --list -v` 
      • wsl --update
      • wsl --shutdown
 
