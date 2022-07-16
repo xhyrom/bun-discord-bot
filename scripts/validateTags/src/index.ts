@@ -1,5 +1,3 @@
-import { context } from '@actions/github';
-
 interface Tag {
 	keywords: string[];
 	content: string;
@@ -7,6 +5,7 @@ interface Tag {
 
 const githubToken = process.env['github-token'];
 const commitSha = process.env['commit-sha'];
+const pullRequestNumber = process.env['pr-number'];
 
 const codeBlockRegex = /(`{1,3}).+?\1/gs;
 const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gi;
@@ -50,7 +49,7 @@ for (const [key, value] of Object.entries(tags)) {
 }
 
 if (errors.length === 0) {
-    fetch(`https://api.github.com/repos/${context.repo.owner}/${context.repo.repo}/pulls/${context.payload.pull_request.number}/reviews`, {
+    fetch(`https://api.github.com/repos/xHyroM/bun-discord-bot/pulls/${pullRequestNumber}/reviews`, {
         method: 'POST',
         headers: {
             'Accept': 'application/vnd.github+json',
@@ -62,7 +61,7 @@ if (errors.length === 0) {
         })
     })
 } else {
-    fetch(`https://api.github.com/repos/${context.repo.owner}/${context.repo.repo}/pulls/${context.payload.pull_request.number}/reviews`, {
+    fetch(`https://api.github.com/repos/xHyroM/bun-discord-bot/pulls/${pullRequestNumber}/reviews`, {
         method: 'POST',
         headers: {
             'Accept': 'application/vnd.github+json',

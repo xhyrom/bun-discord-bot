@@ -31,3 +31,4 @@ jobs:
         env:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           commit-sha: ${{ github.event.pull_request.head.sha }}
+          pr-number: ${{ github.event.pull_request.number }}
