@@ -1,4 +1,4 @@
-name: Validate Tags
+name: Validate
 
 on:
   pull_request_target:
@@ -9,6 +9,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: refs/pull/${{ github.event.number }}/merge
 
       - name: Setup Bun
         uses: xhyrom/setup-bun@v0.1.3
@@ -24,5 +26,8 @@ jobs:
       - name: Add json
         run: cp $HOME/files.json ./scripts/validateTags/
 
-      - name: Validate tags
+      - name: Validate tag
         run: bun run validate
+        env:
+          PR_ID: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
