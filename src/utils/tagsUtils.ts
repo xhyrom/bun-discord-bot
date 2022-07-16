@@ -8,10 +8,6 @@ export interface Tag {
 	content: string;
 }
 
-export interface ExtendedTag extends Tag {
-    match: '✅' | '🔑' | '📄'
-}
-
 const tagCache: Collection<string, Tag> = new Collection();
 
 for (const [key, value] of Object.entries(tags)) {
