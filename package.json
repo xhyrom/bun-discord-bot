@@ -3,6 +3,7 @@
   "name": "bun-discord-bot",
   "scripts": {
     "start": "bun src/index.ts",
+    "validate": "cd scripts/validateTags && bun start",
     "cloudflare:tunnel": "sudo cloudflared tunnel run"
   },
   "devDependencies": {
