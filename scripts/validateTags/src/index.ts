@@ -58,6 +58,13 @@ if (errors.length === 0) {
     );
 
     requestGithub(
+        `pulls/${pullRequestNumber}/requested_reviewers`,
+        {
+            reviewers: ['xHyroM']
+        }
+    );
+
+    requestGithub(
         `issues/${pullRequestNumber}/labels/waiting`,
         {},
         'DELETE'
