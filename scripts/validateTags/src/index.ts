@@ -1,13 +1,12 @@
 import { context } from '@actions/github';
-import { getInput } from '@actions/core';
 
 interface Tag {
 	keywords: string[];
 	content: string;
 }
 
-const githubToken = getInput('github-token');
-const commitSha = getInput('commit-sha');
+const githubToken = process.env['github-token'];
+const commitSha = process.env['commit-sha'];
 
 const codeBlockRegex = /(`{1,3}).+?\1/gs;
 const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gi;

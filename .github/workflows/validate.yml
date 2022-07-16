@@ -28,6 +28,6 @@ jobs:
 
       - name: Validate tag
         run: bun run validate
-        with:
+        env:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           commit-sha: ${{ github.event.pull_request.head.sha }}
