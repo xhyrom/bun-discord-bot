@@ -3,5 +3,6 @@ repositories = [
     "oven-sh/bun",
     "oven-sh/docs",
     "oven-sh/bun-dependencies",
+    "oven-sh/bun-types",
     "xHyroM/bun-discord-bot"
 ]
