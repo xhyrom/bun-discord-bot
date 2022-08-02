@@ -82,9 +82,9 @@ content = """
 **Illegal instruction - core dumped**
 
 Update to latest 0.1.6 version using:
-```
++++
 curl https://bun.sh/install | bash
-```
++++
 
 or install latest *-baseline build 
 """
