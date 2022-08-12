@@ -1,8 +1,8 @@
 import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
 import { Command } from '../structures/Command';
-import { exec } from 'bun-utilities';
+import { exec } from 'bun-utilities/spawn';
 
-const commitHash = (await exec(['git', 'log', '--pretty=format:\'%h\'', '-n', '1'])).stdout.replaceAll('\'', '');
+const commitHash = exec(['git', 'log', '--pretty=format:\'%h\'', '-n', '1']).stdout.replaceAll('\'', '');
 
 new Command({
     name: 'version',
