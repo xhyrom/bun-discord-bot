@@ -37,7 +37,7 @@ content = """
 **Hono - [炎] means flame🔥 in Japanese**
 • Is a small, simple, and ultrafast web framework for Cloudflare Workers, Deno, Bun, and others
 
-[Bun doesn't currently support express because some native modules are missing, but you can use hono for now.](<https://github.com/honojs/hono#bun>)
+[Bun supports partially express, but you can also use hono.](<https://github.com/honojs/hono#bun>)
 """
 
 [not-same-file-system]
@@ -81,12 +81,12 @@ keywords = ["illegal-instruction", "core-dumped", "dumped", "core", "illegal"]
 content = """
 **Illegal instruction - core dumped**
 
-Update to latest 0.1.6 version using:
+Update to latest version using:
 +++
 curl https://bun.sh/install | bash
 +++
 
-or install latest *-baseline build 
+or install latest *-baseline build from [GitHub Releases](https://github.com/oven-sh/bun/releases)
 """
 
 [why-zig]
