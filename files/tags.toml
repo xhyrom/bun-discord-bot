@@ -100,7 +100,7 @@ Its **low-level control over memory** and **lack of hidden control flow**, whils
 [lookbehinds]
 keywords = ["lookbehinds", "regex", "jsc", "discord.js"]
 content = """
-Bun (i.e. JavaScriptCore) does not currently support regex lookbehinds. ([#314](<https://github.com/oven-sh/bun/issues/314>))
+Bun (i.e. JavaScriptCore) **does not currently** support regex lookbehinds. ([#314](<https://github.com/oven-sh/bun/issues/314>))
 
 If you need to use lookbehinds, you can use an alternative. Read more [here](<https://stackoverflow.com/questions/7376238/javascript-regex-look-behind-alternative>) 
 """
