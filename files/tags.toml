@@ -86,13 +86,21 @@ Update to latest version using:
 curl https://bun.sh/install | bash
 +++
 
-or install latest *-baseline build from [GitHub Releases](https://github.com/oven-sh/bun/releases)
+or install latest *-baseline build from [GitHub Releases](<https://github.com/oven-sh/bun/releases>)
 """
 
 [why-zig]
 keywords = ["why-zig", "zig", "zig-lang", "zig lang bun"]
 content = """
-[**Zig**](https://ziglang.org/) is a general-purpose programming language and toolchain for maintaining **robust**, **optimal** and **reusable** software.
+[**Zig**](<https://ziglang.org/>) is a general-purpose programming language and toolchain for maintaining **robust**, **optimal** and **reusable** software.
 
 Its **low-level control over memory** and **lack of hidden control flow**, whilst retaining **simplicity** and **flexibility**, makes building _fast_ software (in development time as well) relatively easier.
+"""
+
+[lookbehinds]
+keywords = ["lookbehinds", "regex", "jsc", "discord.js"]
+content = """
+Bun (i.e. JavaScriptCore) does not currently support regex lookbehinds. ([#314](<https://github.com/oven-sh/bun/issues/314>))
+
+If you need to use lookbehinds, you can use an alternative. Read more [here](<https://stackoverflow.com/questions/7376238/javascript-regex-look-behind-alternative>) 
 """
