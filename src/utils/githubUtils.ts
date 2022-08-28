@@ -216,7 +216,7 @@ export const search = async(query: string, repository: string, state: IssueState
         const result = searcher.search(query);
     
         return (result as unknown as Issue[] | PullRequest[]).slice(0, 25).map((issueOrPr: Issue | PullRequest) => new Object({
-            name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 93).replace(githubTitleClean, '')}`,
+            name: `${issueOrPr.type.slice(0, -1)} #${issueOrPr.number}) ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 91 - issueOrPr.id.toString().length).replace(githubTitleClean, '')}`,
             value: issueOrPr.number.toString()
         })) as APIApplicationCommandOptionChoice[]
     } catch(e) {
