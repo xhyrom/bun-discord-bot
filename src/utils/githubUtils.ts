@@ -153,7 +153,8 @@ export const setIssue = async(issue: Issue) => {
             issue.html_url,
             issue.user_login,
             issue.user_html_url,
-            '(IS)'
+            '(IS)',
+            null,
         ]);
     }
 }
