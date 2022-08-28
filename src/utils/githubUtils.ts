@@ -26,14 +26,15 @@ interface Issue {
 
 interface PullRequest extends Issue {
     merged_at: string | null;
+    draft: boolean;
 }
 
 export const db = new Database('./files/database.sqlite');
 await db.exec('DROP TABLE IF EXISTS issuesandprs');
-await db.exec('CREATE TABLE issuesandprs (id INTEGER PRIMARY KEY, repository TEXT, title TEXT, number INTEGER, state TEXT, created_at TEXT, closed_at TEXT, merged_at TEXT, html_url TEXT, user_login TEXT, user_html_url TEXT, type TEXT)');
+await db.exec('CREATE TABLE issuesandprs (id INTEGER PRIMARY KEY, repository TEXT, title TEXT, number INTEGER, state TEXT, created_at TEXT, closed_at TEXT, merged_at TEXT, html_url TEXT, user_login TEXT, user_html_url TEXT, type TEXT, draft TINYINT)');
 
 const addToDb = db.prepare(
-    'INSERT INTO issuesandprs (repository, title, number, state, created_at, closed_at, merged_at, html_url, user_login, user_html_url, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    'INSERT INTO issuesandprs (repository, title, number, state, created_at, closed_at, merged_at, html_url, user_login, user_html_url, type, draft) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
 );
 
 export let issues: number = 0;
@@ -67,7 +68,8 @@ export const fetchIssues = async() => {
                     issue.html_url,
                     issue.user.login,
                     issue.user.html_url,
-                    '(IS)'
+                    '(IS)',
+                    null,
                 ]);
                 issues++;
             }
@@ -113,7 +115,8 @@ export const fetchPullRequests = async() => {
                     pull.html_url,
                     pull.user.login,
                     pull.user.html_url,
-                    '(PR)'
+                    '(PR)',
+                    pull.draft,
                 ]);
                 pulls++;
             }
@@ -172,7 +175,8 @@ export const setPullRequest = async(pull: PullRequest) => {
             pull.html_url,
             pull.user_login,
             pull.user_html_url,
-            '(IS)'
+            '(IS)',
+            pull.draft,
         ]);
     }
 }
@@ -200,7 +204,7 @@ export const search = async(query: string, repository: string, state: IssueState
     
         const searcher = new MiniSearch({
             fields: query.startsWith('#') ? ['number'] : ['title'],
-            storeFields: ['title', 'number', 'type', 'state', 'merged_at'],
+            storeFields: ['title', 'number', 'type', 'state', 'merged_at', 'draft'],
             searchOptions: {
                 fuzzy: 3,
                 processTerm: term => term.toLowerCase(),
@@ -254,14 +258,12 @@ export const formatEmojiStatus = (data: Issue | PullRequest) => {
     let emoji = '';
     switch(data.state as 'open' | 'closed' | 'all') {
         case 'open':
-            emoji = '🟢';
+            emoji = (data as PullRequest).draft ? '⚫' : '🟢';
             break;
         case 'closed':
-            emoji = '🔴';
+            emoji = (data as PullRequest).merged_at ? '🟣' : '🔴';
             break;
     }
-
-    if (data.type === '(PR)' && (data as PullRequest).merged_at) emoji = '🟣';
 
     return emoji;
 }

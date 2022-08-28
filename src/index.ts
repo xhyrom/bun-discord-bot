@@ -126,6 +126,7 @@ app.post('/github_webhook', bodyParse(), (c) => {
         user_login: issueOrPr.pull_request.user.login,
         user_html_url: issueOrPr.pull_request.user.html_url,
         type: '(PR)',
+        draft: issueOrPr.pull_request.draft,
       })
     }
   } else {
