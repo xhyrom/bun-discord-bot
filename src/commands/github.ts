@@ -128,7 +128,7 @@ new Command({
         }
 
         return ctx.editResponse([
-            `${formatEmojiStatus(issueOrPR)} [#${issueOrPR.number} ${repositoryOwner}/${repositoryName}](<${issueOrPR.html_url}>) by [${issueOrPR.user_login}](<${issueOrPR.user_html_url}>) ${formatStatus(issueOrPR)}`,
+            `${formatEmojiStatus(issueOrPR)} [#${issueOrPR.number} ${issueOrPR.title.replace(/\[\]/g, '').slice(0, 1500)} ${repositoryOwner}/${repositoryName}](<${issueOrPR.html_url}>) by [${issueOrPR.user_login}](<${issueOrPR.user_html_url}>) ${formatStatus(issueOrPR)}`,
             issueOrPR.title
         ].join('\n'));
     }
