@@ -197,7 +197,7 @@ export const search = async(query: string, repository: string, state: IssueState
         if (!query) {
             const array = arrayFiltered.slice(0, 25);
             return array.map((issueOrPr: Issue | PullRequest) => new Object({
-                name: `${issueOrPr.type} ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 93).replace(githubTitleClean, '')}`,
+                name: `${issueOrPr.type.slice(-1)}${issueOrPr.id}) ${formatEmojiStatus(issueOrPr)} ${issueOrPr.title.slice(0, 93 - issueOrPr.id.toString().length).replace(githubTitleClean, '')}`,
                 value: issueOrPr.number.toString()
             })) as APIApplicationCommandOptionChoice[]
         }
