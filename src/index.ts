@@ -13,9 +13,15 @@ import registerCommands from './utils/registerCommands';
 import { Option, OptionOptions } from './structures/Option';
 import { AutocompleteContext } from './structures/contexts/AutocompleteContext';
 import { deleteIssueOrPR, fetchIssues, fetchPullRequests, setIssue, setPullRequest } from './utils/githubUtils';
+import { removeExclamationFromNicknames } from './utils/discord';
 
 await fetchIssues();
 await fetchPullRequests();
+(async() => {
+  Logger.info('Removing exclamation marks from nicknames...');
+  await removeExclamationFromNicknames();
+  Logger.info('Removing is done!');
+})();
 await loadCommands();
 try {
   await registerCommands(config.client.token, config.client.id);
