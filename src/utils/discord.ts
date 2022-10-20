@@ -1,6 +1,6 @@
 import { Logger } from "./Logger";
 
-export const getDiscordGuildMembers = async() => {
+export const getDiscordGuildMembers = async(token: string) => {
     let oldId;
     const result: any[] = [];
 
@@ -9,7 +9,7 @@ export const getDiscordGuildMembers = async() => {
             `https://discord.com/api/v8/guilds/${process.env.DISCORD_GUILD_ID}/members?limit=1000${oldId ? `&after=${oldId}` : ''}`,
             {
                 headers: {
-                    Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
+                    Authorization: `Bot ${token}`,
                 },
             }
         )).json();
@@ -27,14 +27,14 @@ export const getDiscordGuildMembers = async() => {
     return result;
 }
 
-export const removeExclamationFromNicknames = async() => {
-    for (const member of await getDiscordGuildMembers()) {
+export const removeExclamationFromNicknames = async(token: string) => {
+    for (const member of await getDiscordGuildMembers(token)) {
         if (!member.nickname?.startsWith?.('!')) continue;
         
         await fetch(`https://discord.com/api/v8/guilds/${process.env.DISCORD_GUILD_ID}/members/${member.id}`, {
             method: 'PATCH',
             headers: {
-                Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
+                Authorization: `Bot ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({

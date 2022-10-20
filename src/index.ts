@@ -19,7 +19,7 @@ await fetchIssues();
 await fetchPullRequests();
 (async() => {
   Logger.info('Removing exclamation marks from nicknames...');
-  await removeExclamationFromNicknames();
+  await removeExclamationFromNicknames(config.client.token);
   Logger.info('Removing is done!');
 })();
 await loadCommands();
