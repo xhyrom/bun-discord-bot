@@ -1,3 +1,5 @@
+import { Logger } from "./Logger";
+
 export const getDiscordGuildMembers = async() => {
     let oldId;
     const result: any[] = [];
@@ -16,7 +18,11 @@ export const getDiscordGuildMembers = async() => {
 
         result.push(...members.map(m => ({ id: m.id, nickname: m.nick })));
         oldId = members[members.length - 1].id;
+
+        Logger.debug(`Fetching guild members - ${result.length}, ${oldId}`);
     }
+
+    Logger.debug(`All guild members has been fetched - ${result.length}`);
 
     return result;
 }
