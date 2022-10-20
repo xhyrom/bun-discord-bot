@@ -16,6 +16,7 @@ export const getDiscordGuildMembers = async(token: string) => {
 
         if (members.length == 0) break;
 
+        console.log(members);
         result.push(...members.map(m => ({ id: m.id, nickname: m.nick })));
         oldId = members[members.length - 1].id;
 
