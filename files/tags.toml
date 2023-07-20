@@ -1,10 +1,7 @@
 [bun]
 keywords = ["bun", "bun.sh"]
 content = """
-Bun is a modern JavaScript runtime like Node or Deno. It was built from scratch to focus on three main things:
-• Start fast (it has the edge in mind).
-• New levels of performance (extending JavaScriptCore, the engine).
-• Being a great and complete tool (bundler, transpiler, package manager).
+Bun is an all-in-one JavaScript runtime & toolkit designed for speed, complete with a bundler, test runner, and Node.js-compatible package manager.
 
 Read more [here](<https://bun.sh/>)
 """
@@ -13,40 +10,22 @@ Read more [here](<https://bun.sh/>)
 keywords = ["bug", "report", "bugs"]
 content = """
 Found a bug in bun?
-• If you are unsure, first discuss your bug in <#887787428973281300> or <#995247410794217553>
-• [Open an issue on GitHub](<https://github.com/oven-sh/bun/issues/new?template=1-bug-report.yml>) and fill out the given template
+- If you are unsure, first discuss your bug in <#887787428973281300> or <#995247410794217553>
+- [Open an issue on GitHub](<https://github.com/oven-sh/bun/issues/new?template=1-bug-report.yml>) and fill out the given template
 """
 
 [feature-request]
 keywords = ["feature-request", "feature", "request"]
 content = """
 Any idea what to add to bun?
-• Please consider if this is a request for bun, not for other 3rd party packages
-• [Open an issue on GitHub](<https://github.com/oven-sh/bun/issues/new?template=2-feature-request.yml>) and fill out the given template
+- Please consider if this is a request for bun, not for other 3rd party packages
+- [Open an issue on GitHub](<https://github.com/oven-sh/bun/issues/new?template=2-feature-request.yml>) and fill out the given template
 """
 
-[contributing-tags]
+[tags]
 keywords = ["contributing-tags", "contributing", "tags"]
 content = """
 To create or update tag, check [xHyroM/bun-discord-bot#contributing-tags](<https://github.com/xHyroM/bun-discord-bot/#contributing-tags>)
-"""
-
-[hono]
-keywords = ["hono", "express", "server", "routes"]
-content = """
-**Hono - [炎] means flame🔥 in Japanese**
-• Is a small, simple, and ultrafast web framework for Cloudflare Workers, Deno, Bun, and others
-
-[Bun supports partially express, but you can also use hono.](<https://github.com/honojs/hono#bun>)
-"""
-
-[not-same-file-system]
-keywords = ["not-same-file-system", "backend copyfile", "copyfile"]
-content = """
-**error: NotSameFileSystem installing [package]**
-
-You have old bun. Use `bun upgrade` to upgrade.
-If you have problems with upgrade, reinstall bun using `curl https://bun.sh/install | bash`
 """
 
 [windows]
@@ -65,11 +44,11 @@ To fix this error, you need to update Linux kernel.
 If you are using the Windows Subsystem for Linux, do:
   **1.** Open powershell as administrator
   **2.** Run:
-     • wsl --set-version <disto name> 2
-       • If it throws `Please enable the Virtual Machine Platform Windows feature and ensure virtualization is enabled in the BIOS.`, turn on Virtual Machine Platform in Windows Features and then rerun this command.
-       • PS: You can get distro name from `wsl --list -v` 
-     • wsl --update
-     • wsl --shutdown
+     - wsl --set-version <disto name> 2
+       - If it throws `Please enable the Virtual Machine Platform Windows feature and ensure virtualization is enabled in the BIOS.`, turn on Virtual Machine Platform in Windows Features and then rerun this command.
+       - PS: You can get distro name from `wsl --list -v` 
+     - wsl --update
+     - wsl --shutdown
 
 If that doesn't work (and you're on a Windows machine), try this:
   **1.** Open Windows Update
@@ -89,10 +68,23 @@ curl https://bun.sh/install | bash
 or install latest *-baseline build from [GitHub Releases](<https://github.com/oven-sh/bun/releases>)
 """
 
-[why-zig]
-keywords = ["why-zig", "zig", "zig-lang", "zig lang bun"]
-content = """
-[**Zig**](<https://ziglang.org/>) is a general-purpose programming language and toolchain for maintaining **robust**, **optimal** and **reusable** software.
+# common questions
 
-Its **low-level control over memory** and **lack of hidden control flow**, whilst retaining **simplicity** and **flexibility**, makes building _fast_ software (in development time as well) relatively easier.
+[ts] # 'how do i use typescript or jsx?'
+keywords = ["typescript", "tsc"]
+content = """
+Bun supports TypeScript and JSX out of the box. They can be run directly with [`bun run`](https://bun.sh/docs/cli/run).
+For setting up IDE support, [documentation page on TypeScript](https://bun.sh/docs/runtime/typescript)
+"""
+
+[nix] # 'it doesnt work on nixos'
+keywords = ["nix", "nixos"]
+content = """
+To use Bun on NixOS, you must install it through the nix package manager using [the `bun` package in nixpkgs](https://search.nixos.org/packages?channel=unstable&show=bun&from=0&size=1&sort=relevance&type=packages&query=bun):
+
++++
+nix-env -iA nixos.bun
++++
+
+Using `bun upgrade` or the curl installer will not work because NixOS does not provide `ld.so` which means any non-nixos linux executables will not work (you'll see "File not found" when trying to run them, even though the binary is there).
 """
