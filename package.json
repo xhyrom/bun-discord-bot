@@ -3,19 +3,13 @@
   "name": "bun-discord-bot",
   "scripts": {
     "start": "bun src/index.ts",
-    "validate": "cd scripts/validateTags && bun install && bun start",
-    "cloudflare:tunnel": "sudo cloudflared tunnel run"
+    "validate:tags": "cd scripts/validate_tags && bun install && bun start"
   },
   "devDependencies": {
-    "bun-types": "^0.1.8"
+    "bun-types": "^0.7.0"
   },
   "dependencies": {
-    "@discordjs/collection": "^0.7.0",
-    "bun-utilities": "^0.2.1",
-    "create-hmac": "^1.1.7",
-    "discord-api-types": "^0.36.1",
-    "hono": "^1.6.4",
-    "minisearch": "^5.0.0",
-    "tweetnacl": "^1.0.3"
+    "@paperdave/logger": "^3.0.1",
+    "discord.js": "^14.11.0"
   }
 }
