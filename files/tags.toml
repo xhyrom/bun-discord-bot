@@ -23,7 +23,7 @@ Any idea what to add to bun?
 """
 
 [tags]
-keywords = ["contributing-tags", "contributing", "tags"]
+keywords = ["tags", "contributing"]
 content = """
 To create or update tag, check [xHyroM/bun-discord-bot#contributing-tags](<https://github.com/xHyroM/bun-discord-bot/#contributing-tags>)
 """
@@ -71,16 +71,16 @@ or install latest *-baseline build from [GitHub Releases](<https://github.com/ov
 # common questions
 
 [ts] # 'how do i use typescript or jsx?'
-keywords = ["typescript", "tsc"]
+keywords = ["ts", "typescript", "tsc"]
 content = """
-Bun supports TypeScript and JSX out of the box. They can be run directly with [`bun run`](https://bun.sh/docs/cli/run).
-For setting up IDE support, [documentation page on TypeScript](https://bun.sh/docs/runtime/typescript)
+Bun supports TypeScript and JSX out of the box. They can be run directly with [`bun run`](<https://bun.sh/docs/cli/run>).
+For setting up IDE support, [documentation page on TypeScript](<https://bun.sh/docs/runtime/typescript>)
 """
 
 [nix] # 'it doesnt work on nixos'
 keywords = ["nix", "nixos"]
 content = """
-To use Bun on NixOS, you must install it through the nix package manager using [the `bun` package in nixpkgs](https://search.nixos.org/packages?channel=unstable&show=bun&from=0&size=1&sort=relevance&type=packages&query=bun):
+To use Bun on NixOS, you must install it through the nix package manager using [the `bun` package in nixpkgs](<https://search.nixos.org/packages?channel=unstable&show=bun&from=0&size=1&sort=relevance&type=packages&query=bun>):
 
 +++
 nix-env -iA nixos.bun
