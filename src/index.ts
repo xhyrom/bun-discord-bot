@@ -1,10 +1,9 @@
-import { GatewayIntentBits } from "discord.js";
-import { Bient } from "./Bient.ts";
+import "./loaders";
 
-const client = new Bient({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
-});
+import { Bubu } from "./structs/Client.ts";
 
-await client.load();
+// Make sure bubu will not crash
+process.on("unhandledRejection", console.error);
+process.on("uncaughtException", console.error);
 
-client.login();
+Bubu.login(process.env.DISCORD_BOT_TOKEN).catch(console.error);

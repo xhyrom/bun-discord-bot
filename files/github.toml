@@ -1,4 +1,0 @@
-repositories = [
-    "oven-sh/bun",
-    "xHyroM/bun-discord-bot"
-]

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@paperdave/logger": "^3.0.1",
-    "discord.js": "^14.11.0"
+    "discord.js": "^14.13.0",
+    "zlib-sync": "^0.1.8"
   }
 }
