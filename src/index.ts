@@ -1,4 +1,5 @@
-import "./loaders";
+import "./commands"
+import "./listeners";
 
 import { Bubu } from "./structs/Client.ts";
 

@@ -1,8 +1,8 @@
-import { ClientEvents, Events } from "discord.js";
-import "../listeners/ready.ts";
+import type { ClientEvents } from "discord.js";
 
 interface Listener<E extends keyof ClientEvents> {
   event: E;
+  once?: boolean;
   run: (
     ...args: ClientEvents[E]
   ) => any;

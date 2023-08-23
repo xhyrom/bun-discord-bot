@@ -1,9 +1,10 @@
 import { defineListener } from "../loaders/listeners.ts";
-import { Events } from "discord.js";
+import { Client, Events } from "discord.js";
 
 defineListener({
   event: Events.ClientReady,
-  run: (client) => {
+  once: true,
+  run: (client: Client) => {
     console.log("heeh");
   }
 })
