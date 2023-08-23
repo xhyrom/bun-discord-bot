@@ -6,7 +6,7 @@
     "validate:tags": "cd scripts/validate_tags && bun install && bun start"
   },
   "devDependencies": {
-    "bun-types": "^0.7.0"
+    "bun-types": "^0.7.3"
   },
   "dependencies": {
     "@paperdave/logger": "^3.0.1",

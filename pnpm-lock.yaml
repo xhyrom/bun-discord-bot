@@ -17,8 +17,8 @@ dependencies:
 
 devDependencies:
   bun-types:
-    specifier: ^0.7.0
-    version: 0.7.0
+    specifier: ^0.7.3
+    version: 0.7.3
 
 packages:
 
@@ -150,8 +150,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /bun-types@0.7.0:
-    resolution: {integrity: sha512-jXFiYtwSUQtD/Y3LHRWeWNwhFaUYvcO96zI7y3gSPgTq+ozxXpuTGDxABLdIKmFc672Q7Qp/OgrfJFEjg4Mnkg==}
+  /bun-types@0.7.3:
+    resolution: {integrity: sha512-kssLD5mDLoawmLZFgQRRq0Wy+dca/os6TZ0MHWyFVoVAEwSrpAxmNCZ1K1GUelfhlDaL2FikRxeF9GkATdzXZg==}
     dev: true
 
   /busboy@1.6.0:
