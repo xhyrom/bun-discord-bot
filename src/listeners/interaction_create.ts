@@ -4,6 +4,7 @@ import { defineListener } from "../loaders/listeners.ts";
 import { InteractionCommandContext } from "../structs/context/CommandContext.ts";
 import { AutocompleteContext } from "../structs/context/AutocompleteContext.ts";
 import { Option, StringOption } from "../structs/Command.ts";
+import { error } from "@paperdave/logger";
 
 defineListener({
   event: Events.InteractionCreate,
@@ -28,9 +29,11 @@ async function handleCommand(interaction: ChatInputCommandInteraction) {
 
   const context = new InteractionCommandContext(command, interaction);
   await Promise.resolve(command.run(context))
-   .catch(async error => {
+   .catch(async err => {
+        error(err);
+
         context.reply({
-          content: `Something went wrong... ${error.message} (${error.code})`
+          content: `Something went wrong... ${err.message} (${err.code})`
         });
     });
 }
