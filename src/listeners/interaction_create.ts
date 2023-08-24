@@ -1,13 +1,11 @@
-import { Events } from "discord.js";
+import { Events, Interaction, ChatInputCommandInteraction } from "discord.js";
 import { COMMANDS } from "../loaders/commands.ts";
 import { defineListener } from "../loaders/listeners.ts";
-import { CommandContext } from "../structs/context/CommandContext.ts";
-import { BaseInteraction } from "discord.js";
-import { ChatInputCommandInteraction } from "discord.js";
+import { InteractionCommandContext } from "../structs/context/CommandContext.ts";
 
 defineListener({
   event: Events.InteractionCreate,
-  run: (interaction: BaseInteraction) => {
+  run: (interaction: Interaction) => {
     if (interaction.isChatInputCommand()) return handleCommand(interaction);
 
     return;
@@ -25,5 +23,5 @@ function handleCommand(interaction: ChatInputCommandInteraction) {
     return;
   }
 
-  command.run(new CommandContext(command, interaction));
+  command.run(new InteractionCommandContext(command, interaction));
 }

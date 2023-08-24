@@ -18,11 +18,11 @@ defineListener({
     if (commandName.length === 0) return;
     
     const command = COMMANDS.get(commandName);
-    if (!command) return;
+    if (!command || !command.runMessage) return;
 
     const context = new MessageCommandContext(command, message, args);
 
-    await Promise.resolve(command.run(context))
+    await Promise.resolve(command.runMessage(context))
       .catch(async error => {
         context.reply({
           content: `Something went wrong... ${error.message} (${error.code})`
