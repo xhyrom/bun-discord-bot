@@ -9,7 +9,7 @@ export default defineCommand({
     context.interaction.reply({
       content: [
         `[git-bun-discord-bot-${COMMIT_HASH}](<https://github.com/xHyroM/bun-discord-bot/tree/${COMMIT_HASH}>) ${!PRODUCTION ? "(dev)" : ""}`,
-        `[v${Bun.version}](https://github.com/oven-sh/bun/releases/tag/bun-v${Bun.version})`
+        `[v${Bun.version} (${Bun.revision})](<https://github.com/oven-sh/bun/releases/tag/bun-v${Bun.version}>)`
       ].join("\n"),
       ephemeral: true,
     });
