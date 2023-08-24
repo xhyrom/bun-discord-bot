@@ -1,4 +1,4 @@
-import { SlashCommandStringOption } from "discord.js";
+import { SlashCommandStringOption, SlashCommandUserOption } from "discord.js";
 import { defineCommand } from "../loaders/commands";
 import { AutocompleteContext } from "../structs/context/AutocompleteContext";
 import { InteractionCommandContext } from "../structs/context/CommandContext";
@@ -34,15 +34,21 @@ defineCommand({
             }
           })
         );
-      }
+      },
+    },
+    {
+      ...new SlashCommandUserOption()
+          .setName("target")
+          .setRequired(false)
+          .setDescription("User to mention")
+          .toJSON()
     }
   ],
   run: async(context: InteractionCommandContext) => {
-    await context.interaction.deferReply({
-      ephemeral: true,
-    });
+    await context.interaction.deferReply();
     
     const query = context.interaction.options.getString("query");
+    const target = context.interaction.options.getUser("target");
 
     const result = await algoliaIndex.search(query, {
       hitsPerPage: 1,
@@ -58,13 +64,19 @@ defineCommand({
     const notice = hit.content?.replace(/\r/g, "");
 
     const content = [
+      target ? `*Suggestion for <@${target.id}>:*\n` : "",
       `[*${name.full}*](<${url}>)`,
       snippetContent ? snippetContent : "",
       notice ? notice.split("\n").map(s => `> ${s}`).join("\n") : ""
     ].join("\n")
 
-
-    await context.interaction.editReply(content);
+    await context.interaction.editReply({
+      content,
+      allowedMentions: {
+        parse: [ "users" ],
+        repliedUser: true,
+      }
+    });
   }
 })
 
