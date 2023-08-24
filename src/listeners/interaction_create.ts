@@ -50,11 +50,9 @@ async function handleAutocomplete(interaction: AutocompleteInteraction) {
   if (interaction.options.getSubcommand(false))
     options = (options.find(o => o.name === interaction.options.getSubcommand()) as APIApplicationCommandSubcommandOption)?.options as Option[];
   
-
   const focused = interaction.options.getFocused(true);
   const option = options.find(o => o.name === focused.name) as StringOption;
   if (!option) return;
-
 
   const context = new AutocompleteContext(option, command, interaction);
   await option.run(context);
