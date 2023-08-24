@@ -1,4 +1,5 @@
 import { AutocompleteInteraction } from "discord.js";
+import { Option } from "../Command.ts";
 
 export class AutocompleteContext {
   public option: Option;
