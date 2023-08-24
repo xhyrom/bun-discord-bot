@@ -1,4 +1,5 @@
 ---
+question: How to upgrade linux kernel?
 keywords:
     - "io-uring-is-not-supported"
     - "io uring"
@@ -6,9 +7,6 @@ keywords:
     - "update"
     - "linux"
 ---
-
-**error: Linux kernel version doesn't support io_uring, which Bun depends on**
-
 To fix this error, you need to update Linux kernel.
 If you are using the Windows Subsystem for Linux, do:
   **1.** Open powershell as administrator

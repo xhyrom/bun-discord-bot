@@ -1,4 +1,5 @@
 ---
+question: "Do i need compiler for typescript?"
 keywords:
     - "ts"
     - "typescript"

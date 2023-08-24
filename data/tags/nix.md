@@ -1,4 +1,5 @@
 ---
+question: "How to use bun on NixOS?"
 keywords:
     - "nix"
     - "nixos"

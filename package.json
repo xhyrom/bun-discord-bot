@@ -11,6 +11,8 @@
   "dependencies": {
     "@paperdave/logger": "^3.0.1",
     "discord.js": "^14.13.0",
+    "glob": "^10.3.3",
+    "gray-matter": "^4.0.3",
     "zlib-sync": "^0.1.8"
   }
 }

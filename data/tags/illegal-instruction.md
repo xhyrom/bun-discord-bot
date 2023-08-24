@@ -1,4 +1,5 @@
 ---
+question: "How to solve illegal instruction (core dumped) error?"
 keywords:
     - "illegal-instruction"
     - "core-dumped"
@@ -6,9 +7,6 @@ keywords:
     - "core"
     - "illegal"
 ---
-
-**Illegal instruction - core dumped**
-
 Update to latest version using:
 ```sh
 curl https://bun.sh/install | bash
