@@ -53,10 +53,5 @@ async function handleAutocomplete(interaction: AutocompleteInteraction) {
 
 
   const context = new AutocompleteContext(option, command, interaction);
-  await Promise.resolve(command.run(context))
-   .catch(async error => {
-        context.respond({
-          content: `Something went wrong... ${error.message} (${error.code})`
-        });
-    });
+  await option.run(context);
 }

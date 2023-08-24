@@ -1,5 +1,4 @@
 import { REST, Routes, SlashCommandBuilder } from "discord.js";
-import { Bubu } from "../structs/Client.ts";
 import type { Command } from "../structs/Command.ts";
 
 export const COMMANDS: Map<string, Command> = new Map();
