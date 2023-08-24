@@ -14,7 +14,7 @@ export type Option = APIApplicationCommandAttachmentOption |
   APIApplicationCommandSubcommandGroupOption |
   StringOption;
 
-interface StringOption {
+export interface StringOption {
   name: string;
   name_localizations?: LocalizationMap;
   description: string;
@@ -25,11 +25,12 @@ interface StringOption {
   type: ApplicationCommandOptionType.String;
   autocomplete?: boolean;
   choices?: APIApplicationCommandOptionChoice[];
-  run: (option: Option, interaction: AutocompleteContext) => any;
+  run: (interaction: AutocompleteContext) => any;
 }
 
 export interface Command {
   name: string;
+  description: string;
   options: Option[];
   run?: (
     context: CommandContext<true>

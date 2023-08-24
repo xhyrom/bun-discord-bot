@@ -1,10 +1,11 @@
 import { SlashCommandStringOption } from "discord.js";
 import { defineCommand } from "../loaders/commands";
 import { AutocompleteContext } from "../structs/context/AutocompleteContext";
-import { Option } from "../structs/Command";
+import { InteractionCommandContext } from "../structs/context/CommandContext";
 
 defineCommand({
   name: "docs",
+  description: "Search at docs",
   options: [
     {
       ...new SlashCommandStringOption()
@@ -13,9 +14,14 @@ defineCommand({
           .setAutocomplete(true)
           .setDescription("Select query")
           .toJSON(),
-      run: (_: Option, context: AutocompleteContext) => {
-        return context.interaction.respond([{ name: "heh", value: "heh" }]);
+      run: (context: AutocompleteContext) => {
+        return context.respond([{ name: "heh", value: "heh" }]);
       }
     }
-  ]
+  ],
+  run: (context: InteractionCommandContext) => {
+    context.reply({
+      content: "ccc"
+    });
+  }
 })

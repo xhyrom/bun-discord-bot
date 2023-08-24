@@ -4,6 +4,7 @@ import { InteractionCommandContext } from "../structs/context/CommandContext.ts"
 
 export default defineCommand({
   name: "version",
+  description: "Show version",
   options: [],
   run: (context: InteractionCommandContext) => {
     context.interaction.reply({
