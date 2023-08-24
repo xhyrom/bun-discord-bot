@@ -1,9 +1,9 @@
-import { Events, Interaction, ChatInputCommandInteraction, AutocompleteInteraction } from "discord.js";
+import { Events, Interaction, ChatInputCommandInteraction, AutocompleteInteraction, APIApplicationCommandSubcommandOption, APIApplicationCommandSubcommandGroupOption } from "discord.js";
 import { COMMANDS } from "../loaders/commands.ts";
 import { defineListener } from "../loaders/listeners.ts";
 import { InteractionCommandContext } from "../structs/context/CommandContext.ts";
 import { AutocompleteContext } from "../structs/context/AutocompleteContext.ts";
-import { StringOption } from "../structs/Command.ts";
+import { Option, StringOption } from "../structs/Command.ts";
 
 defineListener({
   event: Events.InteractionCreate,
@@ -42,10 +42,11 @@ async function handleAutocomplete(interaction: AutocompleteInteraction) {
   let options = command.options;
 
   if (interaction.options.getSubcommandGroup(false))
-    options = options.find(o => o.name === interaction.options.getSubcommandGroup())?.options;
+    options = (options.find(o => o.name === interaction.options.getSubcommandGroup()) as APIApplicationCommandSubcommandGroupOption)?.options as Option[];
   
   if (interaction.options.getSubcommand(false))
-    options = options.find(o => o.name === interaction.options.getSubcommand())?.options;
+    options = (options.find(o => o.name === interaction.options.getSubcommand()) as APIApplicationCommandSubcommandOption)?.options as Option[];
+  
 
   const focused = interaction.options.getFocused(true);
   const option = options.find(o => o.name === focused.name) as StringOption;
