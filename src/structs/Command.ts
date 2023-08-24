@@ -11,10 +11,10 @@ interface StringOption extends SlashCommandStringOption {
 export interface Command {
   name: string;
   options: Option[];
-  run: (
+  run?: (
     context: CommandContext<true>
   ) => any;
-  runMessage: (
+  runMessage?: (
     context: CommandContext<false>
   ) => any;
 }

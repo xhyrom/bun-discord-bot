@@ -15,7 +15,7 @@ defineListener({
 function handleCommand(interaction: ChatInputCommandInteraction) {
   const command = COMMANDS.get(interaction.commandName);
 
-  if (!command) {
+  if (!command || !command.run) {
     interaction.reply({
       content: "Hmm.. Invalid command :P",
       ephemeral: true,

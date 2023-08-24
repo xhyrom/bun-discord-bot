@@ -1,11 +1,11 @@
 import { defineCommand } from "../loaders/commands.ts";
 import { COMMIT_HASH, PRODUCTION } from "../constants.ts"; 
-import { CommandContext } from "../structs/context/CommandContext.ts";
+import { InteractionCommandContext } from "../structs/context/CommandContext.ts";
 
 export default defineCommand({
   name: "version",
   options: [],
-  run: (context: CommandContext) => {
+  run: (context: InteractionCommandContext) => {
     context.interaction.reply({
       content: [
         `[git-bun-discord-bot-${COMMIT_HASH}](<https://github.com/xHyroM/bun-discord-bot/tree/${COMMIT_HASH}>) ${!PRODUCTION ? "(dev)" : ""}`,
