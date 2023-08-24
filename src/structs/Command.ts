@@ -12,6 +12,9 @@ export interface Command {
   name: string;
   options: Option[];
   run: (
-    context: CommandContext
+    context: CommandContext<true>
+  ) => any;
+  runMessage: (
+    context: CommandContext<false>
   ) => any;
 }
