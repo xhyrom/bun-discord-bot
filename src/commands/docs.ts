@@ -7,12 +7,12 @@ defineCommand({
   name: "docs",
   options: [
     {
-    ...new SlashCommandStringOption()
-      .setName("query")
-      .setRequired(true)
-      .setAutocomplete(true)
-      .setDescription("Select query")
-      .toJSON(),
+      ...new SlashCommandStringOption()
+          .setName("query")
+          .setRequired(true)
+          .setAutocomplete(true)
+          .setDescription("Select query")
+          .toJSON(),
       run: (_: Option, context: AutocompleteContext) => {
         return context.interaction.respond([{ name: "heh", value: "heh" }]);
       }

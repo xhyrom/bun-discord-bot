@@ -1,1 +1,2 @@
-import "./version.ts"
+import "./version.ts";
+import "./docs.ts";

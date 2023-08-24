@@ -18,5 +18,3 @@ for (const tag of tags) {
     answer: frontMatter.content
   });
 }
-
-console.log(TAGS);
