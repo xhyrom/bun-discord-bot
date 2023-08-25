@@ -1,5 +1,5 @@
-export function safeSlice<T>(array: T[], length: number) {
-  return array.length > length ? array.slice(0, length) : array;
+export function safeSlice<T>(input: T[] | string, length: number) {
+  return input.length > length ? input.slice(0, length) : input;
 }
 
 export async function silently<T>(value: Promise<T>) {
