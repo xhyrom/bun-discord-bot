@@ -19,7 +19,7 @@ export async function registerCommands() {
             .setName(d.name)
             .setDescription(d.description)
             .toJSON(),
-        options: d.options
+        options: d.options ?? []
       }))
     }
   )

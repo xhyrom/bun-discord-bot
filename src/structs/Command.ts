@@ -31,7 +31,7 @@ export interface StringOption {
 export interface Command {
   name: string;
   description: string;
-  options: Option[];
+  options?: Option[];
   run?: (
     context: CommandContext<true>
   ) => any;
