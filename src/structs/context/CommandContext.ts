@@ -3,7 +3,6 @@ import type { Command } from "../Command.ts";
 
 export interface CommandContext<T extends boolean> {
   command: Command;
-  isInteraction: T;
 
   user: User;
   member: GuildMember | APIInteractionGuildMember;
@@ -19,10 +18,6 @@ export class InteractionCommandContext implements CommandContext<true> {
   public constructor(command: Command, interaction: ChatInputCommandInteraction) {
     this.command = command;
     this.interaction = interaction;
-  }
-
-  get isInteraction(): true {
-      return true;
   }
 
   get user() {
@@ -49,16 +44,14 @@ export class InteractionCommandContext implements CommandContext<true> {
 export class MessageCommandContext implements CommandContext<false> {
   public command: Command;
   public message: Message;
+  public options: string[];
 
   public constructor(command: Command, message: Message, args: string[]) {
     this.command = command;
     this.message = message;
 
-    // change args structure to application commands like
-  }
-
-  get isInteraction(): false {
-    return false;
+    // TODO: change args structure to application commands like
+    this.options = args;
   }
 
   get user() {

@@ -1,7 +1,7 @@
 import { SlashCommandStringOption, SlashCommandUserOption } from "discord.js";
-import { defineCommand } from "../loaders/commands";
-import { AutocompleteContext } from "../structs/context/AutocompleteContext";
-import { InteractionCommandContext } from "../structs/context/CommandContext";
+import { defineCommand } from "../loaders/commands.ts";
+import { AutocompleteContext } from "../structs/context/AutocompleteContext.ts";
+import { InteractionCommandContext } from "../structs/context/CommandContext.ts";
 import algoliasearch from "algoliasearch";
 
 const algoliaClient = algoliasearch("2527C13E0N", "4efc87205e1fce4a1f267cadcab42cb2");
@@ -74,7 +74,6 @@ defineCommand({
       content,
       allowedMentions: {
         parse: [ "users" ],
-        repliedUser: true,
       }
     });
   }
