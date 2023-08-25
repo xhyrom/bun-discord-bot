@@ -6,7 +6,7 @@ import { MessageCommandContext } from "../structs/context/CommandContext.ts";
 import { extname } from "node:path"; 
 import { safeSlice } from "../util.ts";
 
-const GITHUB_LINE_URL_REGEX = /^(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
+const GITHUB_LINE_URL_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
 
 defineListener({
   event: Events.MessageCreate,
@@ -51,16 +51,16 @@ async function handleGithubLink(message: Message) {
   const firstLineNumber = parseInt(groups.first_line_number) - 1;
   const secondLineNumber = parseInt(groups.second_line_number) || firstLineNumber + 1;
 
-  // limit, max 25 lines - possible flood
-  if (secondLineNumber - firstLineNumber > 25) {
-    message.react("❌");
-    return;
-  }
-
   const contentUrl = `https://raw.githubusercontent.com/${repo}/${path}`;
   const response = await fetch(contentUrl);
   const content = await response.text();
   const lines = content.split("\n");
+
+  // limit, max 25 lines - possible flood
+  if (secondLineNumber - firstLineNumber > 25 && lines.length > secondLineNumber) {
+    message.react("❌");
+    return;
+  }
 
   let text = "";
 
@@ -82,7 +82,7 @@ async function handleGithubLink(message: Message) {
           new ButtonBuilder()
             .setLabel(repo)
             .setStyle(ButtonStyle.Link)
-            .setURL(`https://github.com/${repo}`)
+            .setURL(`https://github.com/${repo}/blob/${path}#L${firstLineNumber + 1}${secondLineNumber ? `-L${secondLineNumber}` : ""}`)
         )
         .toJSON()
     ]

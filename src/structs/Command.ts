@@ -25,7 +25,7 @@ export interface StringOption {
   type: ApplicationCommandOptionType.String;
   autocomplete?: boolean;
   choices?: APIApplicationCommandOptionChoice[];
-  run: (interaction: AutocompleteContext) => any;
+  run?: (interaction: AutocompleteContext) => any;
 }
 
 export interface Command {

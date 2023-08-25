@@ -1,4 +1,5 @@
-export function safeSlice<T>(input: T[] | string, length: number) {
+export function safeSlice<T>(input: T, length: number) {
+  // @ts-expect-error i know where im using it
   return input.length > length ? input.slice(0, length) : input;
 }
 
