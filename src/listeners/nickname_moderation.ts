@@ -16,10 +16,10 @@ async function moderateNick(member: GuildMember) {
   const name = member.displayName;
   const normalizedName = name.normalize("NFKC").replace(/^[!$#@%^`&*()]+/, "");
 
-  if (name !== normalizedName) {
-    silently(member.edit({
-      nick: normalizedName,
-      reason: "lame username"
-    }));
-  }
+  if (name === normalizedName) return;
+
+  silently(member.edit({
+    nick: normalizedName,
+    reason: "lame username"
+  }));
 }
