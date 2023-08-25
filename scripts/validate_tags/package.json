@@ -1,6 +1,9 @@
 {
-    "name": "validate_tags",
-    "scripts": {
-        "start": "bun src/index.ts"
-    }
+  "name": "validate_tags",
+  "scripts": {
+    "start": "bun src/index.ts"
+  },
+  "dependencies": {
+    "glob": "^10.3.3"
+  }
 }
