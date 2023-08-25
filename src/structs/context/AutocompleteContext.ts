@@ -12,6 +12,10 @@ export class AutocompleteContext {
     this.interaction = interaction;
   }
 
+  get channel() {
+    return this.interaction.channel;
+  }
+
   get user() {
     return this.interaction.user;
   }

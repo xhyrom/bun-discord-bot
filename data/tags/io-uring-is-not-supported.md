@@ -7,7 +7,8 @@ keywords:
     - "update"
     - "linux"
 ---
-To fix this error, you need to update Linux kernel.
+
+To fix `io uring is not supported`, you need to update Linux kernel.
 If you are using the Windows Subsystem for Linux, do:
   **1.** Open powershell as administrator
   **2.** Run:

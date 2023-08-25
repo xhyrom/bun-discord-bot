@@ -7,6 +7,7 @@ keywords:
     - "core"
     - "illegal"
 ---
+
 Update to latest version using:
 ```sh
 curl https://bun.sh/install | bash

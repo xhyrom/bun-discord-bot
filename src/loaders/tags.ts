@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { globSync as glob } from "glob";
 import { join } from "node:path"; 
 import { Tag } from "../structs/Tag";
-import { APIApplicationCommandOptionChoice } from "discord.js";
+import { APIApplicationCommandOptionChoice, BaseGuildTextChannel, GuildTextBasedChannel, TextBasedChannel } from "discord.js";
 import { safeSlice } from "../util";
 
 const tags = glob(join(__dirname, "..", "..", "data", "tags", "*.md"));
@@ -17,13 +17,30 @@ for (const tag of tags) {
   TAGS.push({
     question: frontMatter.data.question,
     keywords: frontMatter.data.keywords,
-    answer: frontMatter.content
+    answer: frontMatter.content,
+    category_ids: frontMatter.data.category_ids ?? null,
+    channel_ids: frontMatter.data.channel_ids ?? null
   });
 }
 
-export function getTags(length: number): APIApplicationCommandOptionChoice[] {
+function getAvailableTags(channel: GuildTextBasedChannel) {
+  return TAGS.filter(t => {
+    const channelIds = t.channel_ids;
+    const categoryIds = t.category_ids;
+
+    if (!channelIds && !categoryIds) return true;
+    if (channelIds && channelIds.includes(channel.id)) return true;
+    if (categoryIds && categoryIds.includes(channel.parentId)) return true;
+
+    return false;
+  });
+
+}
+
+export function getTags(channel: GuildTextBasedChannel, length: number): APIApplicationCommandOptionChoice[] {
+  const availableTags = getAvailableTags(channel);
   return safeSlice(
-    TAGS.map((tag) => (
+    availableTags.map((tag) => (
       {
         name: `🚀 ${tag.question}`,
         value: tag.question
@@ -32,14 +49,15 @@ export function getTags(length: number): APIApplicationCommandOptionChoice[] {
   length);
 }
 
-export function searchTag<T extends boolean>(providedQuery: string, multiple?: T): T extends true ? APIApplicationCommandOptionChoice[] : Tag {
+export function searchTag<T extends boolean>(channel: GuildTextBasedChannel, providedQuery: string, multiple?: T): T extends true ? APIApplicationCommandOptionChoice[] : Tag {
+  const availableTags = getAvailableTags(channel);
   const query = providedQuery?.toLowerCase()?.replace(/-/g, " ");
   
   if (!multiple) {
-    const exactKeyword = TAGS.find(tag => tag.keywords.find((k) => k.toLowerCase() === query));
-    const keywordMatch = TAGS.find(tag => tag.keywords.find((k) => k.toLowerCase().includes(query)));
-    const questionMatch = TAGS.find(tag => tag.question.toLowerCase().includes(query));
-    const answerMatch = TAGS.find(tag => tag.answer.toLowerCase().includes(query));
+    const exactKeyword = availableTags.find(tag => tag.keywords.find((k) => k.toLowerCase() === query));
+    const keywordMatch = availableTags.find(tag => tag.keywords.find((k) => k.toLowerCase().includes(query)));
+    const questionMatch = availableTags.find(tag => tag.question.toLowerCase().includes(query));
+    const answerMatch = availableTags.find(tag => tag.answer.toLowerCase().includes(query));
 
     const tag = exactKeyword ?? questionMatch ?? keywordMatch ?? answerMatch;
     return tag as T extends true ? APIApplicationCommandOptionChoice[] : Tag;
@@ -50,7 +68,7 @@ export function searchTag<T extends boolean>(providedQuery: string, multiple?: T
   const questionMatches: APIApplicationCommandOptionChoice[] = [];
   const answerMatches: APIApplicationCommandOptionChoice[] = [];
 
-  for (const tag of TAGS) {
+  for (const tag of availableTags) {
     const exactKeyword = tag.keywords.find((t) => t.toLowerCase() === query); 
     const includesKeyword = tag.keywords.find((t) => t.toLowerCase().includes(query));
     const questionMatch = tag.question.toLowerCase().includes(query);
