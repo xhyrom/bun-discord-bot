@@ -1,4 +1,5 @@
 export interface Tag {
+  name: string;
   question: string;
   answer: string;
   keywords: string[];
