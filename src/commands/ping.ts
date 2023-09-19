@@ -1,16 +1,30 @@
-import { InteractionResponseType, MessageFlags } from 'discord-api-types/v10';
-import { Command } from '../structures/Command';
+import { defineCommand } from "../loaders/commands.ts";
+import { Bubu } from "../structs/Client.ts";
+import { InteractionCommandContext, MessageCommandContext } from "../structs/context/CommandContext.ts";
 
-new Command({
-    name: 'ping',
-    description: 'pong',
-    run: (ctx) => {
-        return ctx.respond({
-            type: InteractionResponseType.ChannelMessageWithSource,
-            data: {
-                content: 'Pong 🏓',
-                flags: MessageFlags.Ephemeral,
-            }
-        })
-    }
+defineCommand({
+  name: "ping",
+  description: "pong",
+  run: async(ctx: InteractionCommandContext) => {
+    const message = await ctx.interaction.deferReply({
+      ephemeral: true,
+    });
+
+    const restPing = message.createdTimestamp - ctx.interaction.createdTimestamp;
+
+    ctx.interaction.editReply({
+      content: `🏓 WebSocket: \`${Bubu.ws.ping}ms\` | Rest: \`${restPing}ms\``
+    });
+  },
+  runMessage: async(ctx: MessageCommandContext) => {
+    const message = await ctx.reply({
+      content: "🏓...",
+    });
+
+    const restPing = message.createdTimestamp - ctx.message.createdTimestamp;
+
+    message.edit({
+      content: `🏓 WebSocket: \`${Bubu.ws.ping}ms\` | Rest: \`${restPing}ms\`` 
+    });
+  }
 })

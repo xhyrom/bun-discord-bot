@@ -1,10 +1,12 @@
 {
-    "compilerOptions": {
-      "lib": ["ESNext"],
-      "module": "esnext",
-      "target": "esnext",
-      "moduleResolution": "Node",
-      // "bun-types" is the important part
-      "types": ["bun-types"]
-    }
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "Node",
+    "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    // "bun-types" is the important part
+    "types": ["bun-types"]
+  }
 }

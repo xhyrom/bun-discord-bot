@@ -1,34 +1,33 @@
 name: Validate
 
 on:
-  pull_request_target:
+    pull_request_target:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+    test:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: refs/pull/${{ github.event.number }}/merge
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  ref: refs/pull/${{ github.event.number }}/merge
 
-      - name: Setup Bun
-        uses: xhyrom/setup-bun@v0.1.3
-        with:
-          bun-version: latest
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: latest
 
-      - name: Get changed files
-        uses: Mineflash07/gh-action-get-changed-files@feature/support-pr-target-event
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Get changed files
+              uses: Mineflash07/gh-action-get-changed-files@feature/support-pr-target-event
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Add json
-        run: cp $HOME/files.json ./scripts/validateTags/
+            - name: Update files.json file
+              run: cp $HOME/files.json ./scripts/validate_tags/
 
-      - name: Validate tag
-        run: bun run validate
-        env:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          commit-sha: ${{ github.event.pull_request.head.sha }}
-          pr-number: ${{ github.event.pull_request.number }}
+            - name: Validate tags
+              run: bun run validate:tags
+              env:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  commit-sha: ${{ github.event.pull_request.head.sha }}
+                  pr-number: ${{ github.event.pull_request.number }}

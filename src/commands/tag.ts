@@ -1,54 +1,89 @@
-import {
-    APIApplicationCommandInteractionDataStringOption,
-    ApplicationCommandOptionType,
-    InteractionResponseType,
-    MessageFlags,
-} from 'discord-api-types/v10';
-import { Command } from '../structures/Command';
-import { findTags, getTag } from '../utils/tagsUtils';
+import { GuildTextBasedChannel, SlashCommandStringOption, SlashCommandUserOption, User } from "discord.js";
+import { defineCommand } from "../loaders/commands.ts";
+import { AutocompleteContext } from "../structs/context/AutocompleteContext.ts";
+import { getTags, searchTag } from "../loaders/tags.ts";
+import { InteractionCommandContext, MessageCommandContext } from "../structs/context/CommandContext.ts";
+import { Bubu } from "../structs/Client.ts";
 
-new Command({
-    name: 'tag',
-    description: 'Send a tag by name or alias',
-    options: [
-        {
-            name: 'query',
-            description: 'Tag name or alias',
-            type: ApplicationCommandOptionType.String,
-            required: true,
-            run: (ctx) => {
-                return ctx.respond(findTags(ctx.value));
-            },
-        },
-        {
-            name: 'target',
-            description: 'User to mention',
-            type: ApplicationCommandOptionType.User,
-            required: false,
-        },
-    ],
-    run: (ctx) => {
-        const query: APIApplicationCommandInteractionDataStringOption = ctx
-            .options[0] as APIApplicationCommandInteractionDataStringOption;
-        const target = ctx?.resolved?.users
-            ? Object.values(ctx?.resolved?.users)[0]
-            : null;
+defineCommand({
+  name: "tag",
+  description: "Get tag",
+  options: [
+    {
+      ...new SlashCommandStringOption()
+          .setName("query")
+          .setRequired(true)
+          .setAutocomplete(true)
+          .setDescription("Select query")
+          .toJSON(),
+      run: async(context: AutocompleteContext) => {
+        const query = context.options.getString("query");
+        if (!query) {
+          return context.respond(getTags(context.channel, 25));
+        }
 
-        const tag = getTag(query.value, false);
-        if (!tag)
-            return ctx.respond({
-                type: InteractionResponseType.ChannelMessageWithSource,
-                data: {
-                    content: `\`❌\` Could not find a tag \`${query.value}\``,
-                    flags: MessageFlags.Ephemeral,
-                },
-            });
+        const tags = searchTag(context.channel, query, true);
+        if (tags.length > 0)
+          return context.respond(tags);
 
-        return ctx.respond(
-            [
-                target ? `*Tag suggestion for <@${target.id}>:*` : '',
-                tag.content,
-            ].join('\n')
-        );
+        return context.respond(getTags(context.channel, 25));
+      },
     },
-});
+    {
+      ...new SlashCommandUserOption()
+          .setName("target")
+          .setRequired(false)
+          .setDescription("User to mention")
+          .toJSON()
+    }
+  ],
+  run: (ctx: InteractionCommandContext) => {
+    const query = ctx.interaction.options.getString("query");
+    const target = ctx.interaction.options.getUser("target");
+
+    const tag = searchTag(ctx.channel, query, false);
+    if (!tag) {
+      return ctx.reply({
+        content: `\`❌\` Could not find a tag \`${query}\``,
+        ephemeral: true,
+      });
+    }
+
+    ctx.reply({
+      content: [
+        target ? `*Suggestion for <@${target.id}>:*\n` : "",
+        `**${tag.question}**`,
+        tag.answer
+      ].join("\n"),
+      allowedMentions: {
+        parse: [ "users" ]
+      }
+    });
+  },
+  runMessage: (ctx: MessageCommandContext) => {
+    if (!ctx.message.inGuild()) return;
+
+    const keyword = ctx.options?.[0] ?? "what-is-bun";
+
+    const target = ctx.options?.[1]?.match(/([0-9]+)/)?.[0];
+    const resolvedTarget = target ? Bubu.users.cache.get(target) : null;
+
+    const tag = searchTag(ctx.channel as GuildTextBasedChannel, keyword, false);
+    if (!keyword || !tag) {
+      return ctx.reply({
+        content: `\`❌\` Could not find a tag \`${keyword}\``,
+      });
+    }
+
+    ctx.reply({
+      content: [
+        resolvedTarget ? `*Suggestion for <@${resolvedTarget.id}>:*\n` : "",
+        `**${tag.question}**`,
+        tag.answer
+      ].join("\n"),
+      allowedMentions: {
+        parse: [ "users" ]
+      }
+    });
+  }
+})

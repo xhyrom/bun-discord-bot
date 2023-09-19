@@ -2,8 +2,6 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
 files/database.sqlite
-files/config.toml
-requests.rest
 
 ### Node ###
 # Logs
