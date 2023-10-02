@@ -47,7 +47,7 @@ async function handleGithubLink(message: Message) {
 
   const repo = groups.repo;
   const path = groups.path;
-  const extension = extname(path).slice(1);
+  let extension = extname(path).slice(1);
   const firstLineNumber = parseInt(groups.first_line_number) - 1;
   const secondLineNumber = parseInt(groups.second_line_number) || firstLineNumber + 1;
 
@@ -73,6 +73,8 @@ async function handleGithubLink(message: Message) {
 
   // delete the last \n
   text = text.slice(0, -1);
+
+  if (extension === "zig") extension = "rs";
 
   message.reply({
     content: `\`\`\`${extension}\n${safeSlice(text, 2000 - 6 - extension.length)}\n\`\`\``,
