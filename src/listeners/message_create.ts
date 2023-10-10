@@ -12,6 +12,7 @@ const BUN_ONLY_CHANNEL_ID = "1161157663867027476";
 defineListener({
   event: Events.MessageCreate,
   run: async(message: Message) => {
+    if (handleBunOnlyChannel(message)) return;
     if (message.system || message.author.bot) return;
 
     if (!message.content.toLowerCase().startsWith(MESSAGE_PREFIX)) return handleOthers(message);
@@ -38,8 +39,6 @@ defineListener({
 });
 
 function handleOthers(message: Message) {
-  if (handleBunOnlyChannel(message)) return;
-
   handleGithubLink(message);
 }
 
