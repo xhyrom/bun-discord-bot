@@ -7,6 +7,7 @@ import { extname } from "node:path";
 import { safeSlice } from "../util.ts";
 
 const GITHUB_LINE_URL_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
+const BUN_ONLY_CHANNEL_ID = "1161157663867027476";
 
 defineListener({
   event: Events.MessageCreate,
@@ -37,7 +38,21 @@ defineListener({
 });
 
 function handleOthers(message: Message) {
+  if (handleBunOnlyChannel(message)) return;
+
   handleGithubLink(message);
+}
+
+function handleBunOnlyChannel(message: Message) {
+  if (message.channel.id !== BUN_ONLY_CHANNEL_ID) return false;
+
+  if (message.content !== "bun") {
+    message.delete();
+    return true;
+  }
+  
+  message.react("🐰");
+  return true;
 }
 
 async function handleGithubLink(message: Message) {
