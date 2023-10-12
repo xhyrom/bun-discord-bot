@@ -8,4 +8,4 @@ export const PRODUCTION = process.env.NODE_ENV === "production";
 
 export const MESSAGE_PREFIX = PRODUCTION ? "b" : "<>";
 
-
+export const BUN_ONLY_CHANNEL_ID = "1161157663867027476"

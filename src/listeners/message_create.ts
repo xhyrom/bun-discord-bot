@@ -1,13 +1,12 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Events, Message } from "discord.js";
 import { defineListener } from "../loaders/listeners.ts";
-import { MESSAGE_PREFIX } from "../constants.ts";
+import { MESSAGE_PREFIX, BUN_ONLY_CHANNEL_ID } from "../constants.ts";
 import { COMMANDS } from "../loaders/commands.ts";
 import { MessageCommandContext } from "../structs/context/CommandContext.ts";
 import { extname, basename } from "node:path";
 import { safeSlice } from "../util.ts";
 
 const GITHUB_LINE_URL_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
-const BUN_ONLY_CHANNEL_ID = "1161157663867027476";
 
 defineListener({
   event: Events.MessageCreate,
