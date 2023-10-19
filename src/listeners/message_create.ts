@@ -90,7 +90,7 @@ async function handleGithubLink(message: Message) {
   if (extension === "zig") extension = "rs";
 
   message.reply({
-    content: `***${basename(path)}*** — *(L${firstLineNumber}${secondLineNumber ? `-L${secondLineNumber}` : ""})*\n\`\`\`${extension}\n${safeSlice(text, 2000 - 6 - extension.length)}\n\`\`\``,
+    content: `***${basename(path)}*** — *(L${firstLineNumber + 1}${secondLineNumber ? `-L${secondLineNumber}` : ""})*\n\`\`\`${extension}\n${safeSlice(text, 2000 - 6 - extension.length)}\n\`\`\``,
     components: [
       new ActionRowBuilder<ButtonBuilder>()
         .setComponents(
