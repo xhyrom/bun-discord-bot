@@ -4,8 +4,8 @@ import { AutocompleteContext } from "../structs/context/AutocompleteContext.ts";
 import { InteractionCommandContext } from "../structs/context/CommandContext.ts";
 import { safeSlice, silently } from "../util.ts";
 
-type State = "open" | "closed_as_completed" | "closed_as_not_planned" | "closed" | "merged" | "draft" | "all";
-type StateEmoji = "🔴" | "🟠" | "🟢" | "⚫️" | "⚪️" | "🟣" | "📝";
+type State = "open" | "closed_as_completed" | "closed_as_not_planned" | "closed" | "merged" | "draft" | "all";
+type StateEmoji = "🔴" | "🟠" | "🟢" | "⚫️" | "⚪️" | "🟣" | "📝";
 type Type = "issues" | "pull_requests" | "both";
 
 interface Item {
@@ -33,15 +33,15 @@ defineCommand({
   options: [
     {
       ...new SlashCommandStringOption()
-          .setName("query")
-          .setDescription("Issue/Pull request number or name")
-          .setRequired(true)
-          .setAutocomplete(true)
-          .setMaxLength(100),
-      run: async(ctx: AutocompleteContext) => {
+        .setName("query")
+        .setDescription("Issue/Pull request number or name")
+        .setRequired(true)
+        .setAutocomplete(true)
+        .setMaxLength(100),
+      run: async (ctx: AutocompleteContext) => {
         const query = ctx.options.getString("query");
-        const state: State = ctx.options.getString("state") as State || "all";
-        const type: Type = ctx.options.getString("type") as Type || "both";
+        const state: State = ctx.options.getString("state") as State || "all";
+        const type: Type = ctx.options.getString("type") as Type || "both";
 
         const response = await search(query, state, type, 25);
 
@@ -53,68 +53,68 @@ defineCommand({
     },
     {
       ...new SlashCommandStringOption()
-          .setName("state")
-          .setDescription("Issue or Pull request state")
-          .setRequired(false)
-          .addChoices(
-            {
-              name: "🔴🟠 Open",
-              value: "open"
-            },
-            {
-              name: "🟢 Closed as completed",
-              value: "closed_as_completed"
-            },
-            {
-              name: "⚪️ Closed as not planned",
-              value: "closed_as_not_planned"
-            },
-            {
-              name: "⚫️ Closed",
-              value: "closed"
-            },
-            {
-              name: "🟣 Merged",
-              value: "merged"
-            },
-            {
-              name: "📝 Draft",
-              value: "draft",
-            },
-            {
-              name: "🌍 All",
-              value: "all",
-            }
-          )
+        .setName("state")
+        .setDescription("Issue or Pull request state")
+        .setRequired(false)
+        .addChoices(
+          {
+            name: "🔴🟠 Open",
+            value: "open"
+          },
+          {
+            name: "🟢 Closed as completed",
+            value: "closed_as_completed"
+          },
+          {
+            name: "⚪️ Closed as not planned",
+            value: "closed_as_not_planned"
+          },
+          {
+            name: "⚫️ Closed",
+            value: "closed"
+          },
+          {
+            name: "🟣 Merged",
+            value: "merged"
+          },
+          {
+            name: "📝 Draft",
+            value: "draft",
+          },
+          {
+            name: "🌍 All",
+            value: "all",
+          }
+        )
     },
     {
       ...new SlashCommandStringOption()
-          .setName("type")
-          .setDescription("Issue or Pull Requests")
-          .setRequired(false)
-          .addChoices(
-            {
-              name: "🐛 Issues",
-              value: "issues"
-            },
-            {
-              name: "🔨 Pull Requests",
-              value: "pull_requests"
-            },
-            {
-              name: "🌍 Both",
-              value: "both"
-            }
-          )
+        .setName("type")
+        .setDescription("Issue or Pull Requests")
+        .setRequired(false)
+        .addChoices(
+          {
+            name: "🐛 Issues",
+            value: "issues"
+          },
+          {
+            name: "🔨 Pull Requests",
+            value: "pull_requests"
+          },
+          {
+            name: "🌍 Both",
+            value: "both"
+          }
+        )
     },
     {
       ...new SlashCommandBooleanOption()
-          .setName("hide")
-          .setDescription("Show this message only for you")
-          .setRequired(false)
+        .setName("hide")
+        .setDescription("Show this message only for you")
+        .setRequired(false)
     }
   ],
-  run: async(ctx: InteractionCommandContext) => {
+  run: async (ctx: InteractionCommandContext) => {
     const hide = ctx.interaction.options.getBoolean("hide") ?? false;
 
     await ctx.interaction.deferReply({
@@ -243,7 +243,7 @@ async function search(query: string, state: State, type: Type, length = 1): Prom
   const body = await response.json();
   const items = body.items;
 
-  return items.map(item => {
+  return items.map(item => {
     let state = "";
     if (item.state === "closed") {
       if (item.pull_request) {
