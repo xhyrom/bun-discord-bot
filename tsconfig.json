@@ -10,6 +10,7 @@
     "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
+    "skipLibCheck": true,
     "types": [
       "bun-types",
       "./globals"
