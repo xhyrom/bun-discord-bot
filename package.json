@@ -15,7 +15,7 @@
     "algoliasearch": "^4.19.1",
     "glob": "^10.3.3",
     "gray-matter": "^4.0.3",
-    "lilybird": "^0.2.0",
+    "lilybird": "^0.2.3",
     "zlib-sync": "^0.1.8"
   }
 }

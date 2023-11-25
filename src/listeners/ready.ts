@@ -1,11 +1,9 @@
 import { info } from "@paperdave/logger";
-import { defineListener } from "../loaders/listeners.ts";
-import { Client, Events } from "discord.js";
+import { Event } from "lilybird";
 
-defineListener({
-  event: Events.ClientReady,
-  once: true,
-  run: (client: Client) => {
-    info(`Logged in as ${client.user.tag} (${client.user.id})`);
+export default {
+  event: "ready",
+  run: (client) => {
+    info(`Logged in as ${client.user.username} (${client.user.id})`);
   }
-})
+} satisfies Event<"ready">

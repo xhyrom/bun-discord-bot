@@ -4,9 +4,12 @@
     "module": "Node16",
     "moduleResolution": "Node16",
     "baseUrl": ".",
+    "jsx": "react-jsx",
+    "jsxImportSource": "lilybird",
     "strict": true,
+    "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true,
-    // "bun-types" is the important part
+    "noEmit": true,
     "types": [
       "bun-types",
       "./globals"
