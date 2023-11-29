@@ -1,12 +1,7 @@
+import { ApplicationCommand, BooleanOption, CommandOptions, StringOption } from "lilybird/jsx";
 import { safeSlice, silently } from "../util.ts";
+import { SlashCommand } from "lilybird";
 
-import {
-    CommandBooleanOption,
-    CommandStringOption,
-    CommandOptions,
-    SlashCommand,
-    Command,
-} from "lilybird";
 
 type State = "open" | "closed_as_completed" | "closed_as_not_planned" | "closed" | "merged" | "draft" | "all";
 type StateEmoji = "🔴" | "🟠" | "🟢" | "⚫️" | "⚪️" | "🟣" | "📝";
@@ -34,9 +29,9 @@ interface Item {
 export default {
     post: "GLOBAL",
     data: (
-        <Command name="github" description="Query an issue, pull request or direct link to issue, pull request">
-            <CommandStringOption name="query" description="Issue/Pull request number or name" autocomplete required max_length={100} />
-            <CommandStringOption name="state" description="Issue or Pull request state">
+        <ApplicationCommand name="github" description="Query an issue, pull request or direct link to issue, pull request">
+            <StringOption name="query" description="Issue/Pull request number or name" autocomplete required max_length={100} />
+            <StringOption name="state" description="Issue or Pull request state">
                 <CommandOptions name="🔴🟠 Open" value="open" />
                 <CommandOptions name="🟢 Closed as completed" value="closed_as_completed" />
                 <CommandOptions name="⚪️ Closed as not planned" value="closed_as_not_planned" />
@@ -44,14 +39,14 @@ export default {
                 <CommandOptions name="🟣 Merged" value="merged" />
                 <CommandOptions name="📝 Draft" value="draft" />
                 <CommandOptions name="🌍 All" value="all" />
-            </CommandStringOption>
-            <CommandStringOption name="query" description="Issue/Pull request number or name" autocomplete required max_length={100} >
+            </StringOption>
+            <StringOption name="query" description="Issue/Pull request number or name" autocomplete required max_length={100} >
                 <CommandOptions name="🐛 Issues" value="issues" />
                 <CommandOptions name="🔨 Pull Requests" value="pull_requests" />
                 <CommandOptions name="🌍 Both" value="both" />
-            </CommandStringOption>
-            <CommandBooleanOption name="hide" description="Show this message only for you" />
-        </Command>
+            </StringOption>
+            <BooleanOption name="hide" description="Show this message only for you" />
+        </ApplicationCommand>
     ),
     run: async (interaction) => {
         const hide = interaction.data.options.getBoolean("hide") ?? false;

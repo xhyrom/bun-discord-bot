@@ -1,22 +1,16 @@
-import { extractTimestampFromId } from "../util.ts";
-
-import {
-    SlashCommand,
-    Command
-} from "lilybird";
+import { ApplicationCommand } from "lilybird/jsx";
+import { SlashCommand } from "lilybird";
 
 export default {
     post: "GLOBAL",
     data: (
-        <Command name="ping" description="pong" />
+        <ApplicationCommand name="ping" description="pong" />
     ),
     run: async (interaction) => {
-        await interaction.deferReply(true);
-
-        const restPing = Date.now() - extractTimestampFromId(interaction.id);
+        const { ws, rest } = await interaction.client.ping();
 
         await interaction.editReply({
-            content: `🏓 WebSocket: \`${interaction.client.ping}ms\` | Rest: \`${restPing}ms\``
+            content: `🏓 WebSocket: \`${ws}ms\` | Rest: \`${rest}ms\``
         });
     },
 } satisfies SlashCommand

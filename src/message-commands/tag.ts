@@ -1,5 +1,5 @@
-import { getTags, searchTag } from "../loaders/tags.ts";
-import { MessageCommand, channelFactory } from "lilybird";
+import { MessageCommand } from "lilybird";
+import { searchTag } from "../loaders/tags.ts";
 
 export default {
     name: "tag",
@@ -9,8 +9,7 @@ export default {
         const target = args[1]?.match(/([0-9]+)/)?.[0];
         const resolvedTarget = target ? await message.client.rest.getUser(target) : null;
 
-        // Lilybird still lacks `fetchx` methods
-        const tag = searchTag(channelFactory(message.client, await message.client.rest.getChannel(message.channelId)), keyword, false);
+        const tag = searchTag(await message.fetchChannel(), keyword, false);
         if (!keyword || !tag) {
             return message.reply({
                 content: `\`❌\` Could not find a tag \`${keyword}\``,

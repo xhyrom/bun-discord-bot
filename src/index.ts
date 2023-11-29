@@ -15,7 +15,7 @@ const listeners = await createHandler({
         slashCommands: `${import.meta.dir}/commands`,
         listeners: `${import.meta.dir}/listeners`
     }
-})
+});
 
 await createClient({
     token: process.env.DISCORD_BOT_TOKEN,
@@ -26,6 +26,4 @@ await createClient({
         Intents.GUILD_MEMBERS
     ],
     ...listeners
-})
-
-// Bubu.login(process.env.DISCORD_BOT_TOKEN).catch(console.error);
+});

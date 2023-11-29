@@ -1,11 +1,11 @@
-import matter from "gray-matter";
-import { readFileSync } from "node:fs";
-import { globSync as glob } from "glob";
-import { join } from "node:path";
-import { Tag } from "../structs/Tag.ts";
-import { safeSlice } from "../util.ts";
-
 import { PartialChannel, GuildTextChannel, ApplicationCommandOptionChoiceStructure } from "lilybird";
+import { globSync as glob } from "glob";
+import { Tag } from "../structs/Tag.ts";
+import { readFileSync } from "node:fs";
+import { safeSlice } from "../util.ts";
+import matter from "gray-matter";
+import { join } from "node:path";
+
 
 type PartialGuildTextChannel = PartialChannel<GuildTextChannel>;
 

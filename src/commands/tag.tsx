@@ -1,18 +1,14 @@
+import { ApplicationCommand, StringOption, UserOption } from "lilybird/jsx";
 import { getTags, searchTag } from "../loaders/tags.ts";
-import {
-    CommandStringOption,
-    CommandUserOption,
-    SlashCommand,
-    Command
-} from "lilybird";
+import { SlashCommand } from "lilybird";
 
 export default {
     post: "GLOBAL",
     data: (
-        <Command name="tag" description="Get tag">
-            <CommandStringOption name="query" description="Select query" required autocomplete />
-            <CommandUserOption name="target" description="User to mention" />
-        </Command>
+        <ApplicationCommand name="tag" description="Get tag">
+            <StringOption name="query" description="Select query" required autocomplete />
+            <UserOption name="target" description="User to mention" />
+        </ApplicationCommand>
     ),
     run: async (interaction) => {
         if (!interaction.inGuild()) return;

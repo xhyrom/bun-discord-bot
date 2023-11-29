@@ -1,11 +1,11 @@
 import { COMMIT_HASH, PRODUCTION } from "../constants.ts";
-
-import { Command, SlashCommand } from "lilybird";
+import { ApplicationCommand } from "lilybird/jsx";
+import { SlashCommand } from "lilybird";
 
 export default {
     post: "GLOBAL",
     data: (
-        <Command name="version" description="Show version" />
+        <ApplicationCommand name="version" description="Show version" />
     ),
     run: (interaction) => {
         interaction.reply({

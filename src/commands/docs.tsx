@@ -1,11 +1,6 @@
+import { ApplicationCommand, StringOption, UserOption } from "lilybird/jsx";
 import algoliasearch from "algoliasearch";
-
-import {
-    CommandStringOption,
-    CommandUserOption,
-    SlashCommand,
-    Command
-} from "lilybird";
+import { SlashCommand } from "lilybird";
 
 // @ts-expect-error It is callable, but algolia for some reason has a namespace with the same name
 const algoliaClient = algoliasearch("2527C13E0N", "4efc87205e1fce4a1f267cadcab42cb2");
@@ -14,10 +9,10 @@ const algoliaIndex = algoliaClient.initIndex("bun");
 export default {
     post: "GLOBAL",
     data: (
-        <Command name="docs" description="Search at docs">
-            <CommandStringOption name="query" description="Select query" required />
-            <CommandUserOption name="target" description="User to mention" />
-        </Command>
+        <ApplicationCommand name="docs" description="Search at docs">
+            <StringOption name="query" description="Select query" required />
+            <UserOption name="target" description="User to mention" />
+        </ApplicationCommand>
     ),
     autocomplete: async (interaction) => {
         const query = interaction.data.options.getString("query");

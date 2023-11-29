@@ -21,9 +21,3 @@ export async function moderateNick(member: GuildMember) {
         reason: "lame username"
     }));
 }
-
-const DiscordEpoch = 1420070400000n;
-
-export function extractTimestampFromId(id: string): number {
-    return Number((BigInt(id) >> 22n) + DiscordEpoch)
-}

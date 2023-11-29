@@ -1,5 +1,4 @@
-import { MessageCommand } from "lilybird";
-import { extractTimestampFromId } from "../util.ts";
+import { MessageCommand, extractTimestampFromId } from "lilybird";
 
 export default {
     name: "ping",
@@ -8,10 +7,10 @@ export default {
             content: "🏓...",
         });
 
-        const restPing = Date.now() - extractTimestampFromId(message.id);
+        const { ws, rest } = await message.client.ping();
 
-        message.edit({
-            content: `🏓 WebSocket: \`${message.client.ping}ms\` | Rest: \`${restPing}ms\``
+        await message.edit({
+            content: `🏓 WebSocket: \`${ws}ms\` | Rest: \`${rest}ms\``
         });
     },
 } satisfies MessageCommand

@@ -1,7 +1,8 @@
+import { Event, Message, ButtonStyle } from "lilybird";
+import { ActionRow, Button } from "lilybird/jsx";
 import { extname, basename } from "node:path";
 import { safeSlice } from "../util.ts";
 
-import { Event, Message, ActionRow, Button, ButtonStyle } from "lilybird";
 
 const GITHUB_LINE_URL_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
 
@@ -73,7 +74,7 @@ async function handleGithubLink(message: Message): Promise<void> {
         components: (
             <ActionRow>
                 <Button style={ButtonStyle.Link} url={`https://github.com/${repo}/blob/${path}#L${firstLineNumber + 1}${secondLineNumber ? `-L${secondLineNumber}` : ""}`} label={repo} />
-            </ ActionRow>
+            </ActionRow>
         )
     })
 }
