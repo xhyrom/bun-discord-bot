@@ -1,6 +1,6 @@
-import { ApplicationCommand, BooleanOption, CommandOptions, StringOption } from "lilybird/jsx";
+import { ApplicationCommand, BooleanOption, CommandOptions, StringOption } from "@lilybird/jsx";
+import { SlashCommand } from "@lilybird/handlers";
 import { safeSlice, silently } from "../util.ts";
-import { SlashCommand } from "lilybird";
 
 
 type State = "open" | "closed_as_completed" | "closed_as_not_planned" | "closed" | "merged" | "draft" | "all";
@@ -40,7 +40,7 @@ export default {
                 <CommandOptions name="📝 Draft" value="draft" />
                 <CommandOptions name="🌍 All" value="all" />
             </StringOption>
-            <StringOption name="query" description="Issue/Pull request number or name" autocomplete required max_length={100} >
+            <StringOption name="type" description="Issue/Pull request number or name" autocomplete required max_length={100} >
                 <CommandOptions name="🐛 Issues" value="issues" />
                 <CommandOptions name="🔨 Pull Requests" value="pull_requests" />
                 <CommandOptions name="🌍 Both" value="both" />
@@ -49,13 +49,13 @@ export default {
         </ApplicationCommand>
     ),
     run: async (interaction) => {
-        const hide = interaction.data.options.getBoolean("hide") ?? false;
+        const hide = interaction.data.getBoolean("hide") ?? false;
 
         await interaction.deferReply(hide);
 
-        const query = interaction.data.options.getString("query", true);
-        const state: State = interaction.data.options.getString("state") as State || "all";
-        const type: Type = interaction.data.options.getString("type") as Type || "both";
+        const query = interaction.data.getString("query", true);
+        const state: State = interaction.data.getString("state") as State || "all";
+        const type: Type = interaction.data.getString("type") as Type || "both";
 
         const result = (await search(query, state, type))[0];
         if (!result) {
@@ -74,9 +74,9 @@ export default {
     },
 
     autocomplete: async (interaction) => {
-        const query = interaction.data.options.getString("query", true);
-        const state: State = interaction.data.options.getString("state") as State || "all";
-        const type: Type = interaction.data.options.getString("type") as Type || "both";
+        const query = interaction.data.getFocused<string>().value;
+        const state: State = interaction.data.getString("state") as State || "all";
+        const type: Type = interaction.data.getString("type") as Type || "both";
 
         const response = await search(query, state, type, 25);
 

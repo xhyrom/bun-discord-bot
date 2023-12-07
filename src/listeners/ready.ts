@@ -1,5 +1,5 @@
 import { info } from "@paperdave/logger";
-import { Event } from "lilybird";
+import { Event } from "@lilybird/handlers";
 
 export default {
   event: "ready",

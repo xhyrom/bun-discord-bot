@@ -2,7 +2,8 @@ import "./loaders/tags";
 import "./commands";
 import "./listeners";
 
-import { createClient, createHandler, Intents } from "lilybird";
+import { createHandler } from "@lilybird/handlers";
+import { createClient, Intents } from "lilybird";
 
 // Make sure bubu will not crash
 process.on("unhandledRejection", console.error);

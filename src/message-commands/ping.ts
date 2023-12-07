@@ -1,4 +1,4 @@
-import { MessageCommand, extractTimestampFromId } from "lilybird";
+import { MessageCommand } from "@lilybird/handlers";
 
 export default {
     name: "ping",

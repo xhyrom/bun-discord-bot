@@ -1,5 +1,5 @@
 import { moderateNick } from "../util.ts";
-import { Event } from "lilybird";
+import { Event } from "@lilybird/handlers";
 
 export default {
     event: "guildMemberUpdate",

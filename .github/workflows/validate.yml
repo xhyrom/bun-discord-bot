@@ -26,7 +26,9 @@ jobs:
               run: cp $HOME/files.json ./scripts/validate_tags/
 
             - name: Validate tags
-              run: bun run validate:tags
+              run: |
+                bun i
+                bun run validate:tags
               env:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   commit-sha: ${{ github.event.pull_request.head.sha }}

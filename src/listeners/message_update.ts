@@ -1,4 +1,5 @@
-import { Event, Message } from "lilybird";
+import { Event } from "@lilybird/handlers";
+import { Message } from "lilybird";
 
 export default {
     event: "messageUpdate",

@@ -1,5 +1,5 @@
-import { ApplicationCommand } from "lilybird/jsx";
-import { SlashCommand } from "lilybird";
+import { ApplicationCommand } from "@lilybird/jsx";
+import { SlashCommand } from "@lilybird/handlers";
 
 export default {
     post: "GLOBAL",

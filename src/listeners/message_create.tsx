@@ -1,6 +1,7 @@
-import { Event, Message, ButtonStyle } from "lilybird";
-import { ActionRow, Button } from "lilybird/jsx";
+import { Message, ButtonStyle } from "lilybird";
+import { ActionRow, Button } from "@lilybird/jsx";
 import { extname, basename } from "node:path";
+import { Event } from "@lilybird/handlers";
 import { safeSlice } from "../util.ts";
 
 

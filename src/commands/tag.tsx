@@ -1,6 +1,6 @@
-import { ApplicationCommand, StringOption, UserOption } from "lilybird/jsx";
+import { ApplicationCommand, StringOption, UserOption } from "@lilybird/jsx";
 import { getTags, searchTag } from "../loaders/tags.ts";
-import { SlashCommand } from "lilybird";
+import { SlashCommand } from "@lilybird/handlers";
 
 export default {
     post: "GLOBAL",
@@ -12,8 +12,8 @@ export default {
     ),
     run: async (interaction) => {
         if (!interaction.inGuild()) return;
-        const query = interaction.data.options.getString("query", true);
-        const target = interaction.data.options.getUser("target");
+        const query = interaction.data.getString("query", true);
+        const target = interaction.data.getUser("target");
 
         const tag = searchTag(interaction.channel, query, false);
         if (!tag) {
@@ -36,7 +36,7 @@ export default {
     },
     autocomplete: async (interaction) => {
         if (!interaction.inGuild()) return;
-        const query = interaction.data.options.getString("query");
+        const query = interaction.data.getFocused<string>().value;
         if (!query) {
             return await interaction.respond(getTags(interaction.channel, 25));
         }
