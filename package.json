@@ -1,19 +1,23 @@
 {
   "version": "0.0.0",
+  "private": true,
   "name": "bun-discord-bot",
+  "type": "module",
   "scripts": {
     "start": "bun src/index.ts",
     "validate:tags": "cd scripts/validate_tags && bun install && bun start"
   },
   "devDependencies": {
-    "bun-types": "^0.7.3"
+    "bun-types": "^1.0.14"
   },
   "dependencies": {
+    "@lilybird/handlers": "^0.1.1",
+    "@lilybird/jsx": "^0.1.1",
     "@paperdave/logger": "^3.0.1",
     "algoliasearch": "^4.19.1",
-    "discord.js": "^14.13.0",
     "glob": "^10.3.3",
     "gray-matter": "^4.0.3",
+    "lilybird": "^0.3.0",
     "zlib-sync": "^0.1.8"
   }
 }

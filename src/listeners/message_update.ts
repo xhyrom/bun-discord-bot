@@ -1,22 +1,21 @@
-import { Events, Message } from "discord.js";
-import { defineListener } from "../loaders/listeners.ts";
-import { BUN_ONLY_CHANNEL_ID } from "../constants.ts";
+import { Event } from "@lilybird/handlers";
+import { Message } from "lilybird";
 
-defineListener({
-  event: Events.MessageUpdate,
-  run: async(_: Message, message: Message) => {
-    if (handleBunOnlyChannel(message)) return;
-  }
-});
+export default {
+    event: "messageUpdate",
+    run: async (message) => {
+        if (handleBunOnlyChannel(message)) return;
+    }
+} satisfies Event<"messageUpdate">;
 
-function handleBunOnlyChannel(message: Message) {
-  if (message.channel.id !== BUN_ONLY_CHANNEL_ID) return false;
+function handleBunOnlyChannel(message: Message): boolean {
+    if (message.channelId !== process.env.BUN_ONLY_CHANNEL_ID) return false;
 
-  if (message.content !== "bun") {
-    message.delete();
+    if (message.content !== "bun") {
+        message.delete();
+        return true;
+    }
+
+    message.react("🐰");
     return true;
-  }
-  
-  message.react("🐰");
-  return true;
 }

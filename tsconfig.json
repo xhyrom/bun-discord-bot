@@ -1,12 +1,22 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "module": "esnext",
-    "target": "esnext",
-    "moduleResolution": "Node",
+    "target": "ESNext",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@lilybird/jsx",
+    "strict": true,
     "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true,
-    // "bun-types" is the important part
-    "types": ["bun-types"]
-  }
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": [
+      "bun-types",
+      "./globals"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ]
 }
