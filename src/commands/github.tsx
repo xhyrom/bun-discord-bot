@@ -66,13 +66,7 @@ export default {
         <CommandOptions name="📝 Draft" value="draft" />
         <CommandOptions name="🌍 All" value="all" />
       </StringOption>
-      <StringOption
-        name="type"
-        description="Issue/Pull request number or name"
-        autocomplete
-        required
-        max_length={100}
-      >
+      <StringOption name="type" description="Issue/Pull request number or name">
         <CommandOptions name="🐛 Issues" value="issues" />
         <CommandOptions name="🔨 Pull Requests" value="pull_requests" />
         <CommandOptions name="🌍 Both" value="both" />

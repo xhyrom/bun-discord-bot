@@ -81,7 +81,7 @@ async function handleGithubLink(message: Message): Promise<void> {
       text,
       2000 - 6 - extension.length
     )}\n\`\`\``,
-    components: (
+    components: [
       <ActionRow>
         <Button
           style={ButtonStyle.Link}
@@ -90,7 +90,7 @@ async function handleGithubLink(message: Message): Promise<void> {
           }${secondLineNumber ? `-L${secondLineNumber}` : ""}`}
           label={repo}
         />
-      </ActionRow>
-    ),
+      </ActionRow>,
+    ],
   });
 }

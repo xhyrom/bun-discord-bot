@@ -18,6 +18,7 @@ const listeners = await createHandler({
 
 await createClient({
   token: process.env.DISCORD_BOT_TOKEN,
+  attachDebugListener: true,
   intents: [
     Intents.GUILDS,
     Intents.GUILD_MESSAGES,
@@ -25,4 +26,7 @@ await createClient({
     Intents.GUILD_MEMBERS,
   ],
   ...listeners,
+  debugListener: (identifier, payload) => {
+    console.log(identifier, payload ?? "");
+  },
 });
