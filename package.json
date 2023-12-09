@@ -4,7 +4,7 @@
   "name": "bun-discord-bot",
   "type": "module",
   "scripts": {
-    "start": "bun src/index.ts",
+    "start": "NODE_ENV=production bun src/index.ts",
     "validate:tags": "bun scripts/validate_tags/index.ts"
   },
   "devDependencies": {

@@ -5,6 +5,8 @@ export default {
   post: "GLOBAL",
   data: <ApplicationCommand name="ping" description="pong" />,
   run: async (interaction) => {
+    await interaction.deferReply();
+
     const { ws, rest } = await interaction.client.ping();
 
     await interaction.editReply({
