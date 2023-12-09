@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "bun src/index.ts",
-    "validate:tags": "cd scripts/validate_tags && bun install && bun start"
+    "validate:tags": "bun scripts/validate_tags/index.ts"
   },
   "devDependencies": {
     "bun-types": "^1.0.14"

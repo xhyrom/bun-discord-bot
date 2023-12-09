@@ -5,5 +5,5 @@ export default {
   event: "ready",
   run: (client) => {
     info(`Logged in as ${client.user.username} (${client.user.id})`);
-  }
-} satisfies Event<"ready">
+  },
+} satisfies Event<"ready">;

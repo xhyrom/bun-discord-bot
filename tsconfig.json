@@ -11,12 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": [
-      "bun-types",
-      "./globals"
-    ]
+    "types": ["bun-types", "./globals"]
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }
