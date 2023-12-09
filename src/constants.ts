@@ -5,5 +5,3 @@ export const COMMIT_HASH = spawnSync({
 }).stdout.toString();
 
 export const PRODUCTION = process.env.NODE_ENV === "production";
-
-export const MESSAGE_PREFIX = PRODUCTION ? "b" : "<>";

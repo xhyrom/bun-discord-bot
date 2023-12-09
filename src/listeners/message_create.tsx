@@ -3,7 +3,6 @@ import { ActionRow, Button } from "@lilybird/jsx";
 import { extname, basename } from "node:path";
 import { Event } from "@lilybird/handlers";
 import { safeSlice } from "../util.ts";
-import { MESSAGE_PREFIX } from "src/constants.ts";
 
 const GITHUB_LINE_URL_REGEX =
   /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
@@ -12,7 +11,7 @@ export default {
   event: "messageCreate",
   run: async (message) => {
     if (handleBunOnlyChannel(message)) return;
-    if (!message.content?.toLowerCase().startsWith(MESSAGE_PREFIX))
+    if (!message.content?.toLowerCase().startsWith(process.env.MESSAGE_PREFIX))
       return handleOthers(message);
   },
 } satisfies Event<"messageCreate">;
