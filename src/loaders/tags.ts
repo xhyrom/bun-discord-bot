@@ -3,16 +3,18 @@ import {
   GuildTextChannel,
   ApplicationCommandOptionChoiceStructure,
 } from "lilybird";
-import { globSync as glob } from "glob";
 import { Tag } from "../structs/Tag.ts";
 import { readFileSync } from "node:fs";
 import { safeSlice } from "../util.ts";
 import matter from "gray-matter";
 import { join } from "node:path";
+import { Glob } from "bun";
 
 type PartialGuildTextChannel = PartialChannel<GuildTextChannel>;
 
-const tags = glob(join(import.meta.dir, "..", "..", "data", "tags", "*.md"));
+const tags = Array.from(
+  new Glob(join(import.meta.dir, "..", "..", "data", "tags", "*.md")).scanSync()
+);
 
 export const TAGS: Tag[] = [];
 
