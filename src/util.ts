@@ -32,5 +32,5 @@ export function isBunOnlyLikeMessage(content?: string) {
   if (!content) return false;
   if (content === "bun") return true;
 
-  return BUN_EMOJIS.some((emoji) => content.replace(/[<>]/g, "") == emoji);
+  return BUN_EMOJIS.some((emoji) => content.replace(/<:|>/g, "") == emoji);
 }
