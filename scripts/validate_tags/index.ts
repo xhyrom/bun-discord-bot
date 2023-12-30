@@ -1,8 +1,8 @@
 import type { Tag } from "../../src/structs/Tag.js";
-import { globSync as glob } from "glob";
 import * as matter from "gray-matter";
 import { join, dirname } from "node:path";
 import { readFileSync } from "node:fs";
+import { Glob } from "bun";
 
 const githubToken = process.env["github-token"];
 const commitSha = process.env["commit-sha"];
@@ -18,8 +18,10 @@ if (!files.some((f) => f.includes("tags"))) process.exit(0);
 const errors: string[] = [];
 
 const tags: Tag[] = [];
-const tagPaths = glob(
-  join(__dirname, "..", "..", "..", "data", "tags", "*.md")
+const tagPaths = Array.from(
+  new Glob(
+    join(import.meta.dir, "..", "..", "..", "data", "tags", "*.md")
+  ).scanSync()
 );
 for (const tagPath of tagPaths) {
   const content = readFileSync(tagPath);

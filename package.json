@@ -15,7 +15,6 @@
     "@lilybird/jsx": "^0.2.0",
     "@paperdave/logger": "^3.0.1",
     "algoliasearch": "^4.19.1",
-    "glob": "^10.3.3",
     "gray-matter": "^4.0.3",
     "lilybird": "^0.4.0",
     "zlib-sync": "^0.1.8"
