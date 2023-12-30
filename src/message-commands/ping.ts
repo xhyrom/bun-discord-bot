@@ -3,13 +3,13 @@ import { MessageCommand } from "@lilybird/handlers";
 export default {
   name: "ping",
   run: async (message) => {
-    await message.reply({
+    const newMessage = await message.reply({
       content: "🏓...",
     });
 
     const { ws, rest } = await message.client.ping();
 
-    await message.edit({
+    await newMessage.edit({
       content: `🏓 WebSocket: \`${ws}ms\` | Rest: \`${rest}ms\``,
     });
   },
