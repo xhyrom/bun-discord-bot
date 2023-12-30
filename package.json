@@ -11,7 +11,7 @@
     "bun-types": "^1.0.14"
   },
   "dependencies": {
-    "@lilybird/handlers": "^0.2.0",
+    "@lilybird/handlers": "^0.2.1",
     "@lilybird/jsx": "^0.2.0",
     "@paperdave/logger": "^3.0.1",
     "algoliasearch": "^4.19.1",
