@@ -12,7 +12,9 @@ const urlRegex =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gi;
 
 // Check if files/tags.toml was changed
-const files = (await Bun.file("./files.json").json()) as string[];
+const files = (await Bun.file(
+  join(import.meta.dir, "files.json")
+).json()) as string[];
 if (!files.some((f) => f.includes("tags"))) process.exit(0);
 
 const errors: string[] = [];
