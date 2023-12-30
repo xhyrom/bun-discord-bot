@@ -2,7 +2,7 @@ import { Message, ButtonStyle } from "lilybird";
 import { ActionRow, Button } from "@lilybird/jsx";
 import { extname, basename } from "node:path";
 import { Event } from "@lilybird/handlers";
-import { safeSlice } from "../util.ts";
+import { isBunOnlyLikeMessage, safeSlice } from "../util.ts";
 
 const GITHUB_LINE_URL_REGEX =
   /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
@@ -23,7 +23,7 @@ function handleOthers(message: Message): void {
 function handleBunOnlyChannel(message: Message): boolean {
   if (message.channelId !== process.env.BUN_ONLY_CHANNEL_ID) return false;
 
-  if (message.content !== "bun") {
+  if (!isBunOnlyLikeMessage(message.content)) {
     message.delete();
     return true;
   }
