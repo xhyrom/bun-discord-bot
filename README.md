@@ -1,5 +1,5 @@
 # Bun discord bot
-Official serverless discord bot for [bun](https://bun.sh/) [discord server](https://bun.sh/discord)
+Official discord bot for [bun](https://bun.sh/) [discord server](https://bun.sh/discord)
 
 ## Contributing tags
 To create a new tag, you need to fork this repository and add new file to `data/tags/name.md` file
