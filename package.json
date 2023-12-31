@@ -16,7 +16,7 @@
     "@paperdave/logger": "^3.0.1",
     "algoliasearch": "^4.19.1",
     "gray-matter": "^4.0.3",
-    "lilybird": "^0.4.0",
+    "lilybird": "^0.4.1",
     "zlib-sync": "^0.1.8"
   }
 }

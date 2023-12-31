@@ -24,5 +24,6 @@ await createClient({
     Intents.MESSAGE_CONTENT,
     Intents.GUILD_MEMBERS,
   ],
+  attachDebugListener: true,
   ...listeners,
 });
