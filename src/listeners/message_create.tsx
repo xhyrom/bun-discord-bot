@@ -2,7 +2,7 @@ import { Message, ButtonStyle } from "lilybird";
 import { ActionRow, Button } from "@lilybird/jsx";
 import { extname, basename } from "node:path";
 import { Event } from "@lilybird/handlers";
-import { isBunOnlyLikeMessage, safeSlice } from "../util.ts";
+import { getRandomBunEmoji, isBunOnlyLikeMessage, safeSlice } from "../util.ts";
 
 const GITHUB_LINE_URL_REGEX =
   /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
@@ -25,6 +25,12 @@ function handleBunOnlyChannel(message: Message): boolean {
 
   if (!isBunOnlyLikeMessage(message.content)) {
     message.delete();
+    return true;
+  }
+
+  // 1% chance to react with a random bun emoji
+  if (Math.floor(Math.random() * 100) === 0) {
+    message.react(getRandomBunEmoji().id, true);
     return true;
   }
 
