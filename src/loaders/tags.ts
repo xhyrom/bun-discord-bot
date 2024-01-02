@@ -12,14 +12,13 @@ import { Glob } from "bun";
 
 type PartialGuildTextChannel = PartialChannel<GuildTextChannel>;
 
-const tags = Array.from(
-  new Glob(join(import.meta.dir, "..", "..", "data", "tags", "*.md")).scanSync()
-);
+const TAGS_PATH = join(import.meta.dir, "..", "..", "data", "tags");
+const tags = Array.from(new Glob("*.md").scanSync(TAGS_PATH));
 
 export const TAGS: Tag[] = [];
 
 for (const tag of tags) {
-  const content = readFileSync(tag);
+  const content = readFileSync(join(TAGS_PATH, tag));
   const frontMatter = matter(content);
 
   TAGS.push({
