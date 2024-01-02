@@ -19,14 +19,11 @@ if (!files.some((f) => f.includes("tags"))) process.exit(0);
 
 const errors: string[] = [];
 
+const TAGS_PATH = join(import.meta.dir, "..", "..", "data", "tags");
 const tags: Tag[] = [];
-const tagPaths = Array.from(
-  new Glob(
-    join(import.meta.dir, "..", "..", "..", "data", "tags", "*.md")
-  ).scanSync()
-);
+const tagPaths = Array.from(new Glob("*.md").scanSync(TAGS_PATH));
 for (const tagPath of tagPaths) {
-  const content = readFileSync(tagPath);
+  const content = readFileSync(join(TAGS_PATH, tagPath));
   const frontMatter = matter(content);
 
   tags.push({
