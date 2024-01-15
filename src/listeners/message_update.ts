@@ -17,15 +17,5 @@ function handleBunOnlyChannel(message: PartialMessage): boolean {
     return true;
   }
 
-  // check if there's reaction from bot
-  if (message.reactions?.some((reaction) => reaction.me)) return true;
-
-  // 1% chance to react with a random bun emoji
-  if (Math.floor(Math.random() * 100) === 0) {
-    message.react(getRandomBunEmoji().id, true);
-    return true;
-  }
-
-  message.react("🐰");
   return true;
 }
