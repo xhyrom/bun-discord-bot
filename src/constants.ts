@@ -31,4 +31,5 @@ export const BUN_EMOJIS = [
   { name: "rainbowbun", id: "995824310860128326" },
   { name: "uwubun", id: "995823895175233587" },
   { name: "bupple", id: "1190690285852839976" },
+  { name: "bunglasses", id: "1192055313185120287" },
 ];
