@@ -6,6 +6,8 @@ import { getRandomBunEmoji, isBunOnlyLikeMessage, safeSlice } from "../util.ts";
 
 const GITHUB_LINE_URL_REGEX =
   /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
+const TWITTER_TWEET_URL_REGEX =
+  /https:\/\/(?:www\.)?(?:twitter|x)\.com\/(?<user>[a-zA-Z0-9-_]+)\/status\/(?<id>\d+)/i;
 
 export default {
   event: "messageCreate",
@@ -18,6 +20,7 @@ export default {
 
 function handleOthers(message: Message): void {
   handleGithubLink(message);
+  handleTwitterLink(message);
 }
 
 function handleBunOnlyChannel(message: Message): boolean {
@@ -99,4 +102,15 @@ async function handleGithubLink(message: Message): Promise<void> {
       </ActionRow>,
     ],
   });
+}
+
+function handleTwitterLink(message: Message): void {
+  if (!message.content) return;
+
+  const match = TWITTER_TWEET_URL_REGEX.exec(message.content);
+  if (!match || !match.groups?.user || !match.groups?.id) return;
+
+  message.reply(
+    `https://fxtwitter.com/${match.groups.user}/status/${match.groups.id}`
+  );
 }

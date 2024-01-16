@@ -28,7 +28,7 @@ export default {
       hitsPerPage: 25,
     });
 
-    return interaction.respond(
+    return interaction.showChoices(
       result.hits.map((hit: any) => {
         const name = getHitName(hit);
 

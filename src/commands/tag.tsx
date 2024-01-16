@@ -43,12 +43,12 @@ export default {
     if (!interaction.inGuild()) return;
     const query = interaction.data.getFocused<string>().value;
     if (!query) {
-      return await interaction.respond(getTags(interaction.channel, 25));
+      return await interaction.showChoices(getTags(interaction.channel, 25));
     }
 
     const tags = searchTag(interaction.channel, query, true);
-    if (tags.length > 0) return await interaction.respond(tags);
+    if (tags.length > 0) return await interaction.showChoices(tags);
 
-    return await interaction.respond(getTags(interaction.channel, 25));
+    return await interaction.showChoices(getTags(interaction.channel, 25));
   },
 } satisfies SlashCommand;
