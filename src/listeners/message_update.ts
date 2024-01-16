@@ -1,6 +1,6 @@
 import { Event } from "@lilybird/handlers";
 import { PartialMessage } from "lilybird";
-import { getRandomBunEmoji, isBunOnlyLikeMessage } from "src/util.ts";
+import { isBunOnlyLikeMessage } from "src/util.ts";
 
 export default {
   event: "messageUpdate",

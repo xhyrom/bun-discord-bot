@@ -113,7 +113,7 @@ export default {
     const response = await search(query, state, type, 25);
 
     await silently(
-      interaction.respond(
+      interaction.showChoices(
         response.map((r) => ({
           name: safeSlice<string>(
             `${r.emoji.type} ${r.emoji.state} #${r.number} | ${r.title}`,
