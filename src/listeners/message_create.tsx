@@ -20,7 +20,7 @@ export default {
 
 function handleOthers(message: Message): void {
   handleGithubLink(message);
-  handleTwitterLink(message);
+  //handleTwitterLink(message); // discord finnaly has embeds
 }
 
 function handleBunOnlyChannel(message: Message): boolean {
