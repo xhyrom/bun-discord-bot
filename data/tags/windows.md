@@ -1,5 +1,5 @@
 ---
-question: "Where can i found windows version of bun?"
+question: "Where can i find windows version of bun?"
 keywords:
     - "windows"
     - "windows support"
