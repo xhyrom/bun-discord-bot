@@ -17,7 +17,7 @@
     "algoliasearch": "^4.22.1",
     "chrono-node": "^2.7.4",
     "gray-matter": "^4.0.3",
-    "lilybird": "^0.5.1",
+    "lilybird": "^0.5.3",
     "zlib-sync": "^0.1.9"
   }
 }
