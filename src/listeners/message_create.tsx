@@ -32,8 +32,8 @@ function handleBunOnlyChannel(message: Message): boolean {
     return true;
   }
 
-  // 1% chance to react with a random bun emoji
-  if (Math.floor(Math.random() * 100) === 0) {
+  // 10% chance to react with a random bun emoji
+  if (Math.floor(Math.random() * 100) < 0) {
     const emoji = getRandomBunEmoji();
     message.react(`${emoji.name}:${emoji.id}`, true);
     return true;
