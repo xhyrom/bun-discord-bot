@@ -13,6 +13,7 @@
   "dependencies": {
     "@lilybird/handlers": "0.4.0-alpha.2",
     "@lilybird/jsx": "0.2.0",
+    "@lilybird/transformers": "0.2.0-alpha.1",
     "@paperdave/logger": "^3.0.1",
     "algoliasearch": "^4.23.2",
     "gray-matter": "^4.0.3",

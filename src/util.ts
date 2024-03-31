@@ -1,4 +1,4 @@
-import { GuildMember } from "lilybird";
+import { GuildMember } from "@lilybird/transformers";
 import { BUN_EMOJIS } from "./constants.ts";
 
 export function safeSlice<T extends string | Array<any>>(
@@ -32,8 +32,10 @@ export function isBunOnlyLikeMessage(content?: string) {
   if (!content) return false;
   if (content === "bun") return true;
 
-  return BUN_EMOJIS.some(
-    (emoji) => content.replace(/<:|>/g, "") == `${emoji.name}:${emoji.id}`
+  return BUN_EMOJIS.some((emoji) =>
+    emoji.animated
+      ? content.replace(/<a:|>/g, "") == `${emoji.name}:${emoji.id}`
+      : content.replace(/<:|>/g, "") == `${emoji.name}:${emoji.id}`
   );
 }
 

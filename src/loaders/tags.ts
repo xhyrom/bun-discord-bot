@@ -1,8 +1,5 @@
-import {
-  PartialChannel,
-  GuildTextChannel,
-  ApplicationCommandOptionChoiceStructure,
-} from "lilybird";
+import { ApplicationCommandOptionChoiceStructure } from "lilybird";
+import { PartialChannel, GuildTextChannel } from "@lilybird/transformers";
 import { Tag } from "../structs/Tag.ts";
 import { readFileSync } from "node:fs";
 import { safeSlice } from "../util.ts";

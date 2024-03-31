@@ -1,4 +1,5 @@
-import { Message, ButtonStyle } from "lilybird";
+import { ButtonStyle } from "lilybird";
+import { Message } from "@lilybird/transformers";
 import { ActionRow, Button } from "@lilybird/jsx";
 import { extname, basename } from "node:path";
 import { Event } from "@lilybird/handlers";

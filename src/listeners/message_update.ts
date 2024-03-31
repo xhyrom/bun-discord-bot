@@ -1,5 +1,5 @@
 import { Event } from "@lilybird/handlers";
-import { PartialMessage } from "lilybird";
+import { PartialMessage } from "@lilybird/transformers";
 import { isBunOnlyLikeMessage } from "src/util.ts";
 
 export default {
