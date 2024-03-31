@@ -8,16 +8,14 @@
     "validate:tags": "bun scripts/validate_tags/index.ts"
   },
   "devDependencies": {
-    "bun-types": "^1.0.22"
+    "bun-types": "^1.0.36"
   },
   "dependencies": {
-    "@lilybird/handlers": "0.2.2",
+    "@lilybird/handlers": "0.4.0-alpha.2",
     "@lilybird/jsx": "0.2.0",
     "@paperdave/logger": "^3.0.1",
-    "algoliasearch": "^4.22.1",
-    "chrono-node": "^2.7.4",
+    "algoliasearch": "^4.23.2",
     "gray-matter": "^4.0.3",
-    "lilybird": "0.4.4",
-    "zlib-sync": "^0.1.9"
+    "lilybird": "^0.6.0-alpha.16"
   }
 }
