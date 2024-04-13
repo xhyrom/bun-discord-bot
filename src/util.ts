@@ -42,3 +42,7 @@ export function isBunOnlyLikeMessage(content?: string) {
 export function getRandomBunEmoji() {
   return BUN_EMOJIS[Math.floor(Math.random() * BUN_EMOJIS.length)];
 }
+
+export function sliceIfStartsWith(input: string, startsWith: string) {
+  return input.startsWith(startsWith) ? input.slice(startsWith.length) : input;
+}
