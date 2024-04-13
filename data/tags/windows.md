@@ -5,12 +5,8 @@ keywords:
     - "windows support"
 ---
 
-Bun provides a *limited*, experimental native builds for [Windows](<https://bun.sh/docs/installation#windows>).  
+Bun provides a native builds for [Windows](<https://bun.sh/docs/installation#windows>).  
 To install, paste this into your terminal:  
 ```ps
-# WARNING: No stability is guaranteed on the experimental Windows builds
 powershell -c "irm bun.sh/install.ps1|iex"
 ```
-
-However, it's still recommended to use [WSL](<https://docs.microsoft.com/en-us/windows/wsl/install>) for the best experience.  
-For more information, you can look into <#1149339379446325248>  
