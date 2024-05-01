@@ -2,6 +2,8 @@ import { GuildMember } from "@lilybird/transformers";
 import { BUN_EMOJIS } from "./constants.ts";
 import { parse, formatMarkdown } from "bun-tracestrings";
 
+const URL_REGEX = /\(\s*(https?:\/\/[^\s\[\]]+)\s*\)/gi;
+
 export function safeSlice<T extends string | Array<any>>(
   input: T,
   length: number
@@ -63,10 +65,22 @@ export async function getBunReportDetailsInMarkdown(
   }
 
   const json = await res.json();
-  console.log(json);
 
-  return formatMarkdown({
+  let content = formatMarkdown({
     ...parsed,
     ...json,
   });
+
+  for (const match of content.matchAll(URL_REGEX)) {
+    let url = match[1];
+    if (url.endsWith(")")) {
+      url = url.slice(0, -1);
+    }
+
+    if (!url.startsWith("<")) {
+      content = content.replace(url, `<${url}>`);
+    }
+  }
+
+  return content;
 }
