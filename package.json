@@ -16,6 +16,7 @@
     "@lilybird/transformers": "0.2.0-alpha.1",
     "@paperdave/logger": "^3.0.1",
     "algoliasearch": "^4.23.2",
+    "bun-tracestrings": "github:oven-sh/bun.report",
     "gray-matter": "^4.0.3",
     "lilybird": "^0.6.0-alpha.16"
   }

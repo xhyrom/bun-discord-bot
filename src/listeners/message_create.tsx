@@ -3,12 +3,18 @@ import { Message } from "@lilybird/transformers";
 import { ActionRow, Button } from "@lilybird/jsx";
 import { extname, basename } from "node:path";
 import { Event } from "@lilybird/handlers";
-import { getRandomBunEmoji, isBunOnlyLikeMessage, safeSlice } from "../util.ts";
+import {
+  getBunReportDetailsInMarkdown,
+  getRandomBunEmoji,
+  isBunOnlyLikeMessage,
+  safeSlice,
+} from "../util.ts";
 
 const GITHUB_LINE_URL_REGEX =
   /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
 const TWITTER_TWEET_URL_REGEX =
   /https:\/\/(?:www\.)?(?:twitter|x)\.com\/(?<user>[a-zA-Z0-9-_]+)\/status\/(?<id>\d+)/i;
+const BUN_REPORT_URL_REGEX = /(https:\/\/bun\.report\/\d+\.\d+(\.\d+)?\/\S+)/g;
 
 export default {
   event: "messageCreate",
@@ -21,6 +27,7 @@ export default {
 
 function handleOthers(message: Message): void {
   handleGithubLink(message);
+  handleBunReportLink(message);
   //handleTwitterLink(message); // discord finnaly has embeds
 }
 
@@ -104,6 +111,16 @@ async function handleGithubLink(message: Message): Promise<void> {
       </ActionRow>,
     ],
   });
+}
+
+async function handleBunReportLink(message: Message): Promise<void> {
+  if (!message.content) return;
+
+  const match = message.content.match(BUN_REPORT_URL_REGEX);
+  if (!match?.[0]) return;
+
+  const data = await getBunReportDetailsInMarkdown(match[0]);
+  message.reply(data);
 }
 
 function handleTwitterLink(message: Message): void {

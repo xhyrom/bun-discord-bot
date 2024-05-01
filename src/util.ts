@@ -1,5 +1,6 @@
 import { GuildMember } from "@lilybird/transformers";
 import { BUN_EMOJIS } from "./constants.ts";
+import { parse, formatMarkdown } from "bun-tracestrings";
 
 export function safeSlice<T extends string | Array<any>>(
   input: T,
@@ -45,4 +46,27 @@ export function getRandomBunEmoji() {
 
 export function sliceIfStartsWith(input: string, startsWith: string) {
   return input.startsWith(startsWith) ? input.slice(startsWith.length) : input;
+}
+
+export async function getBunReportDetailsInMarkdown(
+  url: string
+): Promise<string> {
+  const parsed = await parse(url);
+
+  const res = await fetch("https://bun.report/remap", {
+    method: "POST",
+    body: url,
+  });
+
+  if (!res.ok) {
+    return `Failed to get details from bun.report: ${res.statusText}`;
+  }
+
+  const json = await res.json();
+  console.log(json);
+
+  return formatMarkdown({
+    ...parsed,
+    ...json,
+  });
 }
