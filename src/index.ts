@@ -1,6 +1,6 @@
 import "./loaders/tags.ts";
 
-import { createHandler } from "@lilybird/handlers";
+import { createHandler } from "@lilybird/handlers/simple";
 import { createClient, Intents } from "lilybird";
 
 // Make sure bubu will not crash
@@ -24,6 +24,5 @@ await createClient({
     Intents.MESSAGE_CONTENT,
     Intents.GUILD_MEMBERS,
   ],
-  attachDebugListener: true,
   ...listeners,
 });

@@ -8,16 +8,16 @@
     "validate:tags": "bun scripts/validate_tags/index.ts"
   },
   "devDependencies": {
-    "bun-types": "^1.0.36"
+    "bun-types": "^1.1.6"
   },
   "dependencies": {
-    "@lilybird/handlers": "0.4.0-alpha.2",
+    "@lilybird/handlers": "^0.4.0",
     "@lilybird/jsx": "0.2.0",
-    "@lilybird/transformers": "0.2.0-alpha.1",
+    "@lilybird/transformers": "^0.2.0",
     "@paperdave/logger": "^3.0.1",
     "algoliasearch": "^4.23.2",
     "bun-tracestrings": "github:oven-sh/bun.report",
     "gray-matter": "^4.0.3",
-    "lilybird": "^0.6.0-alpha.16"
+    "lilybird": "^0.6.0"
   }
 }
