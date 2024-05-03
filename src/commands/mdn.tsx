@@ -97,7 +97,7 @@ export default {
       .replaceAll(boldCodeBlockRegex, `**\`$1\``);
 
     const parts = [
-      `<:${MDN_DISCORD_EMOJI}:> __**[${escape(hit.title)}](<${url}>)**__`,
+      `<:${MDN_DISCORD_EMOJI}> __**[${escape(hit.title)}](<${url}>)**__`,
       intro,
     ];
 
