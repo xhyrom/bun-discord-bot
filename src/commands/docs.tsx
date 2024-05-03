@@ -5,6 +5,7 @@ import {
 } from "@lilybird/jsx";
 import { ApplicationCommand } from "@lilybird/handlers";
 import algoliasearch from "algoliasearch";
+import { safeSlice } from "src/util.ts";
 
 // @ts-expect-error It is callable, but algolia for some reason has a namespace with the same name
 const algoliaClient = algoliasearch(
@@ -37,8 +38,8 @@ export default {
         const name = getHitName(hit);
 
         return {
-          name: name.full.length > 100 ? name.full.slice(0, 100) : name.full,
-          value: name.name.length > 100 ? name.name.slice(0, 100) : name.name,
+          name: safeSlice(name.full, 100),
+          value: safeSlice(name.name, 100),
         };
       })
     );
