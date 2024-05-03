@@ -1,11 +1,15 @@
-import { ApplicationCommand, StringOption, UserOption } from "@lilybird/jsx";
+import {
+  ApplicationCommand as JSXApplicationCommand,
+  StringOption,
+  UserOption,
+} from "@lilybird/jsx";
 import { getTags, searchTag } from "../loaders/tags.ts";
-import { SlashCommand } from "@lilybird/handlers";
+import { ApplicationCommand } from "@lilybird/handlers";
 
 export default {
   post: "GLOBAL",
   data: (
-    <ApplicationCommand name="tag" description="Get tag">
+    <JSXApplicationCommand name="tag" description="Get tag">
       <StringOption
         name="query"
         description="Select query"
@@ -13,7 +17,7 @@ export default {
         autocomplete
       />
       <UserOption name="target" description="User to mention" />
-    </ApplicationCommand>
+    </JSXApplicationCommand>
   ),
   run: async (interaction) => {
     if (!interaction.inGuild()) return;
@@ -51,4 +55,4 @@ export default {
 
     return await interaction.showChoices(getTags(interaction.channel, 25));
   },
-} satisfies SlashCommand;
+} satisfies ApplicationCommand;

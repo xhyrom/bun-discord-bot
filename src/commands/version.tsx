@@ -5,12 +5,12 @@ import {
   LILYBIRD_HANDLERS_VERSION,
   LILYBIRD_JSX_VERSION,
 } from "../constants.ts";
-import { ApplicationCommand } from "@lilybird/jsx";
-import { SlashCommand } from "@lilybird/handlers";
+import { ApplicationCommand as JSXApplicationCommand } from "@lilybird/jsx";
+import { ApplicationCommand } from "@lilybird/handlers";
 
 export default {
   post: "GLOBAL",
-  data: <ApplicationCommand name="version" description="Show version" />,
+  data: <JSXApplicationCommand name="version" description="Show version" />,
   run: (interaction) => {
     interaction.reply({
       content: [
@@ -26,4 +26,4 @@ export default {
       ephemeral: true,
     });
   },
-} satisfies SlashCommand;
+} satisfies ApplicationCommand;

@@ -1,9 +1,9 @@
-import { ApplicationCommand } from "@lilybird/jsx";
-import { SlashCommand } from "@lilybird/handlers";
+import { ApplicationCommand as JSXApplicationCommand } from "@lilybird/jsx";
+import { ApplicationCommand } from "@lilybird/handlers";
 
 export default {
   post: "GLOBAL",
-  data: <ApplicationCommand name="ping" description="pong" />,
+  data: <JSXApplicationCommand name="ping" description="pong" />,
   run: async (interaction) => {
     await interaction.deferReply();
 
@@ -13,4 +13,4 @@ export default {
       content: `🏓 WebSocket: \`${ws}ms\` | Rest: \`${rest}ms\``,
     });
   },
-} satisfies SlashCommand;
+} satisfies ApplicationCommand;

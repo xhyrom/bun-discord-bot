@@ -1,10 +1,10 @@
 import {
-  ApplicationCommand,
+  ApplicationCommand as JSXApplicationCommand,
   BooleanOption,
   CommandOptions,
   StringOption,
 } from "@lilybird/jsx";
-import { SlashCommand } from "@lilybird/handlers";
+import { ApplicationCommand } from "@lilybird/handlers";
 import { safeSlice, silently } from "../util.ts";
 
 type State =
@@ -40,7 +40,7 @@ interface Item {
 export default {
   post: "GLOBAL",
   data: (
-    <ApplicationCommand
+    <JSXApplicationCommand
       name="github"
       description="Query an issue, pull request or direct link to issue, pull request"
     >
@@ -72,7 +72,7 @@ export default {
         <CommandOptions name="🌍 Both" value="both" />
       </StringOption>
       <BooleanOption name="hide" description="Show this message only for you" />
-    </ApplicationCommand>
+    </JSXApplicationCommand>
   ),
   run: async (interaction) => {
     const hide = interaction.data.getBoolean("hide") ?? false;
@@ -124,7 +124,7 @@ export default {
       )
     );
   },
-} satisfies SlashCommand;
+} satisfies ApplicationCommand;
 
 function stateToText(item: Item) {
   switch (item.emoji.state) {
