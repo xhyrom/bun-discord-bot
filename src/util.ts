@@ -1,6 +1,6 @@
 import { GuildMember } from "@lilybird/transformers";
 import { BUN_EMOJIS } from "./constants.ts";
-import { parse, formatMarkdown } from "bun-tracestrings";
+import { parseAndRemap, formatMarkdown } from "bun-tracestrings";
 
 const URL_REGEX = /\(\s*(https?:\/\/[^\s\[\]]+)\s*\)/gi;
 
@@ -53,22 +53,11 @@ export function sliceIfStartsWith(input: string, startsWith: string) {
 export async function getBunReportDetailsInMarkdown(
   url: string
 ): Promise<string> {
-  const parsed = await parse(url);
+  const remap = await parseAndRemap(url);
+  if (!Array.isArray(remap.features)) remap.features = []; // temporary fix
 
-  const res = await fetch("https://bun.report/remap", {
-    method: "POST",
-    body: url,
-  });
-
-  if (!res.ok) {
-    return `Failed to get details from bun.report: ${res.statusText}`;
-  }
-
-  const json = await res.json();
-
-  let content = formatMarkdown({
-    ...parsed,
-    ...json,
+  let content = formatMarkdown(remap, {
+    source: url,
   });
 
   for (const match of content.matchAll(URL_REGEX)) {
