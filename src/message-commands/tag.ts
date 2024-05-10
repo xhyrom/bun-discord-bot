@@ -15,6 +15,7 @@ export default {
     if (!keyword || !tag) {
       return message.reply({
         content: `\`❌\` Could not find a tag \`${keyword}\``,
+        allowed_mentions: { parse: [] },
       });
     }
 
