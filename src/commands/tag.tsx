@@ -26,9 +26,13 @@ export default {
 
     const tag = searchTag(interaction.channel, query, false);
     if (!tag) {
+      // @ts-expect-error allowed_mentions
       return interaction.reply({
         content: `\`❌\` Could not find a tag \`${query}\``,
         ephemeral: true,
+        allowed_mentions: {
+          parse: [],
+        },
       });
     }
 

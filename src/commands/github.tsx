@@ -86,8 +86,12 @@ export default {
 
     const result = (await search(query, state, type))[0];
     if (!result) {
+      // @ts-expect-error allowed_mentions
       interaction.editReply({
         content: `❌ Couldn't find issue or pull request \`${query}\``,
+        allowed_mentions: {
+          parse: [],
+        },
       });
       return;
     }

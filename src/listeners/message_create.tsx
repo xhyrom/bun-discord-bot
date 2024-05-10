@@ -92,6 +92,7 @@ async function handleGithubLink(message: Message): Promise<void> {
 
   if (extension === "zig") extension = "rs";
 
+  // @ts-expect-error allowed_mentions
   message.reply({
     content: `***${basename(path)}*** — *(L${firstLineNumber + 1}${
       secondLineNumber ? `-L${secondLineNumber}` : ""
@@ -110,6 +111,9 @@ async function handleGithubLink(message: Message): Promise<void> {
         />
       </ActionRow>,
     ],
+    allowed_mentions: {
+      parse: [],
+    },
   });
 }
 
@@ -120,7 +124,14 @@ async function handleBunReportLink(message: Message): Promise<void> {
   if (!match?.[0]) return;
 
   const data = await getBunReportDetailsInMarkdown(match[0]);
-  message.reply(data);
+
+  // @ts-expect-error allowed_mentions
+  message.reply({
+    content: data,
+    allowed_mentions: {
+      parse: [],
+    },
+  });
 }
 
 function handleTwitterLink(message: Message): void {
