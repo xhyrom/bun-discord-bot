@@ -133,14 +133,3 @@ async function handleBunReportLink(message: Message): Promise<void> {
     },
   });
 }
-
-function handleTwitterLink(message: Message): void {
-  if (!message.content) return;
-
-  const match = TWITTER_TWEET_URL_REGEX.exec(message.content);
-  if (!match || !match.groups?.user || !match.groups?.id) return;
-
-  message.reply(
-    `https://fxtwitter.com/${match.groups.user}/status/${match.groups.id}`
-  );
-}
