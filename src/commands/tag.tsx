@@ -27,7 +27,7 @@ export default {
     const tag = searchTag(interaction.channel, query, false);
     if (!tag) {
       return interaction.reply({
-        content: `\`❌\` Could not find a tag \`${query}\``,
+        content: `\`❌\` Could not find a tag \`${query.replace(/(@&?)(here|everyone|\d+)/, '$1\u200b$2')}\``,
         ephemeral: true,
       });
     }
