@@ -4,7 +4,8 @@ import { searchTag } from "../loaders/tags.ts";
 export default {
   name: "tag",
   run: async (message, args) => {
-    const keyword = args[0] ?? "what-is-bun";
+    const keyword = args[0];
+    if (!keyword) return; // just ignore
 
     const target = args[1]?.match(/([0-9]+)/)?.[0];
     const resolvedTarget = target
@@ -12,15 +13,7 @@ export default {
       : null;
 
     const tag = searchTag(await message.fetchChannel(), keyword, false);
-    if (!keyword || !tag) {
-      // @ts-expect-error allowed_mentions
-      return message.reply({
-        content: `\`❌\` Could not find a tag \`${keyword}\``,
-        allowed_mentions: {
-          parse: [],
-        },
-      });
-    }
+    if (!keyword || !tag) return; // just ignore
 
     // @ts-expect-error allowed_mentions
     message.reply({
