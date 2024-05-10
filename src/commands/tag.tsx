@@ -32,15 +32,16 @@ export default {
       });
     }
 
+    // @ts-expect-error allowed_mentions
     await interaction.reply({
       content: [
         target ? `*Suggestion for <@${target}>:*\n` : "",
         `**${tag.question}**`,
         tag.answer,
       ].join("\n"),
-      // allowedMentions: {
-      //     parse: ["users"]
-      // }
+      allowed_mentions: {
+        parse: target ? ["users"] : [],
+      },
     });
   },
   autocomplete: async (interaction) => {

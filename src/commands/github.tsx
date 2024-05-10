@@ -92,6 +92,7 @@ export default {
       return;
     }
 
+    // @ts-expect-error allowed_mentions
     interaction.editReply({
       content: [
         `${result.emoji.type} ${result.emoji.state} [#${
@@ -101,6 +102,9 @@ export default {
         }>) ${stateToText(result)} ${stateToTimestamp(result)}`,
         result.title,
       ].join("\n"),
+      allowed_mentions: {
+        parse: [],
+      },
     });
   },
 

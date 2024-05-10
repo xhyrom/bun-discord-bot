@@ -75,11 +75,12 @@ export default {
         : "",
     ].join("\n");
 
+    // @ts-expect-error allowed_mentions
     await interaction.editReply({
       content,
-      // allowedMentions: {
-      //     parse: ["users"],
-      // }
+      allowed_mentions: {
+        parse: target ? ["users"] : [],
+      },
     });
   },
 } satisfies ApplicationCommand;

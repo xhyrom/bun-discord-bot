@@ -101,11 +101,15 @@ export default {
       intro,
     ];
 
+    // @ts-expect-error allowed_mentions
     await interaction.editReply({
       content: [
         target ? `*Suggestion for <@${target}>:*\n` : "",
         parts.join("\n"),
       ].join("\n"),
+      allowed_mentions: {
+        parse: target ? ["users"] : [],
+      },
     });
   },
   autocomplete: async (interaction) => {

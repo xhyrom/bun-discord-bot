@@ -13,20 +13,25 @@ export default {
 
     const tag = searchTag(await message.fetchChannel(), keyword, false);
     if (!keyword || !tag) {
+      // @ts-expect-error allowed_mentions
       return message.reply({
         content: `\`❌\` Could not find a tag \`${keyword}\``,
+        allowed_mentions: {
+          parse: [],
+        },
       });
     }
 
+    // @ts-expect-error allowed_mentions
     message.reply({
       content: [
         resolvedTarget ? `*Suggestion for <@${resolvedTarget.id}>:*\n` : "",
         `**${tag.question}**`,
         tag.answer,
       ].join("\n"),
-      // allowedMentions: {
-      //     parse: ["users"]
-      // }
+      allowed_mentions: {
+        parse: resolvedTarget ? ["users"] : [],
+      },
     });
   },
 } satisfies MessageCommand;
