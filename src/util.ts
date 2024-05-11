@@ -1,5 +1,5 @@
 import { GuildMember } from "@lilybird/transformers";
-import { BUN_EMOJIS } from "./constants.ts";
+import { BUN_EMOJIS, wolframApiClient } from "./constants.ts";
 import { parseAndRemap, formatMarkdown } from "bun-tracestrings";
 
 const URL_REGEX = /\(\s*(https?:\/\/[^\s\[\]]+)\s*\)/gi;
@@ -72,4 +72,59 @@ export async function getBunReportDetailsInMarkdown(
   }
 
   return content;
+}
+
+export async function possibleClosedForm(
+  value: number | string
+): Promise<string | number> {
+  try {
+    const res = await wolframApiClient.getFull(value.toString());
+    const pod = res?.pods?.find((p) => p.id === "PossibleClosedForm");
+    if (!pod) {
+      return value;
+    }
+
+    pod.subpods.sort((a, b) => {
+      const aContainsSpecial =
+        a.plaintext.includes("log") ||
+        a.plaintext.includes("e") ||
+        a.plaintext.includes("π");
+      const bContainsSpecial =
+        b.plaintext.includes("log") ||
+        b.plaintext.includes("e") ||
+        b.plaintext.includes("π");
+      const aContainsNear = a.plaintext.includes("near");
+      const bContainsNear = b.plaintext.includes("near");
+
+      if (aContainsSpecial && !aContainsNear) {
+        return -1;
+      }
+
+      if (bContainsSpecial && !bContainsNear) {
+        return 1;
+      }
+
+      if (aContainsSpecial && aContainsNear) {
+        return -1;
+      }
+
+      if (bContainsSpecial && bContainsNear) {
+        return 1;
+      }
+
+      return Math.random() - 0.5;
+    });
+
+    const randomSubpod = pod.subpods[0];
+
+    const text = randomSubpod.plaintext;
+
+    if (text.includes("=") && !text.includes("near") && !text.includes("≈")) {
+      return text.split("=")[0].trim();
+    }
+
+    return randomSubpod.plaintext.split("≈")[0].trim();
+  } catch {
+    return value;
+  }
 }
