@@ -18,7 +18,6 @@ export default {
         `🏓`,
         `WebSocket: \`${wsClosedForm} ms\``,
         `Rest: \`${restClosedForm} ms\``,
-        `||(\`${ws} ms\`, \`${rest} ms\`)||`,
       ].join("\n"),
     });
   },
