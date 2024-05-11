@@ -1,6 +1,7 @@
-import { spawnSync } from "bun";
+import WolframAlphaAPI from "@wolfram-alpha/wolfram-alpha-api";
 import { dependencies } from "../package.json";
 import { sliceIfStartsWith } from "./util.ts";
+import { spawnSync } from "bun";
 
 export const COMMIT_HASH = spawnSync({
   cmd: ["git", "log", "--pretty=format:%h", "-n", "1"],
@@ -50,3 +51,5 @@ export const BUN_EMOJIS = [
 
 export const MDN_API = "https://developer.mozilla.org";
 export const MDN_DISCORD_EMOJI = "mdn:1236028636826566758";
+
+export const wolframApiClient = WolframAlphaAPI(process.env.WOLFRAM_ALPHA);
