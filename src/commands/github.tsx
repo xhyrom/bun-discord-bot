@@ -268,7 +268,7 @@ async function search(
         type: item.pull_request ? "🔨" : "🐛",
       },
       created_at: new Date(item.created_at),
-      closed_at: item.closed_at ? new Date(item.cloased_at) : null,
+      closed_at: item.closed_at ? new Date(item.closed_at) : null,
     };
 
     if (item.pull_request) {
