@@ -15,6 +15,7 @@
     "@lilybird/jsx": "0.2.0",
     "@lilybird/transformers": "^0.2.0",
     "@paperdave/logger": "^3.0.1",
+    "@purplet/serialize": "^2.0.0",
     "@wolfram-alpha/wolfram-alpha-api": "^23.1004.144821-RELEASE",
     "algoliasearch": "^4.23.2",
     "bun-tracestrings": "github:oven-sh/bun.report",
