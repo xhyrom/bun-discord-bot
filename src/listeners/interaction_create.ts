@@ -32,7 +32,7 @@ export default {
             `\`${restClosedForm}\``,
             `\`≈ ${rest} ms\``,
             "",
-            "Mathematics is the language of the universe, it's truly fascinating! And being a software engineer requires a deep understanding of this language. It's not an easy field, but it's incredibly rewarding. 😄",
+            "Mathematics is the language of the universe, it's truly fascinating! 😄",
           ].join("\n"),
           ephemeral: true,
         })

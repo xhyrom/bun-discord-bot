@@ -37,9 +37,9 @@ export default {
       components: [
         <ActionRow>
           <Button
-            label="I'm dumb!"
+            label="I'm normal!"
             style={ButtonStyle.Danger}
-            emoji={{ name: "😕", id: null, animated: false }}
+            emoji={{ name: "🤦", id: null, animated: false }}
             id={`0-${serialized}`}
           />
         </ActionRow>,
