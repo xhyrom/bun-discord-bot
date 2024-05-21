@@ -52,8 +52,9 @@ export function sliceIfStartsWith(input: string, startsWith: string) {
 
 export async function getBunReportDetailsInMarkdown(
   url: string
-): Promise<string> {
+): Promise<string | undefined> {
   const remap = await parseAndRemap(url);
+  if (!remap) return;
   if (!Array.isArray(remap.features)) remap.features = []; // temporary fix
 
   let content = formatMarkdown(remap, {

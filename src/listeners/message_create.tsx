@@ -124,6 +124,7 @@ async function handleBunReportLink(message: Message): Promise<void> {
   if (!match?.[0]) return;
 
   const data = await getBunReportDetailsInMarkdown(match[0]);
+  if (!data) return;
 
   // @ts-expect-error allowed_mentions
   message.reply({
