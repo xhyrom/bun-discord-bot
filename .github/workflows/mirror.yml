@@ -1,0 +1,21 @@
+name: Sync to Mirror
+
+on:
+  - push
+  - delete
+
+jobs:
+  sync-codeberg:
+    if: github.repository_owner == 'xHyroM'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Synchronize code to other Git platforms
+        uses: wangchucheng/git-repo-sync@v0.1.0
+        with:
+          target-url: "https://codeberg.org/xHyroM/bun-discord-bot.git"
+          target-username: ${{ secrets.CODEBERG_USERNAME }}
+          target-token: ${{ secrets.CODEBERG_TOKEN }}
