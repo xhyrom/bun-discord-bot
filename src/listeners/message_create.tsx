@@ -91,7 +91,6 @@ async function handleGithubLink(message: Message): Promise<void> {
 
   if (extension === "zig") extension = "rs";
 
-  // @ts-expect-error allowed_mentions
   message.reply({
     content: `***${basename(path)}*** — *(L${firstLineNumber + 1}${secondLineNumber ? `-L${secondLineNumber}` : ""
       })*\n\`\`\`${extension}\n${safeSlice(
@@ -123,7 +122,6 @@ async function handleBunReportLink(message: Message): Promise<void> {
   const data = await getBunReportDetailsInMarkdown(match[0]);
   if (!data) return;
 
-  // @ts-expect-error allowed_mentions
   message.reply({
     content: data,
     allowed_mentions: {

@@ -1,9 +1,9 @@
 // https://github.com/discordjs/discord-utils-bot/blob/main/src/functions/autocomplete/mdnAutoComplete.ts#L23-L47 thanks
 // https://github.com/discordjs/discord-utils-bot/blob/main/src/functions/mdn.ts#L59C1-L78C3 thanks
+import { ApplicationCommandOptionType, AllowedMentionType } from "lilybird";
 import { $applicationCommand } from "@lilybird/handlers/advanced";
 import { MDN_API, MDN_DISCORD_EMOJI } from "src/constants.ts";
 import { safeSlice, silently } from "src/util.ts";
-import { ApplicationCommandOptionType } from "lilybird";
 
 type MDNIndexEntry = {
   title: string;
@@ -99,14 +99,13 @@ $applicationCommand({
       intro,
     ];
 
-    // @ts-expect-error allowed_mentions
     await interaction.editReply({
       content: [
         target ? `*Suggestion for <@${target}>:*\n` : "",
         parts.join("\n"),
       ].join("\n"),
       allowed_mentions: {
-        parse: target ? ["users"] : [],
+        parse: target ? [AllowedMentionType.UserMentions] : [],
       },
     });
   },

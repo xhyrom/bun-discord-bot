@@ -1,5 +1,6 @@
 import { MessageCommand } from "@lilybird/handlers/simple";
 import { searchTag } from "../loaders/tags.ts";
+import { AllowedMentionType } from "lilybird";
 
 export default {
   name: "tag",
@@ -15,7 +16,6 @@ export default {
     const tag = searchTag(await message.fetchChannel(), keyword, false);
     if (!keyword || !tag) return; // just ignore
 
-    // @ts-expect-error allowed_mentions
     message.reply({
       content: [
         resolvedTarget ? `*Suggestion for <@${resolvedTarget.id}>:*\n` : "",
@@ -23,7 +23,7 @@ export default {
         tag.answer,
       ].join("\n"),
       allowed_mentions: {
-        parse: resolvedTarget ? ["users"] : [],
+        parse: resolvedTarget ? [AllowedMentionType.UserMentions] : [],
       },
     });
   },

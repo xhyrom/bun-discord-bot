@@ -84,7 +84,6 @@ $applicationCommand({
 
     const result = (await search(query, state, type))[0];
     if (!result) {
-      // @ts-expect-error allowed_mentions
       interaction.editReply({
         content: `❌ Couldn't find issue or pull request \`${query}\``,
         allowed_mentions: {
@@ -94,7 +93,6 @@ $applicationCommand({
       return;
     }
 
-    // @ts-expect-error allowed_mentions
     interaction.editReply({
       content: [
         `${result.emoji.type} ${result.emoji.state} [#${result.number

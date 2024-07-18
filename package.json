@@ -20,6 +20,6 @@
     "algoliasearch": "^4.23.2",
     "bun-tracestrings": "github:oven-sh/bun.report",
     "gray-matter": "^4.0.3",
-    "lilybird": "^0.7.1"
+    "lilybird": "^0.7.3"
   }
 }

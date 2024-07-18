@@ -1,5 +1,5 @@
+import { AllowedMentionType, ApplicationCommandOptionType } from "lilybird";
 import { $applicationCommand } from "@lilybird/handlers/advanced";
-import { ApplicationCommandOptionType } from "lilybird";
 import algoliasearch from "algoliasearch";
 import { safeSlice } from "src/util.ts";
 
@@ -74,11 +74,10 @@ $applicationCommand({
         : "",
     ].join("\n");
 
-    // @ts-expect-error allowed_mentions
     await interaction.editReply({
       content,
       allowed_mentions: {
-        parse: target ? ["users"] : [],
+        parse: target ? [AllowedMentionType.UserMentions] : [],
       },
     });
   },

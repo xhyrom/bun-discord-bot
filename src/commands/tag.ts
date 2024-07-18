@@ -1,6 +1,6 @@
+import { AllowedMentionType, ApplicationCommandOptionType } from "lilybird";
 import { $applicationCommand } from "@lilybird/handlers/advanced";
 import { getTags, searchTag } from "../loaders/tags.ts";
-import { ApplicationCommandOptionType } from "lilybird";
 
 $applicationCommand({
   name: "tag",
@@ -27,7 +27,6 @@ $applicationCommand({
 
     const tag = searchTag(interaction.channel, query, false);
     if (!tag) {
-      // @ts-expect-error allowed_mentions
       return interaction.reply({
         content: `\`❌\` Could not find a tag \`${query}\``,
         ephemeral: true,
@@ -37,7 +36,6 @@ $applicationCommand({
       });
     }
 
-    // @ts-expect-error allowed_mentions
     await interaction.reply({
       content: [
         target ? `*Suggestion for <@${target}>:*\n` : "",
@@ -45,7 +43,7 @@ $applicationCommand({
         tag.answer,
       ].join("\n"),
       allowed_mentions: {
-        parse: target ? ["users"] : [],
+        parse: target ? [AllowedMentionType.UserMentions] : [],
       },
     });
   },
