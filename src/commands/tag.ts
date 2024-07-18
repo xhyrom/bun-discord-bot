@@ -1,25 +1,26 @@
-import {
-  ApplicationCommand as JSXApplicationCommand,
-  StringOption,
-  UserOption,
-} from "@lilybird/jsx";
+import { $applicationCommand } from "@lilybird/handlers/advanced";
 import { getTags, searchTag } from "../loaders/tags.ts";
-import { ApplicationCommand } from "@lilybird/handlers";
+import { ApplicationCommandOptionType } from "lilybird";
 
-export default {
-  post: "GLOBAL",
-  data: (
-    <JSXApplicationCommand name="tag" description="Get tag">
-      <StringOption
-        name="query"
-        description="Select query"
-        required
-        autocomplete
-      />
-      <UserOption name="target" description="User to mention" />
-    </JSXApplicationCommand>
-  ),
-  run: async (interaction) => {
+$applicationCommand({
+  name: "tag",
+  description: "Get tag",
+  options: [
+    {
+
+      type: ApplicationCommandOptionType.STRING,
+      name: "query",
+      description: "Select query",
+      required: true,
+      autocomplete: true
+    },
+    {
+      type: ApplicationCommandOptionType.USER,
+      name: "target",
+      description: "User to mention"
+    }
+  ],
+  handle: async (interaction) => {
     if (!interaction.inGuild()) return;
     const query = interaction.data.getString("query", true);
     const target = interaction.data.getUser("target");
@@ -60,4 +61,4 @@ export default {
 
     return await interaction.showChoices(getTags(interaction.channel, 25));
   },
-} satisfies ApplicationCommand;
+});

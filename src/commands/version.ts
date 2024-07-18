@@ -1,3 +1,5 @@
+import { $applicationCommand } from "@lilybird/handlers/advanced";
+
 import {
   COMMIT_HASH,
   PRODUCTION,
@@ -5,17 +7,14 @@ import {
   LILYBIRD_HANDLERS_VERSION,
   LILYBIRD_JSX_VERSION,
 } from "../constants.ts";
-import { ApplicationCommand as JSXApplicationCommand } from "@lilybird/jsx";
-import { ApplicationCommand } from "@lilybird/handlers";
 
-export default {
-  post: "GLOBAL",
-  data: <JSXApplicationCommand name="version" description="Show version" />,
-  run: (interaction) => {
+$applicationCommand({
+  name: "version",
+  description: "Show version",
+  handle: (interaction) => {
     interaction.reply({
       content: [
-        `[git-bun-discord-bot-${COMMIT_HASH}](<https://github.com/xHyroM/bun-discord-bot/tree/${COMMIT_HASH}>) ${
-          !PRODUCTION ? "(dev)" : ""
+        `[git-bun-discord-bot-${COMMIT_HASH}](<https://github.com/xHyroM/bun-discord-bot/tree/${COMMIT_HASH}>) ${!PRODUCTION ? "(dev)" : ""
         }`,
         `[Bun v${Bun.version} (${Bun.revision})](<https://github.com/oven-sh/bun/releases/tag/bun-v${Bun.version}>)`,
         "",
@@ -26,4 +25,4 @@ export default {
       ephemeral: true,
     });
   },
-} satisfies ApplicationCommand;
+});

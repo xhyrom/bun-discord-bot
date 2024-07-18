@@ -1,17 +1,42 @@
-import {
-  ActionRow,
-  Button,
-  ApplicationCommand as JSXApplicationCommand,
-} from "@lilybird/jsx";
-import { ApplicationCommand } from "@lilybird/handlers";
+import { $applicationCommand } from "@lilybird/handlers/advanced";
 import { serializers as S } from "@purplet/serialize";
-import { possibleClosedForm } from "../util.ts";
-import { ButtonStyle } from "lilybird";
+import { ActionRow, Button } from "@lilybird/jsx";
+import { possibleClosedForm, silently } from "../util.ts";
+import { ButtonStyle, ComponentType } from "lilybird";
 
-export default {
-  post: "GLOBAL",
-  data: <JSXApplicationCommand name="ping" description="pong" />,
-  run: async (interaction) => {
+$applicationCommand({
+  name: "ping",
+  description: "pong",
+  components: [{
+    type: ComponentType.Button,
+    id: "ping",
+    customMatcher: `custom_id[0] == "0" && custom_id[1] == "-"`,
+    handle: (interaction) => {
+      const combined = interaction.data.id.split("-")?.[1];
+      if (!combined) return;
+
+      const [ws, wsClosedForm, rest, restClosedForm] = S.generic.decodeCustomId(combined);
+
+      silently(
+        interaction.reply({
+          content: [
+            `🏓`,
+            "**WebSocket:**",
+            `\`${wsClosedForm}\``,
+            `\`≈ ${ws} ms\``,
+            "",
+            "**Rest:**",
+            `\`${restClosedForm}\``,
+            `\`≈ ${rest} ms\``,
+            "",
+            "Mathematics is the language of the universe, it's truly fascinating! 😄",
+          ].join("\n"),
+          ephemeral: true,
+        })
+      );
+    }
+  }],
+  handle: async (interaction) => {
     await interaction.deferReply();
 
     const { ws, rest } = await interaction.client.ping();
@@ -46,4 +71,4 @@ export default {
       ],
     });
   },
-} satisfies ApplicationCommand;
+});

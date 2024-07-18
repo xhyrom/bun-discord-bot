@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionChoiceStructure } from "lilybird";
 import { PartialChannel, GuildTextChannel } from "@lilybird/transformers";
+import { ApplicationCommand } from "lilybird";
 import { Tag } from "../structs/Tag.ts";
 import { readFileSync } from "node:fs";
 import { safeSlice } from "../util.ts";
@@ -49,9 +49,9 @@ function getAvailableTags(channel: PartialGuildTextChannel) {
 export function getTags(
   channel: PartialGuildTextChannel,
   length: number
-): Array<ApplicationCommandOptionChoiceStructure> {
+): Array<ApplicationCommand.Option.ChoiceStructure> {
   const availableTags = getAvailableTags(channel);
-  return safeSlice<Array<ApplicationCommandOptionChoiceStructure>>(
+  return safeSlice<Array<ApplicationCommand.Option.ChoiceStructure>>(
     availableTags.map((tag) => ({
       name: `🚀 ${tag.question}`,
       value: tag.question,
@@ -64,7 +64,7 @@ export function searchTag<T extends boolean>(
   channel: PartialGuildTextChannel,
   providedQuery: string,
   multiple?: T
-): T extends true ? Array<ApplicationCommandOptionChoiceStructure> : Tag {
+): T extends true ? Array<ApplicationCommand.Option.ChoiceStructure> : Tag {
   const availableTags = getAvailableTags(channel);
   const query = providedQuery?.toLowerCase()?.replace(/-/g, " ");
 
@@ -84,14 +84,14 @@ export function searchTag<T extends boolean>(
 
     const tag = exactKeyword ?? questionMatch ?? keywordMatch ?? answerMatch;
     return tag as T extends true
-      ? Array<ApplicationCommandOptionChoiceStructure>
+      ? Array<ApplicationCommand.Option.ChoiceStructure>
       : Tag;
   }
 
-  const exactKeywords: Array<ApplicationCommandOptionChoiceStructure> = [];
-  const keywordMatches: Array<ApplicationCommandOptionChoiceStructure> = [];
-  const questionMatches: Array<ApplicationCommandOptionChoiceStructure> = [];
-  const answerMatches: Array<ApplicationCommandOptionChoiceStructure> = [];
+  const exactKeywords: Array<ApplicationCommand.Option.ChoiceStructure> = [];
+  const keywordMatches: Array<ApplicationCommand.Option.ChoiceStructure> = [];
+  const questionMatches: Array<ApplicationCommand.Option.ChoiceStructure> = [];
+  const answerMatches: Array<ApplicationCommand.Option.ChoiceStructure> = [];
 
   for (const tag of availableTags) {
     const exactKeyword = tag.keywords.find((t) => t.toLowerCase() === query);
@@ -131,6 +131,6 @@ export function searchTag<T extends boolean>(
     ...answerMatches,
   ];
   return tags as T extends true
-    ? Array<ApplicationCommandOptionChoiceStructure>
+    ? Array<ApplicationCommand.Option.ChoiceStructure>
     : Tag;
 }

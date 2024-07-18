@@ -1,9 +1,9 @@
+import { $listener } from "../handler.ts";
 import { moderateNick } from "../util.ts";
-import { Event } from "@lilybird/handlers";
 
-export default {
+$listener({
   event: "guildMemberAdd",
-  run: (member) => {
+  handle: (member) => {
     moderateNick(member);
   },
-} satisfies Event<"guildMemberAdd">;
+});

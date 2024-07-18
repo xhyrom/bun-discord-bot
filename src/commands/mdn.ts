@@ -1,15 +1,9 @@
 // https://github.com/discordjs/discord-utils-bot/blob/main/src/functions/autocomplete/mdnAutoComplete.ts#L23-L47 thanks
 // https://github.com/discordjs/discord-utils-bot/blob/main/src/functions/mdn.ts#L59C1-L78C3 thanks
-
-import {
-  BooleanOption,
-  ApplicationCommand as JSXApplicationCommand,
-  StringOption,
-  UserOption,
-} from "@lilybird/jsx";
-import { ApplicationCommand } from "@lilybird/handlers";
+import { $applicationCommand } from "@lilybird/handlers/advanced";
 import { MDN_API, MDN_DISCORD_EMOJI } from "src/constants.ts";
 import { safeSlice, silently } from "src/util.ts";
+import { ApplicationCommandOptionType } from "lilybird";
 
 type MDNIndexEntry = {
   title: string;
@@ -43,25 +37,29 @@ const MDN_DATA = (await (
 
 const cache = new Map<string, Document>();
 
-export default {
-  post: "GLOBAL",
-  data: (
-    <JSXApplicationCommand
-      name="mdn"
-      description="Search the Mozilla Developer Network documentation"
-    >
-      <StringOption
-        name="query"
-        description="Class or method to search for"
-        required
-        autocomplete
-        max_length={100}
-      />
-      <UserOption name="target" description="User to mention" />
-      <BooleanOption name="hide" description="Show this message only for you" />
-    </JSXApplicationCommand>
-  ),
-  run: async (interaction) => {
+$applicationCommand({
+
+  name: "mdn",
+  description: "Search the Mozilla Developer Network documentation",
+  options: [
+    {
+      type: ApplicationCommandOptionType.STRING,
+      name: "query",
+      description: "Class or method to search for",
+      required: true,
+      autocomplete: true,
+      max_length: 100
+    }, {
+      type: ApplicationCommandOptionType.USER,
+      name: "target",
+      description: "User to mention"
+    }, {
+      type: ApplicationCommandOptionType.BOOLEAN,
+      name: "hide",
+      description: "Show this message only for you"
+    }
+  ],
+  handle: async (interaction) => {
     const hide = interaction.data.getBoolean("hide") ?? false;
 
     await interaction.deferReply(hide);
@@ -151,7 +149,7 @@ export default {
       )
     );
   },
-} satisfies ApplicationCommand;
+});
 
 function escape(text: string) {
   return text.replaceAll("||", "|\u200B|").replaceAll("*", "\\*");

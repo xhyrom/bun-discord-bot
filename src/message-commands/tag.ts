@@ -1,4 +1,4 @@
-import { MessageCommand } from "@lilybird/handlers";
+import { MessageCommand } from "@lilybird/handlers/simple";
 import { searchTag } from "../loaders/tags.ts";
 
 export default {

@@ -1,13 +1,14 @@
-import { Event } from "@lilybird/handlers";
 import { PartialMessage } from "@lilybird/transformers";
 import { isBunOnlyLikeMessage } from "src/util.ts";
+import { $listener } from "../handler.ts";
 
-export default {
+
+$listener({
   event: "messageUpdate",
-  run: async (message) => {
+  handle: (message) => {
     if (handleBunOnlyChannel(message)) return;
   },
-} satisfies Event<"messageUpdate">;
+});
 
 function handleBunOnlyChannel(message: PartialMessage): boolean {
   if (message.channelId !== process.env.BUN_ONLY_CHANNEL_ID) return false;
