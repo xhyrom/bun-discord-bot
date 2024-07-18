@@ -1,9 +1,8 @@
 import "./loaders/tags.ts";
 
+import { SimpleTransformers, transformers, handler } from "./handler.ts";
 import { ClientListeners, Intents, createClient } from "lilybird";
 import { createHandler } from "@lilybird/handlers/simple";
-import { handler } from "@lilybird/handlers/advanced";
-import { SimpleTransformers, transformers } from "./handler.ts";
 import { info } from "@paperdave/logger"
 
 // Make sure bubu will not crash
