@@ -34,8 +34,6 @@ interface Item {
 }
 
 $applicationCommand({
-
-
   name: "github",
   description: "Query an issue, pull request or direct link to issue, pull request",
   options: [
