@@ -1,32 +1,32 @@
-import {
-  ApplicationCommand as JSXApplicationCommand,
-  StringOption,
-  UserOption,
-} from "@lilybird/jsx";
+import { AllowedMentionType, ApplicationCommandOptionType } from "lilybird";
+import { $applicationCommand } from "@lilybird/handlers/advanced";
 import { getTags, searchTag } from "../loaders/tags.ts";
-import { ApplicationCommand } from "@lilybird/handlers";
 
-export default {
-  post: "GLOBAL",
-  data: (
-    <JSXApplicationCommand name="tag" description="Get tag">
-      <StringOption
-        name="query"
-        description="Select query"
-        required
-        autocomplete
-      />
-      <UserOption name="target" description="User to mention" />
-    </JSXApplicationCommand>
-  ),
-  run: async (interaction) => {
+$applicationCommand({
+  name: "tag",
+  description: "Get tag",
+  options: [
+    {
+
+      type: ApplicationCommandOptionType.STRING,
+      name: "query",
+      description: "Select query",
+      required: true,
+      autocomplete: true
+    },
+    {
+      type: ApplicationCommandOptionType.USER,
+      name: "target",
+      description: "User to mention"
+    }
+  ],
+  handle: async (interaction) => {
     if (!interaction.inGuild()) return;
     const query = interaction.data.getString("query", true);
     const target = interaction.data.getUser("target");
 
     const tag = searchTag(interaction.channel, query, false);
     if (!tag) {
-      // @ts-expect-error allowed_mentions
       return interaction.reply({
         content: `\`❌\` Could not find a tag \`${query}\``,
         ephemeral: true,
@@ -36,7 +36,6 @@ export default {
       });
     }
 
-    // @ts-expect-error allowed_mentions
     await interaction.reply({
       content: [
         target ? `*Suggestion for <@${target}>:*\n` : "",
@@ -44,7 +43,7 @@ export default {
         tag.answer,
       ].join("\n"),
       allowed_mentions: {
-        parse: target ? ["users"] : [],
+        parse: target ? [AllowedMentionType.UserMentions] : [],
       },
     });
   },
@@ -60,4 +59,4 @@ export default {
 
     return await interaction.showChoices(getTags(interaction.channel, 25));
   },
-} satisfies ApplicationCommand;
+});

@@ -14,7 +14,7 @@ export function safeSlice<T extends string | Array<any>>(
 export async function silently<T>(value: Promise<T>) {
   try {
     await value;
-  } catch {}
+  } catch { }
 }
 
 export async function moderateNick(member: GuildMember) {

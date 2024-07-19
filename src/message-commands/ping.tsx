@@ -1,5 +1,5 @@
+import { MessageCommand } from "@lilybird/handlers/simple";
 import { serializers as S } from "@purplet/serialize";
-import { MessageCommand } from "@lilybird/handlers";
 import { ActionRow, Button } from "@lilybird/jsx";
 import { possibleClosedForm } from "../util.ts";
 import { ButtonStyle } from "lilybird";

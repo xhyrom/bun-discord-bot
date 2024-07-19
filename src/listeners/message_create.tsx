@@ -1,8 +1,9 @@
-import { ButtonStyle } from "lilybird";
-import { Message } from "@lilybird/transformers";
 import { ActionRow, Button } from "@lilybird/jsx";
+import { Message } from "@lilybird/transformers";
 import { extname, basename } from "node:path";
-import { Event } from "@lilybird/handlers";
+import { $listener } from "../handler.ts";
+import { ButtonStyle } from "lilybird";
+
 import {
   getBunReportDetailsInMarkdown,
   getRandomBunEmoji,
@@ -12,18 +13,16 @@ import {
 
 const GITHUB_LINE_URL_REGEX =
   /(?:https?:\/\/)?(?:www\.)?(?:github)\.com\/(?<repo>[a-zA-Z0-9-_]+\/[A-Za-z0-9_.-]+)\/blob\/(?<path>.+?)#L(?<first_line_number>\d+)[-~]?L?(?<second_line_number>\d*)/i;
-const TWITTER_TWEET_URL_REGEX =
-  /https:\/\/(?:www\.)?(?:twitter|x)\.com\/(?<user>[a-zA-Z0-9-_]+)\/status\/(?<id>\d+)/i;
 const BUN_REPORT_URL_REGEX = /(https:\/\/bun\.report\/\d+\.\d+(\.\d+)?\/\S+)/g;
 
-export default {
+$listener({
   event: "messageCreate",
-  run: async (message) => {
+  handle: (message) => {
     if (handleBunOnlyChannel(message)) return;
     if (!message.content?.toLowerCase().startsWith(process.env.MESSAGE_PREFIX))
       return handleOthers(message);
   },
-} satisfies Event<"messageCreate">;
+});
 
 function handleOthers(message: Message): void {
   handleGithubLink(message);
@@ -92,21 +91,18 @@ async function handleGithubLink(message: Message): Promise<void> {
 
   if (extension === "zig") extension = "rs";
 
-  // @ts-expect-error allowed_mentions
   message.reply({
-    content: `***${basename(path)}*** — *(L${firstLineNumber + 1}${
-      secondLineNumber ? `-L${secondLineNumber}` : ""
-    })*\n\`\`\`${extension}\n${safeSlice(
-      text,
-      2000 - 6 - extension.length
-    )}\n\`\`\``,
+    content: `***${basename(path)}*** — *(L${firstLineNumber + 1}${secondLineNumber ? `-L${secondLineNumber}` : ""
+      })*\n\`\`\`${extension}\n${safeSlice(
+        text,
+        2000 - 6 - extension.length
+      )}\n\`\`\``,
     components: [
       <ActionRow>
         <Button
           style={ButtonStyle.Link}
-          url={`https://github.com/${repo}/blob/${path}#L${
-            firstLineNumber + 1
-          }${secondLineNumber ? `-L${secondLineNumber}` : ""}`}
+          url={`https://github.com/${repo}/blob/${path}#L${firstLineNumber + 1
+            }${secondLineNumber ? `-L${secondLineNumber}` : ""}`}
           label={repo}
         />
       </ActionRow>,
@@ -126,7 +122,6 @@ async function handleBunReportLink(message: Message): Promise<void> {
   const data = await getBunReportDetailsInMarkdown(match[0]);
   if (!data) return;
 
-  // @ts-expect-error allowed_mentions
   message.reply({
     content: data,
     allowed_mentions: {

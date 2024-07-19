@@ -1,10 +1,6 @@
-import {
-  ApplicationCommand as JSXApplicationCommand,
-  BooleanOption,
-  CommandOptions,
-  StringOption,
-} from "@lilybird/jsx";
-import { ApplicationCommand } from "@lilybird/handlers";
+
+import { $applicationCommand } from "@lilybird/handlers/advanced";
+import { ApplicationCommandOptionType } from "lilybird";
 import { safeSlice, silently } from "../util.ts";
 
 type State =
@@ -37,56 +33,57 @@ interface Item {
   };
 }
 
-export default {
-  post: "GLOBAL",
-  data: (
-    <JSXApplicationCommand
-      name="github"
-      description="Query an issue, pull request or direct link to issue, pull request"
-    >
-      <StringOption
-        name="query"
-        description="Issue/Pull request number or name"
-        autocomplete
-        required
-        max_length={100}
-      />
-      <StringOption name="state" description="Issue or Pull request state">
-        <CommandOptions name="🔴🟠 Open" value="open" />
-        <CommandOptions
-          name="🟢 Closed as completed"
-          value="closed_as_completed"
-        />
-        <CommandOptions
-          name="⚪️ Closed as not planned"
-          value="closed_as_not_planned"
-        />
-        <CommandOptions name="⚫️ Closed" value="closed" />
-        <CommandOptions name="🟣 Merged" value="merged" />
-        <CommandOptions name="📝 Draft" value="draft" />
-        <CommandOptions name="🌍 All" value="all" />
-      </StringOption>
-      <StringOption name="type" description="Issue/Pull request number or name">
-        <CommandOptions name="🐛 Issues" value="issues" />
-        <CommandOptions name="🔨 Pull Requests" value="pull_requests" />
-        <CommandOptions name="🌍 Both" value="both" />
-      </StringOption>
-      <BooleanOption name="hide" description="Show this message only for you" />
-    </JSXApplicationCommand>
-  ),
-  run: async (interaction) => {
+$applicationCommand({
+  name: "github",
+  description: "Query an issue, pull request or direct link to issue, pull request",
+  options: [
+    {
+      type: ApplicationCommandOptionType.STRING,
+      name: "query",
+      description: "Issue/Pull request number or name",
+      autocomplete: true,
+      required: true,
+      max_length: 100
+    }, {
+      type: ApplicationCommandOptionType.STRING,
+      name: "state",
+      description: "Issue or Pull request state",
+      choices: [
+        { name: "🔴🟠 Open", value: "open" },
+        { name: "🟢 Closed as completed", value: "closed_as_completed" },
+        { name: "⚪️ Closed as not planned", value: "closed_as_not_planned" },
+        { name: "⚫️ Closed", value: "closed" },
+        { name: "🟣 Merged", value: "merged" },
+        { name: "📝 Draft", value: "draft" },
+        { name: "🌍 All", value: "all" }
+      ]
+    }, {
+      type: ApplicationCommandOptionType.STRING,
+      name: "type",
+      description: "Issue/Pull request number or name",
+      choices: [
+        { name: "🐛 Issues", value: "issues" },
+        { name: "🔨 Pull Requests", value: "pull_requests" },
+        { name: "🌍 Both", value: "both" }
+      ],
+    },
+    {
+      type: ApplicationCommandOptionType.BOOLEAN,
+      name: "hide",
+      description: "Show this message only for you"
+    }
+  ],
+  handle: async (interaction) => {
     const hide = interaction.data.getBoolean("hide") ?? false;
 
     await interaction.deferReply(hide);
 
     const query = interaction.data.getString("query", true);
-    const state: State =
-      (interaction.data.getString("state") as State) || "all";
+    const state: State = (interaction.data.getString("state") as State) || "all";
     const type: Type = (interaction.data.getString("type") as Type) || "both";
 
     const result = (await search(query, state, type))[0];
     if (!result) {
-      // @ts-expect-error allowed_mentions
       interaction.editReply({
         content: `❌ Couldn't find issue or pull request \`${query}\``,
         allowed_mentions: {
@@ -96,13 +93,10 @@ export default {
       return;
     }
 
-    // @ts-expect-error allowed_mentions
     interaction.editReply({
       content: [
-        `${result.emoji.type} ${result.emoji.state} [#${
-          result.number
-        } in oven-sh/bun](<${result.html_url}>) by [${result.user.login}](<${
-          result.user.html_url
+        `${result.emoji.type} ${result.emoji.state} [#${result.number
+        } in oven-sh/bun](<${result.html_url}>) by [${result.user.login}](<${result.user.html_url
         }>) ${stateToText(result)} ${stateToTimestamp(result)}`,
         result.title,
       ].join("\n"),
@@ -111,7 +105,6 @@ export default {
       },
     });
   },
-
   autocomplete: async (interaction) => {
     const query = interaction.data.getFocused<string>().value;
     const state: State =
@@ -132,7 +125,7 @@ export default {
       )
     );
   },
-} satisfies ApplicationCommand;
+});
 
 function stateToText(item: Item) {
   switch (item.emoji.state) {

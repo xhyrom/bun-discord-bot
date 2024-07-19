@@ -1,9 +1,5 @@
-import {
-  ApplicationCommand as JSXApplicationCommand,
-  StringOption,
-  UserOption,
-} from "@lilybird/jsx";
-import { ApplicationCommand } from "@lilybird/handlers";
+import { AllowedMentionType, ApplicationCommandOptionType } from "lilybird";
+import { $applicationCommand } from "@lilybird/handlers/advanced";
 import algoliasearch from "algoliasearch";
 import { safeSlice } from "src/util.ts";
 
@@ -14,19 +10,22 @@ const algoliaClient = algoliasearch(
 );
 const algoliaIndex = algoliaClient.initIndex("bun");
 
-export default {
-  post: "GLOBAL",
-  data: (
-    <JSXApplicationCommand name="docs" description="Search at docs">
-      <StringOption
-        name="query"
-        description="Select query"
-        required
-        autocomplete
-      />
-      <UserOption name="target" description="User to mention" />
-    </JSXApplicationCommand>
-  ),
+$applicationCommand({
+  name: "docs",
+  description: "Search at docs",
+  options: [
+    {
+      type: ApplicationCommandOptionType.STRING,
+      name: "query",
+      description: "Select query",
+      required: true,
+      autocomplete: true,
+    }, {
+      type: ApplicationCommandOptionType.USER,
+      name: "target",
+      description: "User to mention"
+    }
+  ],
   autocomplete: async (interaction) => {
     const query = interaction.data.getFocused<string>().value;
     const result = await algoliaIndex.search(query, {
@@ -44,7 +43,7 @@ export default {
       })
     );
   },
-  run: async (interaction) => {
+  handle: async (interaction) => {
     await interaction.deferReply();
 
     const query = interaction.data.getString("query");
@@ -69,21 +68,20 @@ export default {
       snippetContent ? snippetContent : "",
       notice
         ? notice
-            .split("\n")
-            .map((s: any) => `> ${s}`)
-            .join("\n")
+          .split("\n")
+          .map((s: any) => `> ${s}`)
+          .join("\n")
         : "",
     ].join("\n");
 
-    // @ts-expect-error allowed_mentions
     await interaction.editReply({
       content,
       allowed_mentions: {
-        parse: target ? ["users"] : [],
+        parse: target ? [AllowedMentionType.UserMentions] : [],
       },
     });
   },
-} satisfies ApplicationCommand;
+});
 
 function getHitName(hit: any) {
   const type = hit.hierarchy.lvl0 === "Documentation" ? "📖" : "🗺️";
