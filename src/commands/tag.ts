@@ -7,18 +7,17 @@ $applicationCommand({
   description: "Get tag",
   options: [
     {
-
       type: ApplicationCommandOptionType.STRING,
       name: "query",
       description: "Select query",
       required: true,
-      autocomplete: true
+      autocomplete: true,
     },
     {
       type: ApplicationCommandOptionType.USER,
       name: "target",
-      description: "User to mention"
-    }
+      description: "User to mention",
+    },
   ],
   handle: async (interaction) => {
     if (!interaction.inGuild()) return;

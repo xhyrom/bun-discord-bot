@@ -48,7 +48,7 @@ function getAvailableTags(channel: PartialGuildTextChannel) {
 
 export function getTags(
   channel: PartialGuildTextChannel,
-  length: number
+  length: number,
 ): Array<ApplicationCommand.Option.ChoiceStructure> {
   const availableTags = getAvailableTags(channel);
   return safeSlice<Array<ApplicationCommand.Option.ChoiceStructure>>(
@@ -56,30 +56,30 @@ export function getTags(
       name: `🚀 ${tag.question}`,
       value: tag.question,
     })),
-    length
+    length,
   );
 }
 
 export function searchTag<T extends boolean>(
   channel: PartialGuildTextChannel,
   providedQuery: string,
-  multiple?: T
+  multiple?: T,
 ): T extends true ? Array<ApplicationCommand.Option.ChoiceStructure> : Tag {
   const availableTags = getAvailableTags(channel);
   const query = providedQuery?.toLowerCase()?.replace(/-/g, " ");
 
   if (!multiple) {
     const exactKeyword = availableTags.find((tag) =>
-      tag.keywords.find((k) => k.toLowerCase() === query)
+      tag.keywords.find((k) => k.toLowerCase() === query),
     );
     const keywordMatch = availableTags.find((tag) =>
-      tag.keywords.find((k) => k.toLowerCase().includes(query))
+      tag.keywords.find((k) => k.toLowerCase().includes(query)),
     );
     const questionMatch = availableTags.find((tag) =>
-      tag.question.toLowerCase().includes(query)
+      tag.question.toLowerCase().includes(query),
     );
     const answerMatch = availableTags.find((tag) =>
-      tag.answer.toLowerCase().includes(query)
+      tag.answer.toLowerCase().includes(query),
     );
 
     const tag = exactKeyword ?? questionMatch ?? keywordMatch ?? answerMatch;
@@ -96,7 +96,7 @@ export function searchTag<T extends boolean>(
   for (const tag of availableTags) {
     const exactKeyword = tag.keywords.find((t) => t.toLowerCase() === query);
     const includesKeyword = tag.keywords.find((t) =>
-      t.toLowerCase().includes(query)
+      t.toLowerCase().includes(query),
     );
     const questionMatch = tag.question.toLowerCase().includes(query);
     const answerMatch = tag.answer.toLowerCase().includes(query);

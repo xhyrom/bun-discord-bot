@@ -5,10 +5,13 @@
   "type": "module",
   "scripts": {
     "start": "NODE_ENV=production bun src/index.ts",
-    "validate:tags": "bun scripts/validate_tags/index.ts"
+    "validate:tags": "bun scripts/validate_tags/index.ts",
+    "format:check": "prettier . --check",
+    "format:apply": "prettier . --write"
   },
   "devDependencies": {
-    "bun-types": "^1.1.6"
+    "bun-types": "^1.1.6",
+    "prettier": "3.3.3"
   },
   "dependencies": {
     "@lilybird/handlers": "^0.6.0-beta.9",

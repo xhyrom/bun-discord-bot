@@ -92,17 +92,19 @@ async function handleGithubLink(message: Message): Promise<void> {
   if (extension === "zig") extension = "rs";
 
   message.reply({
-    content: `***${basename(path)}*** — *(L${firstLineNumber + 1}${secondLineNumber ? `-L${secondLineNumber}` : ""
-      })*\n\`\`\`${extension}\n${safeSlice(
-        text,
-        2000 - 6 - extension.length
-      )}\n\`\`\``,
+    content: `***${basename(path)}*** — *(L${firstLineNumber + 1}${
+      secondLineNumber ? `-L${secondLineNumber}` : ""
+    })*\n\`\`\`${extension}\n${safeSlice(
+      text,
+      2000 - 6 - extension.length,
+    )}\n\`\`\``,
     components: [
       <ActionRow>
         <Button
           style={ButtonStyle.Link}
-          url={`https://github.com/${repo}/blob/${path}#L${firstLineNumber + 1
-            }${secondLineNumber ? `-L${secondLineNumber}` : ""}`}
+          url={`https://github.com/${repo}/blob/${path}#L${
+            firstLineNumber + 1
+          }${secondLineNumber ? `-L${secondLineNumber}` : ""}`}
           label={repo}
         />
       </ActionRow>,

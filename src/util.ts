@@ -6,7 +6,7 @@ const URL_REGEX = /\(\s*(https?:\/\/[^\s\[\]]+)\s*\)/gi;
 
 export function safeSlice<T extends string | Array<any>>(
   input: T,
-  length: number
+  length: number,
 ): T {
   return <T>(input.length > length ? input.slice(0, length) : input);
 }
@@ -14,7 +14,7 @@ export function safeSlice<T extends string | Array<any>>(
 export async function silently<T>(value: Promise<T>) {
   try {
     await value;
-  } catch { }
+  } catch {}
 }
 
 export async function moderateNick(member: GuildMember) {
@@ -27,7 +27,7 @@ export async function moderateNick(member: GuildMember) {
     member.modify({
       nick: normalizedName,
       reason: "lame username",
-    })
+    }),
   );
 }
 
@@ -38,7 +38,7 @@ export function isBunOnlyLikeMessage(content?: string) {
   return BUN_EMOJIS.some((emoji) =>
     emoji.animated
       ? content.replace(/<a:|>/g, "") == `${emoji.name}:${emoji.id}`
-      : content.replace(/<:|>/g, "") == `${emoji.name}:${emoji.id}`
+      : content.replace(/<:|>/g, "") == `${emoji.name}:${emoji.id}`,
   );
 }
 
@@ -51,7 +51,7 @@ export function sliceIfStartsWith(input: string, startsWith: string) {
 }
 
 export async function getBunReportDetailsInMarkdown(
-  url: string
+  url: string,
 ): Promise<string | undefined> {
   const remap = await parseAndRemap(url);
   if (!remap) return;
@@ -76,7 +76,7 @@ export async function getBunReportDetailsInMarkdown(
 }
 
 export async function possibleClosedForm(
-  value: number | string
+  value: number | string,
 ): Promise<string | number> {
   try {
     const res = await wolframApiClient.getFull(value.toString());

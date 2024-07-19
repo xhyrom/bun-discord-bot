@@ -1,4 +1,3 @@
-
 import { $applicationCommand } from "@lilybird/handlers/advanced";
 import { ApplicationCommandOptionType } from "lilybird";
 import { safeSlice, silently } from "../util.ts";
@@ -35,7 +34,8 @@ interface Item {
 
 $applicationCommand({
   name: "github",
-  description: "Query an issue, pull request or direct link to issue, pull request",
+  description:
+    "Query an issue, pull request or direct link to issue, pull request",
   options: [
     {
       type: ApplicationCommandOptionType.STRING,
@@ -43,8 +43,9 @@ $applicationCommand({
       description: "Issue/Pull request number or name",
       autocomplete: true,
       required: true,
-      max_length: 100
-    }, {
+      max_length: 100,
+    },
+    {
       type: ApplicationCommandOptionType.STRING,
       name: "state",
       description: "Issue or Pull request state",
@@ -55,23 +56,24 @@ $applicationCommand({
         { name: "⚫️ Closed", value: "closed" },
         { name: "🟣 Merged", value: "merged" },
         { name: "📝 Draft", value: "draft" },
-        { name: "🌍 All", value: "all" }
-      ]
-    }, {
+        { name: "🌍 All", value: "all" },
+      ],
+    },
+    {
       type: ApplicationCommandOptionType.STRING,
       name: "type",
       description: "Issue/Pull request number or name",
       choices: [
         { name: "🐛 Issues", value: "issues" },
         { name: "🔨 Pull Requests", value: "pull_requests" },
-        { name: "🌍 Both", value: "both" }
+        { name: "🌍 Both", value: "both" },
       ],
     },
     {
       type: ApplicationCommandOptionType.BOOLEAN,
       name: "hide",
-      description: "Show this message only for you"
-    }
+      description: "Show this message only for you",
+    },
   ],
   handle: async (interaction) => {
     const hide = interaction.data.getBoolean("hide") ?? false;
@@ -79,7 +81,8 @@ $applicationCommand({
     await interaction.deferReply(hide);
 
     const query = interaction.data.getString("query", true);
-    const state: State = (interaction.data.getString("state") as State) || "all";
+    const state: State =
+      (interaction.data.getString("state") as State) || "all";
     const type: Type = (interaction.data.getString("type") as Type) || "both";
 
     const result = (await search(query, state, type))[0];
@@ -95,8 +98,10 @@ $applicationCommand({
 
     interaction.editReply({
       content: [
-        `${result.emoji.type} ${result.emoji.state} [#${result.number
-        } in oven-sh/bun](<${result.html_url}>) by [${result.user.login}](<${result.user.html_url
+        `${result.emoji.type} ${result.emoji.state} [#${
+          result.number
+        } in oven-sh/bun](<${result.html_url}>) by [${result.user.login}](<${
+          result.user.html_url
         }>) ${stateToText(result)} ${stateToTimestamp(result)}`,
         result.title,
       ].join("\n"),
@@ -118,11 +123,11 @@ $applicationCommand({
         response.map((r) => ({
           name: safeSlice<string>(
             `${r.emoji.type} ${r.emoji.state} #${r.number} | ${r.title}`,
-            100
+            100,
           ),
           value: r.number.toString(),
-        }))
-      )
+        })),
+      ),
     );
   },
 });
@@ -178,7 +183,7 @@ async function search(
   query: string,
   state: State,
   type: Type,
-  length = 1
+  length = 1,
 ): Promise<Item[]> {
   let actualQuery = "repo:oven-sh/bun ";
 
@@ -225,14 +230,14 @@ async function search(
 
   const response = await fetch(
     `https://api.github.com/search/issues?q=${encodeURIComponent(
-      actualQuery
+      actualQuery,
     )}&per_page=${length}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
         Accept: "application/vnd.github+json",
       },
-    }
+    },
   );
 
   const body = await response.json();

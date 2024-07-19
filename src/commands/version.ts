@@ -14,7 +14,8 @@ $applicationCommand({
   handle: (interaction) => {
     interaction.reply({
       content: [
-        `[git-bun-discord-bot-${COMMIT_HASH}](<https://github.com/xHyroM/bun-discord-bot/tree/${COMMIT_HASH}>) ${!PRODUCTION ? "(dev)" : ""
+        `[git-bun-discord-bot-${COMMIT_HASH}](<https://github.com/xHyroM/bun-discord-bot/tree/${COMMIT_HASH}>) ${
+          !PRODUCTION ? "(dev)" : ""
         }`,
         `[Bun v${Bun.version} (${Bun.revision})](<https://github.com/oven-sh/bun/releases/tag/bun-v${Bun.version}>)`,
         "",

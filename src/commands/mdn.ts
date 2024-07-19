@@ -38,7 +38,6 @@ const MDN_DATA = (await (
 const cache = new Map<string, Document>();
 
 $applicationCommand({
-
   name: "mdn",
   description: "Search the Mozilla Developer Network documentation",
   options: [
@@ -48,16 +47,18 @@ $applicationCommand({
       description: "Class or method to search for",
       required: true,
       autocomplete: true,
-      max_length: 100
-    }, {
+      max_length: 100,
+    },
+    {
       type: ApplicationCommandOptionType.USER,
       name: "target",
-      description: "User to mention"
-    }, {
+      description: "User to mention",
+    },
+    {
       type: ApplicationCommandOptionType.BOOLEAN,
       name: "hide",
-      description: "Show this message only for you"
-    }
+      description: "Show this message only for you",
+    },
   ],
   handle: async (interaction) => {
     const hide = interaction.data.getBoolean("hide") ?? false;
@@ -73,7 +74,7 @@ $applicationCommand({
     if (!hit) {
       try {
         const result = (await fetch(key).then(async (response) =>
-          response.json()
+          response.json(),
         )) as APIResult;
         hit = result.doc;
       } catch {
@@ -143,9 +144,9 @@ $applicationCommand({
             name: candidate.entry.title,
             value: candidate.entry.url,
           })),
-          25
-        )
-      )
+          25,
+        ),
+      ),
     );
   },
 });

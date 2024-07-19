@@ -2,7 +2,6 @@ import { PartialMessage } from "@lilybird/transformers";
 import { isBunOnlyLikeMessage } from "src/util.ts";
 import { $listener } from "../handler.ts";
 
-
 $listener({
   event: "messageUpdate",
   handle: (message) => {

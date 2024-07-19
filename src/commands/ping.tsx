@@ -7,35 +7,38 @@ import { ButtonStyle, ComponentType } from "lilybird";
 $applicationCommand({
   name: "ping",
   description: "pong",
-  components: [{
-    type: ComponentType.Button,
-    id: "ping",
-    customMatcher: `custom_id[0] == "0" && custom_id[1] == "-"`,
-    handle: (interaction) => {
-      const combined = interaction.data.id.split("-")?.[1];
-      if (!combined) return;
+  components: [
+    {
+      type: ComponentType.Button,
+      id: "ping",
+      customMatcher: `custom_id[0] == "0" && custom_id[1] == "-"`,
+      handle: (interaction) => {
+        const combined = interaction.data.id.split("-")?.[1];
+        if (!combined) return;
 
-      const [ws, wsClosedForm, rest, restClosedForm] = S.generic.decodeCustomId(combined);
+        const [ws, wsClosedForm, rest, restClosedForm] =
+          S.generic.decodeCustomId(combined);
 
-      silently(
-        interaction.reply({
-          content: [
-            `🏓`,
-            "**WebSocket:**",
-            `\`${wsClosedForm}\``,
-            `\`≈ ${ws} ms\``,
-            "",
-            "**Rest:**",
-            `\`${restClosedForm}\``,
-            `\`≈ ${rest} ms\``,
-            "",
-            "Mathematics is the language of the universe, it's truly fascinating! 😄",
-          ].join("\n"),
-          ephemeral: true,
-        })
-      );
-    }
-  }],
+        silently(
+          interaction.reply({
+            content: [
+              `🏓`,
+              "**WebSocket:**",
+              `\`${wsClosedForm}\``,
+              `\`≈ ${ws} ms\``,
+              "",
+              "**Rest:**",
+              `\`${restClosedForm}\``,
+              `\`≈ ${rest} ms\``,
+              "",
+              "Mathematics is the language of the universe, it's truly fascinating! 😄",
+            ].join("\n"),
+            ephemeral: true,
+          }),
+        );
+      },
+    },
+  ],
   handle: async (interaction) => {
     await interaction.deferReply();
 
