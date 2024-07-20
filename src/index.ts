@@ -11,6 +11,7 @@ process.on("uncaughtException", console.error);
 
 handler.cachePath = `${import.meta.dir}/lily-cache/handler`;
 
+handler.addDebugListener(console.log);
 await handler.scanDir(`${import.meta.dir}/commands`);
 await handler.scanDir(`${import.meta.dir}/listeners`);
 
@@ -29,12 +30,13 @@ const listeners =
 if (
   typeof listeners.messageCreate !== "undefined" &&
   typeof messageCreate !== "undefined"
-)
+) {
+  const oldListener = listeners.messageCreate!;
   listeners.messageCreate = async (m) => {
-    await listeners.messageCreate!(m);
+    await oldListener(m);
     await messageCreate(m);
   };
-else if (typeof messageCreate !== "undefined")
+} else if (typeof messageCreate !== "undefined")
   listeners.messageCreate = messageCreate;
 
 await createClient({

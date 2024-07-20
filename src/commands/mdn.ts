@@ -1,7 +1,7 @@
 // https://github.com/discordjs/discord-utils-bot/blob/main/src/functions/autocomplete/mdnAutoComplete.ts#L23-L47 thanks
 // https://github.com/discordjs/discord-utils-bot/blob/main/src/functions/mdn.ts#L59C1-L78C3 thanks
 import { ApplicationCommandOptionType, AllowedMentionType } from "lilybird";
-import { $applicationCommand } from "@lilybird/handlers/advanced";
+import { $applicationCommand } from "../handler.ts";
 import { MDN_API, MDN_DISCORD_EMOJI } from "src/constants.ts";
 import { safeSlice, silently } from "src/util.ts";
 

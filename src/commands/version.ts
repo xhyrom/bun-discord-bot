@@ -1,4 +1,4 @@
-import { $applicationCommand } from "@lilybird/handlers/advanced";
+import { $applicationCommand } from "../handler.ts";
 
 import {
   COMMIT_HASH,

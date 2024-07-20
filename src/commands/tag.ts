@@ -1,5 +1,5 @@
 import { AllowedMentionType, ApplicationCommandOptionType } from "lilybird";
-import { $applicationCommand } from "@lilybird/handlers/advanced";
+import { $applicationCommand } from "../handler.ts";
 import { getTags, searchTag } from "../loaders/tags.ts";
 
 $applicationCommand({

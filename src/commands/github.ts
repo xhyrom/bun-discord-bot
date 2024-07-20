@@ -1,5 +1,5 @@
-import { $applicationCommand } from "@lilybird/handlers/advanced";
 import { ApplicationCommandOptionType } from "lilybird";
+import { $applicationCommand } from "../handler.ts";
 import { safeSlice, silently } from "../util.ts";
 
 type State =

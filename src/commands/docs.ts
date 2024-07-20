@@ -1,7 +1,7 @@
 import { AllowedMentionType, ApplicationCommandOptionType } from "lilybird";
-import { $applicationCommand } from "@lilybird/handlers/advanced";
+import { $applicationCommand } from "../handler.ts";
 import algoliasearch from "algoliasearch";
-import { safeSlice } from "src/util.ts";
+import { safeSlice } from "../util.ts";
 
 // @ts-expect-error It is callable, but algolia for some reason has a namespace with the same name
 const algoliaClient = algoliasearch(

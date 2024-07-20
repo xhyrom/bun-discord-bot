@@ -14,7 +14,7 @@
     "prettier": "3.3.3"
   },
   "dependencies": {
-    "@lilybird/handlers": "^0.6.0-beta.9",
+    "@lilybird/handlers": "^0.6.0-beta.11",
     "@lilybird/jsx": "0.3.0",
     "@lilybird/transformers": "^0.4.1",
     "@paperdave/logger": "^3.0.1",

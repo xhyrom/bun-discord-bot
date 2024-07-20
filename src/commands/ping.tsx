@@ -1,4 +1,4 @@
-import { $applicationCommand } from "@lilybird/handlers/advanced";
+import { $applicationCommand } from "../handler.ts";
 import { serializers as S } from "@purplet/serialize";
 import { ActionRow, Button } from "@lilybird/jsx";
 import { possibleClosedForm, silently } from "../util.ts";
