@@ -11,7 +11,6 @@ process.on("uncaughtException", console.error);
 
 handler.cachePath = `${import.meta.dir}/lily-cache/handler`;
 
-handler.addDebugListener(console.log);
 await handler.scanDir(`${import.meta.dir}/commands`);
 await handler.scanDir(`${import.meta.dir}/listeners`);
 
