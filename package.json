@@ -10,7 +10,7 @@
     "format:apply": "prettier . --write"
   },
   "devDependencies": {
-    "bun-types": "^1.1.6",
+    "bun-types": "^1.1.21",
     "prettier": "3.3.3"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "@paperdave/logger": "^3.0.1",
     "@purplet/serialize": "^2.0.0",
     "@wolfram-alpha/wolfram-alpha-api": "^23.1004.144821-RELEASE",
-    "algoliasearch": "^4.23.2",
+    "algoliasearch": "^4.24.0",
     "bun-tracestrings": "github:oven-sh/bun.report",
     "gray-matter": "^4.0.3",
     "lilybird": "^0.7.3"
