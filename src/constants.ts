@@ -49,6 +49,7 @@ export const BUN_EMOJIS = [
   { name: "bunparty", id: "1210663548963921960" },
   { name: "bunsplode", id: "1210663666454634586" },
   { name: "bunsob", id: "1254862523857895537" },
+  { name: "bunolice", id: "1274280067735748608" },
   { name: "bundowspet", id: "1222860633377341461", animated: true },
   { name: "bunpet", id: "1172808445737574591", animated: true },
   { name: "bunsegfault", id: "1175208306533486632", animated: true },
