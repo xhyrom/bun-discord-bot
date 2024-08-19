@@ -27,6 +27,7 @@ export const BUN_EMOJIS = [
   { name: "awesomebun", id: "1136571782472683571" },
   { name: "beno", id: "1152544141323010049" },
   { name: "benode", id: "1210663269837316197" },
+  { name: "bolice", id: "1274390797994688542" },
   { name: "bun", id: "994093611065024512" },
   { name: "bunana", id: "1118962978088304741" },
   { name: "buncat", id: "1274985769400012800" },
