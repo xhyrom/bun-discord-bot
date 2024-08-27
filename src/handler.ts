@@ -6,7 +6,9 @@ const { interactionCreate, ...simpleTransformers } = defaultTransformers;
 export type SimpleTransformers = typeof simpleTransformers;
 export const transformers = simpleTransformers;
 
-export const handler = new Handler<SimpleTransformers>({});
+export const handler = new Handler<SimpleTransformers, true>({
+  transformers: defaultTransformers,
+});
 export const $applicationCommand = handler.storeCommand.bind(handler);
 export const $listener = handler.storeListener.bind(handler);
 export const $component = handler.buttonCollector.bind(handler);
