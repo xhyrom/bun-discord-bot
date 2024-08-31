@@ -1,14 +1,12 @@
 import { AllowedMentionType, ApplicationCommandOptionType } from "lilybird";
 import { $applicationCommand } from "../handler.ts";
-import algoliasearch from "algoliasearch";
+import { algoliasearch } from "algoliasearch";
 import { safeSlice } from "../util.ts";
 
-// @ts-expect-error It is callable, but algolia for some reason has a namespace with the same name
 const algoliaClient = algoliasearch(
   "2527C13E0N",
   "4efc87205e1fce4a1f267cadcab42cb2",
 );
-const algoliaIndex = algoliaClient.initIndex("bun");
 
 $applicationCommand({
   name: "docs",
@@ -29,12 +27,18 @@ $applicationCommand({
   ],
   autocomplete: async (interaction) => {
     const query = interaction.data.getFocused<string>().value;
-    const result = await algoliaIndex.search(query, {
-      hitsPerPage: 25,
+    const { results } = await algoliaClient.search({
+      requests: [
+        {
+          indexName: "bun",
+          query: query,
+          hitsPerPage: 25,
+        },
+      ],
     });
 
     return interaction.showChoices(
-      result.hits.map((hit: any) => {
+      results[0].hits.map((hit: any) => {
         const name = getHitName(hit);
 
         return {
@@ -50,11 +54,17 @@ $applicationCommand({
     const query = interaction.data.getString("query");
     const target = interaction.data.getUser("target");
 
-    const result = await algoliaIndex.search(query, {
-      hitsPerPage: 1,
+    const { results } = await algoliaClient.search({
+      requests: [
+        {
+          indexName: "bun",
+          query: query,
+          hitsPerPage: 1,
+        },
+      ],
     });
 
-    const hit = result.hits[0];
+    const hit = results[0].hits[0];
     const url = hit.url;
     const name = getHitName(hit);
     const snippetContent = hit._snippetResult?.content?.value?.replace(
