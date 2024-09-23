@@ -10,19 +10,19 @@
     "format:apply": "prettier . --write"
   },
   "devDependencies": {
-    "bun-types": "^1.1.26",
+    "bun-types": "^1.1.29",
     "prettier": "3.3.3"
   },
   "dependencies": {
-    "@lilybird/handlers": "0.6.0-beta.20",
+    "@lilybird/handlers": "0.6.0",
     "@lilybird/jsx": "0.3.0",
-    "@lilybird/transformers": "^0.4.1",
+    "@lilybird/transformers": "^0.4.2",
     "@paperdave/logger": "^3.0.1",
     "@purplet/serialize": "^2.0.0",
     "@wolfram-alpha/wolfram-alpha-api": "^23.1004.144821-RELEASE",
-    "algoliasearch": "^5.2.3",
-    "bun-tracestrings": "github:oven-sh/bun.report",
+    "algoliasearch": "^5.5.3",
+    "bun-tracestrings": "https://github.com/oven-sh/bun.report",
     "gray-matter": "^4.0.3",
-    "lilybird": "^0.7.3"
+    "lilybird": "^0.8.0"
   }
 }
