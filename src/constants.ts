@@ -54,6 +54,7 @@ export const BUN_EMOJIS = [
   { name: "bunpet", id: "1172808445737574591", animated: true },
   { name: "bunsegfault", id: "1175208306533486632", animated: true },
 ];
+export const BUN_STICKER = "994093337080516698";
 
 export const MDN_API = "https://developer.mozilla.org";
 export const MDN_DISCORD_EMOJI = "mdn:1236028636826566758";

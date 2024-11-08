@@ -1,5 +1,5 @@
-import { GuildMember } from "@lilybird/transformers";
-import { BUN_EMOJIS, wolframApiClient } from "./constants.ts";
+import { GuildMember, PartialMessage } from "@lilybird/transformers";
+import { BUN_EMOJIS, BUN_STICKER, wolframApiClient } from "./constants.ts";
 import { parseAndRemap, formatMarkdown } from "bun-tracestrings";
 
 const URL_REGEX = /\(\s*(https?:\/\/[^\s\[\]]+)\s*\)/gi;
@@ -31,14 +31,28 @@ export async function moderateNick(member: GuildMember) {
   );
 }
 
-export function isBunOnlyLikeMessage(content?: string) {
-  if (!content) return false;
-  if (content === "bun") return true;
+export function isBunOnlyLikeMessage(message: PartialMessage) {
+  // No content or stickers
+  if (!message.content && message.stickerItems?.length == 0) return false;
+  // Has attachments
+  if (message.hasAttachments()) return false;
+  // Has more than one sticker or a sticker that isn't the bun sticker
+  if (
+    message.stickerItems &&
+    ((message.stickerItems.length == 1 &&
+      message.stickerItems[0].id !== BUN_STICKER) ||
+      message.stickerItems.length > 1)
+  )
+    return false;
+
+  // has valid sticker
+  if (message.stickerItems) return true;
+  if (message.content === "bun") return true;
 
   return BUN_EMOJIS.some((emoji) =>
     emoji.animated
-      ? content.replace(/<a:|>/g, "") == `${emoji.name}:${emoji.id}`
-      : content.replace(/<:|>/g, "") == `${emoji.name}:${emoji.id}`,
+      ? message.content!.replace(/<a:|>/g, "") == `${emoji.name}:${emoji.id}`
+      : message.content!.replace(/<:|>/g, "") == `${emoji.name}:${emoji.id}`,
   );
 }
 

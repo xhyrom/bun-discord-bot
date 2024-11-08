@@ -12,7 +12,7 @@ $listener({
 function handleBunOnlyChannel(message: PartialMessage): boolean {
   if (message.channelId !== process.env.BUN_ONLY_CHANNEL_ID) return false;
 
-  if (!isBunOnlyLikeMessage(message.content)) {
+  if (!isBunOnlyLikeMessage(message)) {
     message.delete();
     return true;
   }
