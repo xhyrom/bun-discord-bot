@@ -1,6 +1,6 @@
 import "./loaders/tags.ts";
 
-import { handler } from "./handler.ts";
+import { defaultTransformers, handler } from "./handler.ts";
 import { Intents, createClient } from "lilybird";
 import { info } from "@paperdave/logger";
 
@@ -22,5 +22,6 @@ await createClient({
       await handler.loadGlobalCommands(client);
     },
   },
-  ...handler.getListenersObject()
+  ...handler.getListenersObject(),
+  ...defaultTransformers,
 });
