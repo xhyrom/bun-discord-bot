@@ -1,7 +1,7 @@
 import WolframAlphaAPI from "@wolfram-alpha/wolfram-alpha-api";
 import { dependencies } from "../package.json";
 import { sliceIfStartsWith } from "./util.ts";
-import { spawnSync } from "bun";
+import { main, spawnSync } from "bun";
 
 export const COMMIT_HASH = spawnSync({
   cmd: ["git", "log", "--pretty=format:%h", "-n", "1"],
@@ -50,6 +50,12 @@ export const BUN_EMOJIS = [
   { name: "rainbowbun", id: "995824310860128326" },
   { name: "uwubun", id: "995823895175233587" },
   { name: "ziggybun", id: "1274994335590518824" },
+  { name: "gigabun", id: "1369049575834255521" },
+  { name: "bupple", id: "1190690285852839976" },
+  { name: "bunsalute", id: "1356099199313383586" },
+  { name: "bundroid", id: "1196556081166565519" },
+  { name: "bunerd", id: "1372332559790375043" },
+  { name: "bunflush", id: "1379914605740167268" },
   { name: "bundowspet", id: "1222860633377341461", animated: true },
   { name: "bunpet", id: "1172808445737574591", animated: true },
   { name: "bunsegfault", id: "1175208306533486632", animated: true },
