@@ -1,9 +1,13 @@
 import { Address, Remap, ResolvedCommit } from "bun-tracestrings";
-import {
-  basename,
-  escmd,
-  escmdcode,
-} from "node_modules/bun-tracestrings/lib/util";
+
+const basename = (path: string) => path.split("/").pop()!;
+function escmd(str: string): string {
+  return str.replace(/[*#\\\(\)\[\]\<\>_\`]/g, "\\$&");
+}
+
+function escmdcode(str: string): string {
+  return str.replace(/[\`]/g, "\\$&");
+}
 
 export function formatMarkdown(
   remap: Remap,
