@@ -1,6 +1,7 @@
 import { GuildMember, PartialMessage } from "@lilybird/transformers";
 import { BUN_EMOJIS, BUN_STICKER, wolframApiClient } from "./constants.ts";
-import { parseAndRemap, formatMarkdown } from "bun-tracestrings";
+import { parseAndRemap } from "bun-tracestrings";
+import { formatMarkdown } from "./trace/format.ts";
 
 const URL_REGEX = /\(\s*(https?:\/\/[^\s\[\]]+)\s*\)/gi;
 
